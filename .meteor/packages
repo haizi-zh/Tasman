@@ -9,3 +9,4 @@ insecure
 underscore
 twbs:bootstrap
 coffeescript
+iron:router
