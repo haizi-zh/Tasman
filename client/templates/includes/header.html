@@ -11,11 +11,14 @@
         <a class="navbar-brand" href="{{pathFor 'postsList'}}">Microscope</a>
       </div>
       <div class="collapse navbar-collapse" id="navigation">
-        {{#if currentUser}}
-          <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav">  
+          {{#if currentUser}}
             <li><a href="{{pathFor 'postSubmit'}}">Submit Post</a></li>
-          </ul>
-        {{/if}}
+          <li class="dropdown">
+            {{> notifications}}
+          </li>
+          {{/if}}
+        </ul>
         <ul class="nav navbar-nav navbar-right">
           {{> loginButtons}}
         </ul>
