@@ -1,5 +1,5 @@
 <template name="header">
-  <nav class="navbar navbar-default" role="navigation">
+  <nav class="navbar navbar-default " role="navigation">
     <div class="container-fluid">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navigation">
@@ -8,10 +8,29 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="{{pathFor 'home'}}">Microscope</a>
+        <a class="navbar-brand" href="{{pathFor 'home'}}" style="color: green"><b>爱走-CMS</b></a>
       </div>
       <div class="collapse navbar-collapse" id="navigation">
         <ul class="nav navbar-nav">
+          {{#if naviBarConfig}}
+            {{#each naviBarConfig}}
+              {{#if subItem}}
+                <li class="dropdown">
+                  <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                    {{name}}
+                    <b class="caret"></b>
+                  </a>
+                  <ul class="dropdown-menu">
+                    {{#each subItem}}
+                      <li class="{{activeTag}}" route="{{routeName}}"><a href="{{url}}">{{name}}</a></li>
+                    {{/each}}
+                  </ul>
+                </li>
+              {{else}}
+                <li class="{{activeTag}}" route="{{routeName}}"><a href="{{url}}">{{name}}</a></li>
+              {{/if}}
+            {{/each}}
+          {{/if}}
           <li class="{{activeRouteClass 'home' 'newPosts'}}">
             <a href="{{pathFor 'newPosts'}}">最新</a>
           </li>
@@ -27,6 +46,10 @@
             </li>
           {{/if}}
         </ul>
+
+        <!-- 插入搜索信息 -->
+        {{> searchTpl}}
+
         <ul class="nav navbar-nav navbar-right">
           {{> loginButtons}}
         </ul>
