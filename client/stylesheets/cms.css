@@ -1,0 +1,85 @@
+.left-navi-container {
+    float: left;
+    width: 20%;
+    margin-right: 8px;
+}
+
+.right-info-container {
+    float: right;
+    width: 79%;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 2px;
+}
+
+.up-navi, .down-navi {
+    margin: 0px auto;
+}
+
+.divider {
+    margin: 3px auto;
+}
+
+.province-container {
+    width: 40%;
+    float: left;
+}
+
+.city-container {
+    width: 60%;
+    float: right;
+}
+
+.up-navi-btn-ct {
+    padding: 0 30px;
+}
+
+.city-info-container {
+    margin-top: 10px;
+}
+
+.submit-btn {
+    margin-right: 77px;
+    float: right;
+}
+
+#submit-info {
+    float: right;
+    margin-right: 80px;
+}
+
+#search-theme {
+    margin-left: 600px;
+}
+
+.picture-zone {
+  margin: 10px auto;
+}
+
+.pictures-info {
+  margin: 10px auto;
+}
+
+.selectd-container {
+  display: block;
+}
+
+.raw-picture-container {
+  width: 200px;
+  height: 200px;
+  overflow: hidden;
+  margin: 5px;
+  display: inline-block;
+}
+
+.seleted-picture-container {
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  margin: 3px;
+  display: inline-block;
+}
+
+.clean-float {
+  overflow: auto;
+}

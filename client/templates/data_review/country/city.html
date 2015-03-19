@@ -1,0 +1,68 @@
+<template name="reviewCity">
+  <!-- 左侧导航栏 -->
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default china"><span class="up-navi-btn-ct">国内</span></button>
+        <button type="button" class="btn btn-default foreign"><span class="up-navi-btn-ct">国外</span></button>
+      </div>
+    </div>
+    <div class="divider"></div>
+    <div class="down-navi">
+      <div class="province-container">
+        <ul class="list-group">
+          <li class="list-group-item active">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+        </ul>
+      </div>
+      <!-- 国内城市或者国外城市 -->
+      <div class="city-container">
+        <ul class="list-group">
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+          <li class="list-group-item">hello</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- 城市信息审核 -->
+  <div class="right-info-container">
+
+    <!-- 导航Tab -->
+    <div class="city-info-container">
+      <form>
+        <nav class="navbar navbar-default" role="navigation">
+          <ul class="nav nav-tabs">
+            <li role="navigation" class=""><a href="#">基本信息</a></li>
+            <li role="navigation"><a href="#">交通</a></li>
+            <li role="navigation"><a href="#">特色</a></li>
+            <li role="navigation"><a href="#">图片筛选</a></li>
+              <!-- 动态改变 label-success -->
+            <span class="label label-success">编辑状态</span>
+            <botton id="submit-info" class="btn btn-default" type="button">提交信息</botton>
+          </ul>
+        </nav>
+
+        <!-- use hidden and show to implement tab selections -->
+        <div class="characteristic-info">{{> cityBasicInfo}}</div>
+        <div class="traffic-info ">{{> cityTraffic}}</div>
+        <div class="characteristic-info">{{> cityCharacteristic}}</div>
+        <div class="pictures-info">{{> pictures}}</div>
+
+        <button type="submit" class="btn btn-default">Submit</button>
+      </form>
+    </div>
+  </div>
+
+</template>
