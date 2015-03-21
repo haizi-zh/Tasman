@@ -1,0 +1,32 @@
+<template name="cityCharacteristic">
+  <div class="form-group">
+  <!-- 游玩体验、活动 -->
+    <label>游玩体验</label>
+    <textarea class="form-control" rows="3" id="play-experience" placeholder="感觉还可以...">{{diningIntro}}</textarea>
+  </div>
+  <div class="form-group">
+    <div>活动</div>
+    {{#each activities}}
+      <label>名称: <b>{{title}}</b></label>
+      {{#each images}}
+        <textarea class="form-control local-activity-pic" rows="5" placeholder="活动图片...">{{this}}</textarea>
+      {{/each}}
+      <textarea class="form-control local-activity" rows="5" placeholder="毛驴...">{{this}}</textarea>
+    {{/each}}
+  </div>
+  <div class="form-group">
+    <div>Tips</div>
+    {{#each tips}}
+      <label>名称: <b>{{title}}</b></label>
+      <textarea class="form-control warm-tips" rows="5" placeholder="毛驴...">{{desc}}</textarea>
+    {{/each}}
+  </div>
+
+  <div class="form-group">
+    <div>特色</div>
+    {{#each specials}}
+      <label>名称: <b>{{title}}</b></label>
+      <textarea class="form-control specials" rows="5" placeholder="毛驴...">{{desc}}</textarea>
+    {{/each}}
+  </div>
+</template>

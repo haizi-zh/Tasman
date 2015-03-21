@@ -4,36 +4,42 @@
     <!-- 国内省份或者国外国家名 -->
     <div class="up-navi">
       <div class="btn-group" role="group" aria-label="...">
-        <button type="button" class="btn btn-default china"><span class="up-navi-btn-ct">国内</span></button>
-        <button type="button" class="btn btn-default foreign"><span class="up-navi-btn-ct">国外</span></button>
+        <button type="button" class="btn btn-default china"><a href="/data-review/city/china/" class="up-navi-btn-ct">国内</a></button>
+        <button type="button" class="btn btn-default foreign"><a href="/data-review/city/abroad/" class="up-navi-btn-ct">国外</a></button>
       </div>
     </div>
     <div class="divider"></div>
+
     <div class="down-navi">
-      <div class="province-container">
+      {{#if isAbroad}}
+      <!-- 国外 -->
         <ul class="list-group">
-          <li class="list-group-item active">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
+          {{#each cities}}
+            <li class="city-name list-group-item"  id="{{_id._str}}">{{zhName}}</li>
+          {{/each}}
         </ul>
-      </div>
-      <!-- 国内城市或者国外城市 -->
-      <div class="city-container">
+        <!-- <div class="province-container">
+        </div> -->
+        <!-- 国内城市或者国外城市 -->
+        <!-- <div class="city-container">
+        </div>  -->
+      {{else}}
+      <!-- 国内 -->
         <ul class="list-group">
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
-          <li class="list-group-item">hello</li>
+          {{#each cities}}
+            <li class="city-name list-group-item" id="{{_id._str}}">{{zhName}}</li>
+          {{/each}}
         </ul>
-      </div>
+      {{/if}}
     </div>
+
+    {{#if nextPath}}
+      <a href="{{nextPath}}" class="load-more">加载更多</a>
+    {{else}}
+      {{#unless ready}}
+        {{> spinner}}
+      {{/unless}}
+    {{/if}}
   </div>
 
   <!-- 城市信息审核 -->
@@ -55,9 +61,9 @@
         </nav>
 
         <!-- use hidden and show to implement tab selections -->
-        <div class="characteristic-info">{{> cityBasicInfo}}</div>
-        <div class="traffic-info ">{{> cityTraffic}}</div>
-        <div class="characteristic-info">{{> cityCharacteristic}}</div>
+        <div class="characteristic-info">{{> cityBasicInfo cityDetails}}</div>
+        <div class="traffic-info ">{{> cityTraffic cityDetails}}</div>
+        <div class="characteristic-info">{{> cityCharacteristic cityDetails}}</div>
         <div class="pictures-info">{{> pictures}}</div>
 
         <button type="submit" class="btn btn-default">Submit</button>

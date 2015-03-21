@@ -8,7 +8,7 @@ var naviBarConfig = [{
     routeName: "reviewCountry"
   }, {
     name: "城市数据",
-    url: "/data-review/city",
+    url: "/data-review/city/china",
     routeName: "reviewCity"
   }, {
     name: "景点数据",

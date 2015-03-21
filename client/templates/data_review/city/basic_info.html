@@ -1,20 +1,20 @@
 <template name="cityBasicInfo">
   <div class="form-group">
     <label>默认名称</label>
-    <textarea class="form-control" rows="1" id="default-name" placeholder="帝都..."></textarea>
+    <textarea class="form-control" rows="1" id="default-name" placeholder="帝都...">{{zhName}}</textarea>
   </div>
   <div class="form-group">
     <label>城市描述</label>
-    <textarea class="form-control" rows="5" id="description" placeholder="城市..."></textarea>
+    <textarea class="form-control" rows="5" id="description" placeholder="城市...">{{desc}}</textarea>
   </div>
   <div class="form-group">
     <label>参考游玩时间</label>
-    <textarea class="form-control" row="1" id="suggest-travel-time" placeholder="1-2天..."></textarea>
+    <textarea class="form-control" row="1" id="suggest-travel-time" placeholder="1-2天...">{{timeCostDesc}}</textarea>
 
   </div>
   <div class="form-group">
     <label>最佳旅游时间</label>
-    <textarea class="form-control" row="2" id="best-travel-time" placeholder="春了个天..."></textarea>
+    <textarea class="form-control" row="2" id="best-travel-time" placeholder="春了个天...">{{travelMonth}}</textarea>
   </div>
   <div class="form-group">
     <label>历史文化</label>
