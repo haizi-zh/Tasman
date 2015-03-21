@@ -15,12 +15,6 @@ Meteor.publish('cityDetail', function(mid) {
   return Locality.find({'_id': new Mongo.ObjectID(mid)});
 });
 
-// Meteor.publish('citiesOfChina', function() {
-//   return Locality.find({}, {sort: {hotness: -1}, limit: 20, fields: {zhName: 1, abroad: 1, superAdm: 1}});
-// });
-
-
-
 Locality.allow({
   update: function () {
     return false;
