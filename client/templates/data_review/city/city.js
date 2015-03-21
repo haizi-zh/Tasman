@@ -42,6 +42,7 @@ Template.reviewCity.events({
     // // check modification status
 
     var mid = $(e.target).attr('id');
+    $(e.target).siblings("")
     Session.set('currentCityId', mid);
     Meteor.subscribe("cityDetail", mid);
     Locality.findOne({'_id': new Mongo.ObjectID(mid)});
