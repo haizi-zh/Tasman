@@ -2,25 +2,25 @@ var mongoPoiUrl = mongoUrlGen(dbAuth.poi.db, dbAuth.poi.username, dbAuth.poi.pas
 
 var poi = new MongoInternals.RemoteCollectionDriver(mongoPoiUrl);
 
-Viewspot = new Mongo.Collection("Viewspot", { _driver: poi });
+ViewSpot = new Mongo.Collection("ViewSpot", { _driver: poi });
 
 Meteor.publish('vs', function(isAbroad, zoneName, pageLimit) {
   check(isAbroad, Boolean);
   check(zoneName, String);
   check(pageLimit, Number);
-  if(isAbroad){
-    return Viewspot.find({'country.zhName': zoneName}, {sort: {hotness: -1}, limit: parseInt(pageLimit), fields: {zhName: 1}});
+  if(isAbroad) {
+    return ViewSpot.find({'country.zhName': zoneName}, {sort: {hotness: -1}, limit: parseInt(pageLimit), fields: {country: 1, zhName: 1}});
   } else {
-    return Viewspot.find({'locList.zhName': zoneName}, {sort: {hotness: -1}, limit: parseInt(pageLimit), fields: {zhName: 1}});
+    return ViewSpot.find({'locList.zhName': zoneName}, {sort: {hotness: -1}, limit: parseInt(pageLimit), fields: {locList: 1, zhName: 1}});
   }
 });
 
 Meteor.publish('vsDetail', function(mid) {
   check(mid, String);
-  return Viewspot.find({'_id': new Mongo.ObjectID(mid)});
+  return ViewSpot.find({'_id': new Mongo.ObjectID(mid)});
 });
 
-Viewspot.allow({
+ViewSpot.allow({
   update: function () {
     return false;
   }
