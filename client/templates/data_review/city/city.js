@@ -1,63 +1,73 @@
 Meteor.subscribe("cities");
 
+if (Meteor.isClient) {
+  Meteor.startup(function () {
+    Session.set('submitted', true);
+  });
+}
+
 Locality = new Mongo.Collection('Locality');
 
 Template.reviewCity.helpers({
-  // cities: function() {
-  //   var raw = Locality.distinct({
-  //     'abroad': false
-  //   }, {
-  //     fields: {
-  //       zhName: 1
-  //     }
-  //   }).fetch();
-  //   Session.set('citiesInChina', raw);
-  //   console.log(raw);
-  //   var zhNames = [];
-  //   _.map(raw, function(obj) {
-  //     zhNames.push(obj.zhName);
-  //   });
-  //   zhNames = _.uniq(zhNames);
-  //   return pureArrToObjArr(zhNames, "zhName");
-  // },
-
   cityDetails: function() {
     var currentCityId = Session.get('currentCityId');
     if (currentCityId == undefined) {
       return;
     }
-    var cityDetailInfo = Locality.findOne({'_id': new Mongo.ObjectID(currentCityId)});
+    var cityDetailInfo = Locality.findOne({
+      '_id': new Mongo.ObjectID(currentCityId)
+    });
     return cityDetailInfo;
   }
 });
 
 Template.reviewCity.events({
-  "click .city-name": function(e){
-    // currentCity = Session.get('');
+  "click .city-name": function(e) {
+    // TODO 通过判断键位的设置来判断是否修改，未修改，可以自由切换
 
-    // var targetCityId = e.target.cityId;
-    // if (currentId == targetCityId)
-    //   return;
-
-    // // check modification status
-
+    // 重复点击
     var mid = $(e.target).attr('id');
-    $(e.target).siblings("")
+    if (mid === Session.get('currentID')) {
+      return;
+    } else {
+      Session.set('currentID', mid);
+    }
+
+    // 是否提交
+    if (!Session.get('submitted')) {
+      var res = confirm('尚未保存, 是否放弃本次编辑?');
+      if(res){
+        Session.set('submitted', true);
+      }else{
+        return;
+      }
+    }
+    Session.set('submitted', false);
+
+    $(e.target).addClass("active");
+    $(e.target).siblings().removeClass('active');
     Session.set('currentCityId', mid);
     Meteor.subscribe("cityDetail", mid);
-    Locality.findOne({'_id': new Mongo.ObjectID(mid)});
+    Locality.findOne({
+      '_id': new Mongo.ObjectID(mid)
+    });
   },
+
+  "click .navi-tabs": function(e) {
+    console.log(e.target);
+    var par = $(e.target).parent(),
+      clsName = par.attr('class');
+    par.addClass("active");
+    par.siblings().removeClass("active");
+
+
+    console.log(clsName);
+    $('div.' + clsName).removeClass('hidden').addClass("show");
+    $('div.' + clsName).siblings().removeClass('show').addClass("hidden");
+  }
 });
 
-pureArrToObjArr = function(arr, keyName) {
-  var tempArr = [],
-    temp = {},
-    len = arr.length;
-  console.log(len);
-  for(var i = 0; i < len; i++){
-    temp[keyName] = arr[i];
-    tempArr.push(temp);
-    temp = {};
-  }
-  return tempArr;
+
+isSubmitted = function(){
+  return Session.get('submitted');
 }

@@ -12,7 +12,7 @@ var naviBarConfig = [{
     routeName: "reviewCity"
   }, {
     name: "景点数据",
-    url: "/data-review/viewspot",
+    url: "/data-review/viewspot/china",
     routeName: "reviewViewspot"
   }, {
     name: "美食数据",
