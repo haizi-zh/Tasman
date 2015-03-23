@@ -2,7 +2,14 @@ var mongoPoiUrl = mongoUrlGen(dbAuth.poi.db, dbAuth.poi.username, dbAuth.poi.pas
 
 var poi = new MongoInternals.RemoteCollectionDriver(mongoPoiUrl);
 
-Viewspot = new Mongo.Collection("Viewspot", { _driver: poi });
+Viewspot = new Mongo.Collection("ViewSpot", { _driver: poi });
+
+// 搜索设置
+Viewspot.initEasySearch('zhName', {
+  'limit' : 5,
+  'use' : 'mongo-db'
+});
+
 
 Meteor.publish('vs', function(isAbroad, zoneName, pageLimit) {
   check(isAbroad, Boolean);

@@ -3,10 +3,15 @@ Meteor.subscribe("cities");
 if (Meteor.isClient) {
   Meteor.startup(function () {
     Session.set('submitted', true);
+    Session.set('curSearchCollection', 'ViewSpot');
   });
 }
 
 Locality = new Mongo.Collection('Locality');
+Locality.initEasySearch('zhName', {
+  'limit' : 5,
+  'use' : 'mongo-db'
+});
 
 Template.reviewCity.helpers({
   cityDetails: function() {

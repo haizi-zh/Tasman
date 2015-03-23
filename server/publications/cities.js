@@ -3,6 +3,11 @@ var mongoGeoUrl = mongoUrlGen(dbAuth.geo.db, dbAuth.geo.username, dbAuth.geo.pas
 var geo = new MongoInternals.RemoteCollectionDriver(mongoGeoUrl);
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
+// 搜索设置
+Locality.initEasySearch('zhName', {
+  'limit' : 5,
+  'use' : 'mongo-db'
+});
 
 Meteor.publish('cities', function(isAbroad, pageLimit) {
   check(isAbroad, Boolean);

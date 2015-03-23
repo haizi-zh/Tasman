@@ -6,6 +6,11 @@
 // }
 
 Viewspot = new Mongo.Collection('Viewspot');
+Viewspot.initEasySearch('zhName', {
+  'limit' : 5,
+  'use' : 'mongo-db'
+});
+
 
 // Template.reviewCity.helpers({
 //   cityDetails: function() {
