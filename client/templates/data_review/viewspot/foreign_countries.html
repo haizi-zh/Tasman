@@ -1,7 +1,7 @@
 <template name="foreignCountries">
   <ul class="list-group">
     {{#each countries}}
-      <li class="city-name list-group-item">{{this}}</li>
+      <li class="list-group-item"><a href="{{url}}">{{name}}</a></li>
     {{/each}}
   </ul>
 </template>
