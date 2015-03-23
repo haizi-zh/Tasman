@@ -24,9 +24,18 @@ Template.searchTpl.events({
   }
 });
 
+
+// searchResult
 Template.searchResult.helpers({
   collections: function(){
     Session.get('curSearchCollection')
     return colSelection;
+  },
+  urlGen: function(type, id){
+    return '/' + type + '/' + id;
   }
-})
+});
+
+Template.searchResult.events({
+  // TODO 
+});

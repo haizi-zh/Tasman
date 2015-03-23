@@ -4,7 +4,7 @@ var geo = new MongoInternals.RemoteCollectionDriver(mongoGeoUrl);
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
 // 搜索设置
-Locality.initEasySearch('zhName', {
+Locality.initEasySearch(['zhName', '_id'], {
   'limit' : 5,
   'use' : 'mongo-db'
 });

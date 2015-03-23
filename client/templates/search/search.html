@@ -47,31 +47,31 @@
     <div class="list-group">
     {{#if ViewSpot}}
       {{#esEach index="ViewSpot"}}
-          <a href="#" class="list-group-item" data-type="ViewSpot">{{zhName}}</a>
+          <a href="{{urlGen 'ViewSpot' _id._str}}" class="list-group-item searchRes" data-type="ViewSpot" id='{{_id._str}}'>{{zhName}}</a>
       {{/esEach}}
     {{/if}}
 
     {{#if Locality}}
       {{#esEach index="Locality"}}
-          <a href="#" class="list-group-item" data-type="Locality">{{zhName}}</a>
+          <a href="#" class="searchRes list-group-item" data-type="Locality" id='{{_id._str}}'>{{zhName}}</a>
       {{/esEach}}
     {{/if}}
 
     {{#if Restaurant}}
       {{#esEach index="Restaurant"}}
-          <a href="#" class="list-group-item" data-type="Restaurant">{{zhName}}</a>
+          <a href="#" class="list-group-item searchRes" data-type="Restaurant" id='{{_id._str}}'>{{zhName}}</a>
       {{/esEach}}
     {{/if}}
 
     {{#if Shopping}}
       {{#esEach index="Shopping"}}
-          <a href="#" class="list-group-item" data-type="Shopping">{{zhName}}</a>
+          <a href="#" class="list-group-item searchRes" data-type="Shopping" id='{{_id._str}}'>{{zhName}}</a>
       {{/esEach}}
     {{/if}}
 
     {{#if Hotel}}
       {{#esEach index="Hotel"}}
-          <a href="#" class="list-group-item" data-type="Hotel">{{zhName}}</a>
+          <a href="#" class="list-group-item searchRes" data-type="Hotel" id='{{_id._str}}'>{{zhName}}</a>
       {{/esEach}}
     {{/if}}
     </div>
