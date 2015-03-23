@@ -1,7 +1,7 @@
 <template name="province">
   <ul class="list-group">
     {{#each province}}
-      <li class="city-name list-group-item">{{this}}</li>
+    <li class="list-group-item"><a href="{{url}}">{{name}}</a></li>
     {{/each}}
   </ul>
 </template>
