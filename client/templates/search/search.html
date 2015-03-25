@@ -53,7 +53,7 @@
 
     {{#if Locality}}
       {{#esEach index="Locality"}}
-          <a href="#" class="searchRes list-group-item" data-type="Locality" id='{{_id._str}}'>{{zhName}}</a>
+          <a href="{{urlGen 'Locality' _id._str}}" class="searchRes list-group-item" data-type="Locality" id='{{_id._str}}'>{{zhName}}</a>
       {{/esEach}}
     {{/if}}
 

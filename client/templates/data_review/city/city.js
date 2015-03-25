@@ -4,6 +4,7 @@ if (Meteor.isClient) {
   Meteor.startup(function () {
     Session.set('submitted', true);
     Session.set('curSearchCollection', 'ViewSpot');
+    Images = new Mongo.Collection('Images');
   });
 }
 
@@ -55,6 +56,25 @@ Template.reviewCity.events({
     Locality.findOne({
       '_id': new Mongo.ObjectID(mid)
     });
+
+    /************* for pictures by lyn ************/
+    Meteor.subscribe("Images", mid);
+    var imageList = Images.find({
+      'itemIds': new Mongo.ObjectID(mid)
+    }).fetch();
+    var image,
+        images = [];
+    for (var i = 0;i < imageList.length;i++){
+      image = {
+        id: imageList[i]._id._str,
+        url: pictures_host + imageList[i].key,
+        index: i
+      }
+      images.push(image);
+    }
+    $('div.pic').empty();
+    Blaze.renderWithData(Template.pictures, {imageList:images}, $('div.pic')[0]);
+    /************* for pictures by lyn ************/
   },
 
   "click .navi-tabs": function(e) {
@@ -70,7 +90,6 @@ Template.reviewCity.events({
     $('div.' + clsName).siblings().removeClass('show').addClass("hidden");
   }
 });
-
 
 isSubmitted = function(){
   return Session.get('submitted');
