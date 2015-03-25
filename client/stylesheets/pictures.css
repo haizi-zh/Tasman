@@ -1,0 +1,139 @@
+/******* edit by @ck ***********/
+.pic-top10{margin-top: 10px;}
+
+.picture-zone {
+  margin: 10px auto;
+}
+
+.pictures-info {
+  margin: 10px auto;
+}
+
+.raw-picture-container {
+  width: 200px;
+  height: 200px;
+  margin: 5px;
+  display: inline-block;
+}
+
+.selected-container {
+  list-style: none;
+  display: block;
+  overflow: hidden;
+  padding-left: 10px;
+}
+
+.selected-picture-container {
+  width: 100px;
+  height: 100px;
+  margin: 10px;
+  float: left;
+  background: #707070;
+color: #FFF;
+box-shadow: 0px 0px 10px #505050;
+border-radius: 5px;
+}
+/******* edit by @ck ***********/
+
+/******* edit by @lyn ***********/
+.btn-pic-sort{
+	margin-right: 40px;
+}
+
+.pic-for-selection{
+	padding-left: 10px;
+}
+
+.pic-shadow{
+	display: none;
+	width: 200px;
+	height: 200px;
+ 	position: absolute;
+ 	background-color: rgba(0,0,0,0.5);
+ 	z-index: 10;
+ 	border: 5px solid #f00;
+ 	box-sizing: border-box;
+ 	-moz-box-sizing: border-box;/* Firefox */
+ 	-webkit-box-sizing: border-box;/* Safari */
+ }
+
+.raw-picture-container{
+	position: relative;
+}
+
+.crop-window{
+	display: none;
+	position: fixed;
+	height: 604px;
+	width: 1030px;
+	background: #fff;
+	top: 0;
+	left: 0;
+	border: 2px solid #337ab7;
+	z-index: 101;
+	box-sizing: context;
+}
+
+.crop-frame{
+	display: inline-block;
+	height: 600px;
+	width: 802px;
+	border-right:2px solid #337ab7;
+}
+
+
+.crop-side{
+	display: inline-block;
+	width: 220px;
+	height: 500px;
+	vertical-align: top;
+}
+
+.crop-btn{
+	margin: 20px 10px;
+	width: 80px;
+	height: 30px;
+	text-align: center;
+	background-color: #337ab7;
+	cursor: pointer;
+	color: #fff;
+}
+
+.fl{float: left;}
+.fr{float: right;}
+
+.crop-shadow{
+	display: none;
+	background-color: rgba(0, 0, 0, 0.6);
+	position: fixed;
+	z-index: 100;
+	top: 0;
+	left: 0;
+}
+
+.small-frame{
+	overflow: hidden;
+	display: inline-block;
+	width: 200px;
+	height: 200px;
+	vertical-align: top;
+	margin-left: 10px;
+	margin-top: 100px;
+}
+/******* edit by @lyn ***********/
+.gbin1-list {
+	list-style: none;
+}
+
+.gbin1-list li {
+	float: left;
+	width: 100px;
+	height: 100px;
+	/*border: 1px solid #CCC;*/
+	margin: 10px;
+	/*background: #707070;*/
+	/*color: #FFF;*/
+	/*box-shadow: 0px 0px 10px #505050;*/
+	/*border-radius: 5px;*/
+	/*padding: 0px;*/
+}
