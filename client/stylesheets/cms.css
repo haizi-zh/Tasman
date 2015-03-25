@@ -52,34 +52,6 @@
     margin-left: 600px;
 }
 
-.picture-zone {
-  margin: 10px auto;
-}
-
-.pictures-info {
-  margin: 10px auto;
-}
-
-.selectd-container {
-  display: block;
-}
-
-.raw-picture-container {
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  margin: 5px;
-  display: inline-block;
-}
-
-.seleted-picture-container {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  margin: 3px;
-  display: inline-block;
-}
-
 .clean-float {
   overflow: auto;
 }
