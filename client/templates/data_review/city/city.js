@@ -1,13 +1,18 @@
-Meteor.subscribe("cities");
+// Meteor.subscribe("cities");
 
 if (Meteor.isClient) {
   Meteor.startup(function () {
     Session.set('submitted', true);
+    Session.set('curSearchCollection', 'ViewSpot');
     Images = new Mongo.Collection('Images');
   });
 }
 
 Locality = new Mongo.Collection('Locality');
+Locality.initEasySearch('zhName', {
+  'limit' : 5,
+  'use' : 'mongo-db'
+});
 
 Template.reviewCity.helpers({
   cityDetails: function() {
@@ -44,9 +49,8 @@ Template.reviewCity.events({
       }
     }
     Session.set('submitted', false);
-
-    $(e.target).addClass("active");
     $(e.target).siblings().removeClass('active');
+    $(e.target).addClass("active");
     Session.set('currentCityId', mid);
     Meteor.subscribe("cityDetail", mid);
     Locality.findOne({
