@@ -48,5 +48,8 @@ Template.header.helpers({
   naviBarConfig: function() {
     return naviBarConfig;
   },
-  activeTag: ''
+  activeTag: '',
+  admin : function(){
+    return Meteor.user() ? Meteor.user().admin : false;
+  }
 });

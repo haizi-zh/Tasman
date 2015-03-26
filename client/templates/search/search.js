@@ -16,7 +16,6 @@ Template.searchTpl.helpers({
 });
 
 
-
 Template.searchTpl.events({
   'change .sort-select': function(e) {
     var curCol = $(e.target).val();
@@ -37,5 +36,25 @@ Template.searchResult.helpers({
 });
 
 Template.searchResult.events({
-  // TODO 
+  'change :checkbox': function(e){
+    var parentDom = $(e.target).parent(),
+        dataDome = parentDom.children("a"),
+        checkBox = parentDom.children("input"),
+        id = dataDome.attr('data-id'),
+        zhName = dataDome.html();
+    e.preventDefault();
+    e.stopPropagation();
+
+    if(Session.get(id)){
+      $('#' + id).remove();
+      Session.set(id, false);
+    } else {
+      Blaze.renderWithData(
+                            Template.compareItem,
+                            {'id': id, 'zhName': zhName},
+                            $('.add_to_compare')[0]
+                          );
+      Session.set(id, true);
+    }
+  }
 });

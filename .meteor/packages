@@ -15,3 +15,4 @@ accounts-password
 audit-argument-checks
 mrt:mongodb-aggregation
 matteodem:easy-search
+reactive-var

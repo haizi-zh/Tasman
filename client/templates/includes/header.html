@@ -31,31 +31,41 @@
               {{/if}}
             {{/each}}
           {{/if}}
-          <li class="{{activeRouteClass 'home' 'newPosts'}}">
+          <!-- <li class="{{activeRouteClass 'home' 'newPosts'}}">
             <a href="{{pathFor 'newPosts'}}">最新</a>
           </li>
           <li class="{{activeRouteClass  'bestPosts'}}">
             <a href="{{pathFor 'bestPosts'}}">精品</a>
-          </li>
+          </li> -->
           {{#if currentUser}}
-            <li class="{{activeRouteClass 'postSubmit'}}">
-              <a href="{{pathFor 'postSubmit'}}">发帖</a>
-            </li>
             <li class="dropdown">
               {{> notifications}}
             </li>
           {{/if}}
-        </ul>
 
-        <!-- 插入搜索信息 -->
-        {{> searchTpl}}
-        <!-- {{> search}} -->
-
-        <ul class="nav navbar-nav navbar-right">
-          {{> loginButtons}}
+          <!-- 插入搜索信息 -->
+          {{> searchTpl}}
         </ul>
+        {{#if currentUser}}
+          <ul class="nav navbar-nav pull-right" style="float: right;">
+            <li class="dropdown">
+              <a href="#" class="glyphicon glyphicon-user dropdown-toggle" data-toggle="dropdown">
+                {{currentUser.username}}
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu">
+                {{#if admin}}
+                  <li class=""><a href="{{pathFor 'admin'}}">用户管理</a></li>
+                {{/if}}
+                <li class=""><a href="{{pathFor 'userProfile'}}">个人配置</a></li>
+              </ul>
+            </li>
+          </ul>
+        {{/if}}
+
+
       </div>
-      
+
     </div>
   </nav>
   {{> searchResult}}

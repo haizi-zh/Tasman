@@ -1,15 +1,16 @@
+<!-- 这个文件中有两个模板：searchTpl 和 searchResult -->
+<!-- searchTpl 放在导航栏上 -->
+<!-- searchResult 放在导航栏下边，作为搜索结果的载体 -->
+
 <template name="searchTpl">
   <form class="navbar-form navbar-left" role="search">
     <select class="sort-select">
-      <option value="ViewSpot">景点</option>
       <option value="Locality" selected>城市</option>
+      <option value="ViewSpot">景点</option>
       <option value="Restaurant">美食</option>
       <option value="Shopping">购物</option>
       <option value="Hotel">酒店</option>
     </select>
-    <!-- <div class="form-group">
-      {{> esInput index="{{collection}}" placeholder="酒店" }}
-    </div> -->
 
     {{#with collections}}
       {{#if ViewSpot}}
@@ -42,38 +43,65 @@
   </form>
 </template>
 
+
+<!-- 搜索结果的模版 -->
 <template name="searchResult">
   {{#with collections}}
     <div class="list-group">
     {{#if ViewSpot}}
       {{#esEach index="ViewSpot"}}
-          <a href="{{urlGen 'ViewSpot' _id._str}}" class="list-group-item searchRes" data-type="ViewSpot" id='{{_id._str}}'>{{zhName}}</a>
+        <span class="input-group-addon">
+          <a href="{{urlGen 'ViewSpot' _id._str}}" class="list-group-item searchRes" data-type="ViewSpot" data-id='{{_id._str}}'>{{zhName}}</a>
+          <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
+        </span>
       {{/esEach}}
     {{/if}}
 
     {{#if Locality}}
       {{#esEach index="Locality"}}
-          <a href="{{urlGen 'Locality' _id._str}}" class="searchRes list-group-item" data-type="Locality" id='{{_id._str}}'>{{zhName}}</a>
+        <span class="input-group-addon">
+          <a href="{{urlGen 'Locality' _id._str}}" class="searchRes list-group-item" data-type="Locality" data-id='{{_id._str}}'>{{zhName}}</a>
+          <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
+        </span>
       {{/esEach}}
     {{/if}}
 
     {{#if Restaurant}}
       {{#esEach index="Restaurant"}}
-          <a href="#" class="list-group-item searchRes" data-type="Restaurant" id='{{_id._str}}'>{{zhName}}</a>
+        <span class="input-group-addon">
+          <a href="{{urlGen 'Restaurant' _id._str}}" class="list-group-item searchRes" data-type="Restaurant" data-id='{{_id._str}}'>{{zhName}}</a>
+          <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
+        </span>
       {{/esEach}}
     {{/if}}
 
     {{#if Shopping}}
       {{#esEach index="Shopping"}}
-          <a href="#" class="list-group-item searchRes" data-type="Shopping" id='{{_id._str}}'>{{zhName}}</a>
+        <span class="input-group-addon">
+          <a href="{{urlGen 'Shopping' _id._str}}" class="list-group-item searchRes" data-type="Shopping" data-id='{{_id._str}}'>{{zhName}}</a>
+          <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
+        </span>
       {{/esEach}}
     {{/if}}
 
     {{#if Hotel}}
       {{#esEach index="Hotel"}}
-          <a href="#" class="list-group-item searchRes" data-type="Hotel" id='{{_id._str}}'>{{zhName}}</a>
+        <span class="input-group-addon">
+          <a href="{{urlGen 'Hotel' _id._str}}" class="list-group-item searchRes" data-type="Hotel" data-id='{{_id._str}}'>{{zhName}}</a>
+          <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
+        </span>
       {{/esEach}}
     {{/if}}
     </div>
   {{/with}}
+
+  <div class="add_to_compare">
+    <!-- insert Dom through js code -->
+    <!-- compare Items -->
+  </div>
+  <div class="compare_btn">
+    {{#if cmpItems}}
+      <button>对比</button>
+    {{/if}}
+  </div>
 </template>

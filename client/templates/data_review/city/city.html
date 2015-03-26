@@ -18,11 +18,6 @@
             <li class="city-name list-group-item"  id="{{_id._str}}">{{zhName}}</li>
           {{/each}}
         </ul>
-        <!-- <div class="province-container">
-        </div> -->
-        <!-- 国内城市或者国外城市 -->
-        <!-- <div class="city-container">
-        </div>  -->
       {{else}}
       <!-- 国内 -->
         <ul class="list-group">
@@ -44,33 +39,7 @@
 
   <!-- 城市信息审核 -->
   <div class="right-info-container">
-
-    <!-- 导航Tab -->
-    <div class="city-info-container">
-      <form>
-        <nav class="navbar navbar-default" role="navigation">
-          <ul class="nav nav-tabs">
-            <li role="navigation" class="basic-info"><a class="navi-tabs" href="#">基本信息</a></li>
-            <li role="navigation" class="traffic"><a class="navi-tabs" href="#">交通</a></li>
-            <li role="navigation" class="special"><a class="navi-tabs" href="#">特色</a></li>
-            <li role="navigation" class="pic"><a class="navi-tabs" href="#">图片筛选</a></li>
-              <!-- 动态改变 label-success -->
-            <span class="label label-success">编辑状态</span>
-            <botton id="submit-info" class="btn btn-default" type="button">提交信息</botton>
-          </ul>
-        </nav>
-
-        <!-- use hidden and show to implement tab selections -->
-        <div class="infos">
-          <div class="basic-info show">{{> cityBasicInfo cityDetails}}</div>
-          <div class="traffic hidden">{{> cityTraffic cityDetails}}</div>
-          <div class="special hidden">{{> cityCharacteristic cityDetails}}</div>
-          <div class="pic hidden"><!-- {{> pictures}} --></div>
-        </div>
-
-        <button type="submit" class="btn btn-default">Submit</button>
-      </form>
-    </div>
+    {{> naviTabsLocality}}
   </div>
 
 </template>

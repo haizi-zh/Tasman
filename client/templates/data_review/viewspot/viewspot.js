@@ -7,6 +7,7 @@ ViewSpot.initEasySearch('zhName', {
 Template.reviewViewspot.helpers({
   vsDetail: function() {
     var currentVsId = Session.get('currentID');
+    console.log('hello ---');
     if (currentVsId == undefined) {
       return;
     }
@@ -26,7 +27,7 @@ Template.reviewViewspot.events({
     if (mid === Session.get('currentID')) {
       return;
     } else {
-      Session.set('currentID', mid);
+      // Session.set('currentID', mid);
     }
 
     // 是否提交
@@ -39,10 +40,12 @@ Template.reviewViewspot.events({
       }
     }
     Session.set('submitted', false);
+    Meteor.subscribe("vsDetail", mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Session.set('currentVsId', mid);
-    Meteor.subscribe("vsDetail", mid);
+    Session.set('currentID', mid);
+    console.log(mid);
+    console.log($(e.target).html());
   },
 });
 

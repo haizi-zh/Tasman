@@ -1,13 +1,3 @@
-// Meteor.subscribe("cities");
-
-if (Meteor.isClient) {
-  Meteor.startup(function () {
-    Session.set('submitted', true);
-    Session.set('curSearchCollection', 'ViewSpot');
-    Images = new Mongo.Collection('Images');
-  });
-}
-
 Locality = new Mongo.Collection('Locality');
 Locality.initEasySearch('zhName', {
   'limit' : 5,
@@ -53,9 +43,9 @@ Template.reviewCity.events({
     $(e.target).addClass("active");
     Session.set('currentCityId', mid);
     Meteor.subscribe("cityDetail", mid);
-    Locality.findOne({
-      '_id': new Mongo.ObjectID(mid)
-    });
+    // console.log(Locality.findOne({
+    //   '_id': new Mongo.ObjectID(mid)
+    // }));
 
     /************* for pictures by lyn ************/
     Meteor.subscribe("Images", mid);
@@ -76,19 +66,6 @@ Template.reviewCity.events({
     Blaze.renderWithData(Template.pictures, {imageList:images}, $('div.pic')[0]);
     /************* for pictures by lyn ************/
   },
-
-  "click .navi-tabs": function(e) {
-    console.log(e.target);
-    var par = $(e.target).parent(),
-      clsName = par.attr('class');
-    par.addClass("active");
-    par.siblings().removeClass("active");
-
-
-    console.log(clsName);
-    $('div.' + clsName).removeClass('hidden').addClass("show");
-    $('div.' + clsName).siblings().removeClass('show').addClass("hidden");
-  }
 });
 
 isSubmitted = function(){
