@@ -12,7 +12,7 @@ var naviBarConfig = [{
     routeName: "reviewCity"
   }, {
     name: "景点数据",
-    url: "/data-review/viewspot/china",
+    url: "/data-review/viewspot/china/北京",
     routeName: "reviewViewspot"
   }, {
     name: "美食数据",
@@ -48,5 +48,19 @@ Template.header.helpers({
   naviBarConfig: function() {
     return naviBarConfig;
   },
-  activeTag: ''
+  activeTag: '',
+  admin : function(){
+    return Meteor.user() ? Meteor.user().admin : false;
+  },
+});
+
+Template.header.events({
+  'click #logout': function(event, template) {
+    Meteor.logout(function(error){
+      if(error){
+        // TODO
+      }
+      Router.go('login');
+    });
+  }
 });

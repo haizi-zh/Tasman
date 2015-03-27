@@ -1,16 +1,15 @@
-Meteor.subscribe("cities");
-
-if (Meteor.isClient) {
-  Meteor.startup(function () {
-    Session.set('submitted', true);
-  });
-}
-
 Locality = new Mongo.Collection('Locality');
+Locality.initEasySearch('zhName', {
+  'limit' : 5,
+  'use' : 'mongo-db'
+});
+
+Images = new Mongo.Collection('Images');
 
 Template.reviewCity.helpers({
   cityDetails: function() {
     var currentCityId = Session.get('currentCityId');
+    console.log('hello world');
     if (currentCityId == undefined) {
       return;
     }
@@ -27,46 +26,44 @@ Template.reviewCity.events({
 
     // 重复点击
     var mid = $(e.target).attr('id');
-    if (mid === Session.get('currentID')) {
+    if (mid === Session.get('currentCityId')) {
       return;
-    } else {
-      Session.set('currentID', mid);
     }
 
     // 是否提交
     if (!Session.get('submitted')) {
       var res = confirm('尚未保存, 是否放弃本次编辑?');
-      if(res){
-        Session.set('submitted', true);
-      }else{
+      if(!res){
         return;
       }
     }
     Session.set('submitted', false);
-
-    $(e.target).addClass("active");
-    $(e.target).siblings().removeClass('active');
-    Session.set('currentCityId', mid);
     Meteor.subscribe("cityDetail", mid);
-    Locality.findOne({
-      '_id': new Mongo.ObjectID(mid)
-    });
+    Session.set('currentCityId', mid);
+
+    $(e.target).siblings().removeClass('active');
+    $(e.target).addClass("active");
+
+    /************* for pictures by lyn ************/
+    Meteor.subscribe("Images", mid);
+    var imageList = Images.find({
+      'itemIds': new Mongo.ObjectID(mid)
+    }).fetch();
+    var image,
+        images = [];
+    for (var i = 0;i < imageList.length;i++){
+      image = {
+        id: imageList[i]._id._str,
+        url: pictures_host + imageList[i].key,
+        index: i
+      }
+      images.push(image);
+    }
+    $('div.pic').empty();
+    Blaze.renderWithData(Template.pictures, {imageList:images}, $('div.pic')[0]);
+    /************* for pictures by lyn ************/
   },
-
-  "click .navi-tabs": function(e) {
-    console.log(e.target);
-    var par = $(e.target).parent(),
-      clsName = par.attr('class');
-    par.addClass("active");
-    par.siblings().removeClass("active");
-
-
-    console.log(clsName);
-    $('div.' + clsName).removeClass('hidden').addClass("show");
-    $('div.' + clsName).siblings().removeClass('show').addClass("hidden");
-  }
 });
-
 
 isSubmitted = function(){
   return Session.get('submitted');

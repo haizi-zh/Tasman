@@ -4960,6 +4960,12 @@ a.thumbnail.active {
 a.list-group-item {
   color: #555555;
 }
+a.list-group-item:hover {
+  color: #ffffff;
+  background-color: #337ab7;
+}
+
+
 a.list-group-item .list-group-item-heading {
   color: #333333;
 }
