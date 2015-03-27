@@ -4,9 +4,12 @@ Locality.initEasySearch('zhName', {
   'use' : 'mongo-db'
 });
 
+Images = new Mongo.Collection('Images');
+
 Template.reviewCity.helpers({
   cityDetails: function() {
     var currentCityId = Session.get('currentCityId');
+    console.log('hello world');
     if (currentCityId == undefined) {
       return;
     }
@@ -23,29 +26,23 @@ Template.reviewCity.events({
 
     // 重复点击
     var mid = $(e.target).attr('id');
-    if (mid === Session.get('currentID')) {
+    if (mid === Session.get('currentCityId')) {
       return;
-    } else {
-      Session.set('currentID', mid);
     }
 
     // 是否提交
     if (!Session.get('submitted')) {
       var res = confirm('尚未保存, 是否放弃本次编辑?');
-      if(res){
-        Session.set('submitted', true);
-      }else{
+      if(!res){
         return;
       }
     }
     Session.set('submitted', false);
+    Meteor.subscribe("cityDetail", mid);
+    Session.set('currentCityId', mid);
+
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Session.set('currentCityId', mid);
-    Meteor.subscribe("cityDetail", mid);
-    // console.log(Locality.findOne({
-    //   '_id': new Mongo.ObjectID(mid)
-    // }));
 
     /************* for pictures by lyn ************/
     Meteor.subscribe("Images", mid);

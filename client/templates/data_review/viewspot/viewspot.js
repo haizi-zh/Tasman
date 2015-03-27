@@ -6,8 +6,7 @@ ViewSpot.initEasySearch('zhName', {
 
 Template.reviewViewspot.helpers({
   vsDetail: function() {
-    var currentVsId = Session.get('currentID');
-    console.log('hello ---');
+    var currentVsId = Session.get('currentVsId');
     if (currentVsId == undefined) {
       return;
     }
@@ -24,28 +23,24 @@ Template.reviewViewspot.events({
 
     // 重复点击
     var mid = $(e.target).attr('id');
-    if (mid === Session.get('currentID')) {
+    if (mid === Session.get('currentVsId')) {
       return;
-    } else {
-      // Session.set('currentID', mid);
     }
 
     // 是否提交
     if (!Session.get('submitted')) {
       var res = confirm('尚未保存, 是否放弃本次编辑?');
-      if(res){
-        Session.set('submitted', true);
-      }else{
+      if(!res){
         return;
       }
     }
+
     Session.set('submitted', false);
     Meteor.subscribe("vsDetail", mid);
+    Session.set('currentVsId', mid);
+
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Session.set('currentID', mid);
-    console.log(mid);
-    console.log($(e.target).html());
   },
 });
 

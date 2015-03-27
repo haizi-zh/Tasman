@@ -51,5 +51,16 @@ Template.header.helpers({
   activeTag: '',
   admin : function(){
     return Meteor.user() ? Meteor.user().admin : false;
+  },
+});
+
+Template.header.events({
+  'click #logout': function(event, template) {
+    Meteor.logout(function(error){
+      if(error){
+        // TODO
+      }
+      Router.go('login');
+    });
   }
 });
