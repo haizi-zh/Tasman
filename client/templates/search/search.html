@@ -1,0 +1,79 @@
+<template name="searchTpl">
+  <form class="navbar-form navbar-left" role="search">
+    <select class="sort-select">
+      <option value="ViewSpot">景点</option>
+      <option value="Locality" selected>城市</option>
+      <option value="Restaurant">美食</option>
+      <option value="Shopping">购物</option>
+      <option value="Hotel">酒店</option>
+    </select>
+    <!-- <div class="form-group">
+      {{> esInput index="{{collection}}" placeholder="酒店" }}
+    </div> -->
+
+    {{#with collections}}
+      {{#if ViewSpot}}
+      <div class="form-group">
+        {{> esInput index="ViewSpot" placeholder="景点" }}
+      </div>
+      {{/if}}
+      {{#if Locality}}
+        <div class="form-group">
+          {{> esInput index="Locality" placeholder="城市" }}
+        </div>
+      {{/if}}
+      {{#if Restaurant}}
+        <div class="form-group">
+          {{> esInput index="Restaurant" placeholder="美食" }}
+        </div>
+      {{/if}}
+      {{#if Shopping}}
+        <div class="form-group">
+          {{> esInput index="Shopping" placeholder="购物" }}
+        </div>
+      {{/if}}
+      {{#if Hotel}}
+        <div class="form-group">
+          {{> esInput index="Hotel" placeholder="酒店" }}
+        </div>
+      {{/if}}
+    {{/with}}
+    <button type="submit" class="btn btn-default">搜索</button>
+  </form>
+</template>
+
+<template name="searchResult">
+  {{#with collections}}
+    <div class="list-group">
+    {{#if ViewSpot}}
+      {{#esEach index="ViewSpot"}}
+          <a href="{{urlGen 'ViewSpot' _id._str}}" class="list-group-item searchRes" data-type="ViewSpot" id='{{_id._str}}'>{{zhName}}</a>
+      {{/esEach}}
+    {{/if}}
+
+    {{#if Locality}}
+      {{#esEach index="Locality"}}
+          <a href="{{urlGen 'Locality' _id._str}}" class="searchRes list-group-item" data-type="Locality" id='{{_id._str}}'>{{zhName}}</a>
+      {{/esEach}}
+    {{/if}}
+
+    {{#if Restaurant}}
+      {{#esEach index="Restaurant"}}
+          <a href="#" class="list-group-item searchRes" data-type="Restaurant" id='{{_id._str}}'>{{zhName}}</a>
+      {{/esEach}}
+    {{/if}}
+
+    {{#if Shopping}}
+      {{#esEach index="Shopping"}}
+          <a href="#" class="list-group-item searchRes" data-type="Shopping" id='{{_id._str}}'>{{zhName}}</a>
+      {{/esEach}}
+    {{/if}}
+
+    {{#if Hotel}}
+      {{#esEach index="Hotel"}}
+          <a href="#" class="list-group-item searchRes" data-type="Hotel" id='{{_id._str}}'>{{zhName}}</a>
+      {{/esEach}}
+    {{/if}}
+    </div>
+  {{/with}}
+</template>
