@@ -1,8 +1,5 @@
+Meteor.subscribe("cities");
 Locality = new Mongo.Collection('Locality');
-Locality.initEasySearch('zhName', {
-  'limit' : 5,
-  'use' : 'mongo-db'
-});
 
 Images = new Mongo.Collection('Images');
 

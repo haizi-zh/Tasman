@@ -16,3 +16,5 @@ audit-argument-checks
 mrt:mongodb-aggregation
 matteodem:easy-search
 reactive-var
+http
+jaywon:meteor-node-uuid
