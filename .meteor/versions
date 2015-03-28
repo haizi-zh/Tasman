@@ -46,6 +46,7 @@ mobile-status-bar@1.0.3
 mongo@1.1.0
 mongo-livedata@1.0.8
 mrt:mongodb-aggregation@0.1.71
+natestrauser:select2@3.5.1
 npm-bcrypt@0.7.8_1
 observe-sequence@1.0.5
 ordered-dict@1.0.3

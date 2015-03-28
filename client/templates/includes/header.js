@@ -50,7 +50,7 @@ Template.header.helpers({
   },
   activeTag: '',
   admin : function(){
-    return Meteor.user() ? Meteor.user().admin : false;
+    return _.indexOf(Meteor.user().rights, 'admin') !== -1
   },
 });
 
