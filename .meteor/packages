@@ -15,3 +15,5 @@ accounts-password
 audit-argument-checks
 mrt:mongodb-aggregation
 matteodem:easy-search
+http
+jaywon:meteor-node-uuid

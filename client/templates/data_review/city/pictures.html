@@ -1,13 +1,14 @@
 <template name="pictures">
-  <link rel="stylesheet" href="jquery.Jcrop.css">
+  <!-- <link rel="stylesheet" href="jquery.Jcrop.css"> -->
   <div class="picture-zone">
     <label>通过图片网络地址添加图片</label>
+    <button class="btn-pic-submit fr" type="button">提交</button>
     <div class="row">
       <div class="col-lg-8">
         <div class="input-group">
-          <input type="text" id="add-pic-url" class="form-control" placeholder="图片地址">
+          <input type="text" id="fet-pic-url" class="form-control" placeholder="图片地址">
           <span class="input-group-btn">
-            <button id="pic-url-textarea" class="btn btn-default" type="button">添加图片</button>
+            <button id="pic-fet-sub" class="btn btn-default" type="button">添加图片</button>
           </span>
         </div><!-- /input-group -->
       </div><!-- /.col-lg-6 -->
@@ -42,12 +43,16 @@
     <!-- 编辑弹层的背景阴影 -->
     <div class="crop-shadow"></div>
   </div>
-
-  <div class="form-group">
+  
+  <form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up" style="display:inline-block;height:50px;" class="form-group">
     <label for="exampleInputFile">File input</label>
-    <input type="file" id="exampleInputFile">
+    <input name="key" type="hidden" value="" id="picUpKey">
+    <input name="token" type="hidden" value="" id="picUpToken">
+    <input name="file" type="file"/>
     <p class="help-block">Example block-level help text here.</p>
-  </div>
+  </form>
+  <div id="pic-up-sub" style="display:inline-block;" class="btn btn-primary">提交</div>
+
   <div class="checkbox">
     <label>
       <input type="checkbox"> Check me out
