@@ -26,6 +26,15 @@ Meteor.publish('vsDetail', function(mid) {
   return ViewSpot.find({'_id': new Mongo.ObjectID(mid)});
 });
 
+Meteor.publish('ViewSpot_Cmp', function(items) {
+  check(items, Array);
+  if(items.length !== 0) {
+    var ids = [];
+    items.map(function(item){ids.push(new Mongo.ObjectID(item))});
+    return ViewSpot.find({'_id': {'$in': ids}});
+  }
+});
+
 ViewSpot.allow({
   update: function () {
     return false;

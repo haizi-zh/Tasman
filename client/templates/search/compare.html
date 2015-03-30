@@ -1,0 +1,22 @@
+<template name="compare">
+  <table class="table table-hover table-bordered">
+    <thead>
+      <tr>
+        <td>名字</td>
+        {{#each items}}
+          <td>{{zhName}}</td>
+        {{/each}}
+      </tr>
+    </thead>
+    <tbody>
+      {{#each cmpProperties}}
+        <tr>
+          <td>{{this}}</td>
+          {{#each items}}
+            <td>{{address}}</td>
+          {{/each}}
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+</template>
