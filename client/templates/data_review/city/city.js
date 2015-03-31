@@ -1,4 +1,3 @@
-Meteor.subscribe("cities");
 Locality = new Mongo.Collection('Locality');
 
 Images = new Mongo.Collection('Images');
