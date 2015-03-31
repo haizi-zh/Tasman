@@ -1,22 +1,43 @@
 <template name="compare">
-  <table class="table table-hover table-bordered">
+<!-- table-hover -->
+  <table class="table table-bordered table-hover table-vertical-align table-highlight-head">
     <thead>
       <tr>
-        <td>名字</td>
-        {{#each items}}
-          <td>{{zhName}}</td>
+        <td class="cmp_zhName">名字</td>
+        {{#each cmpElements}}
+          <td>
+            <textarea class="form-control" rows="1" id="" placeholder="无内容">{{zhName}}</textarea>
+            <div class="text-center">
+              <input name="zhName" type="radio" value="{{_id._str}}" />
+            </div>
+          </td>
         {{/each}}
       </tr>
     </thead>
     <tbody>
-      {{#each cmpProperties}}
-        <tr>
-          <td>{{this}}</td>
-          {{#each items}}
-            <td>{{address}}</td>
-          {{/each}}
-        </tr>
-      {{/each}}
+      <tr>
+        <td class="cmp_desc">介绍</td>
+        {{#each cmpElements}}
+          <td class='active'>
+            <textarea class="form-control" rows="5" id="" placeholder="无内容">{{desc}}</textarea>
+            <div class="text-center">
+              <input name="desc" type="radio" value="{{_id._str}}" />
+            </div>
+          </td>
+        {{/each}}
+      </tr>
+      <tr>
+        <td>地址</td>
+        {{#each cmpElements}}
+          <td>
+            <textarea class="form-control" rows="1" id="" placeholder="无内容">{{address}}</textarea>
+            <div class="text-center">
+              <input name="address" type="radio" value="{{_id._str}}" />
+            </div>
+          </td>
+        {{/each}}
+      </tr>
+
     </tbody>
   </table>
 </template>
