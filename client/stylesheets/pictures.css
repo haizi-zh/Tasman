@@ -115,14 +115,23 @@ border-radius: 5px;
 	left: 0;
 }
 
-.small-frame{
-	overflow: hidden;
+.small-container{
 	display: inline-block;
 	width: 200px;
 	height: 200px;
-	vertical-align: top;
 	margin-left: 10px;
-	margin-top: 100px;
+	margin-top: 60px;
+}
+
+.small-frame{
+	overflow: hidden;
+	width: 200px;
+	height: 200px;
+}
+
+.crop-scale{
+	margin-top: 40px;
+	margin-left: 20px;
 }
 /******* edit by @lyn ***********/
 .gbin1-list {
