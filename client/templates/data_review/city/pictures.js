@@ -6,6 +6,8 @@ var selected = [];
 
 
 var AccessToken = "";
+var cropScale = [1, 2, 3/2, 4/3];//width:height
+var cropScaleIndex = 0;
 
 Template.pictures.events({
   "dblclick .raw-picture-container": function(e){
@@ -41,18 +43,17 @@ Template.pictures.events({
     _time = setTimeout(function(){
       cropShow($image);
       cropLocate();
-      selectLocate($image.index);
-      keyEvent();
-
-      //loading jCrop
-      $('#' + $image.id).Jcrop({
-        onChange: changeCoords,
-        onSelect: changeCoords
-        // onRelease: clearCoords
-      },function(){
-        jcrop_api = this;
-      });
+      selectFrameLocate($image.index);
+      keyEvent();//enter&esc
+      initJcrop($image);
     }, 400);
+  },
+
+  "click .radio input": function(e){
+    cropScaleIndex = $(e.target).attr("value");
+    jcrop_api.setOptions({
+      aspectRatio: cropScale[cropScaleIndex]
+    });
   },
 
   "click #crop-close": function(e){
@@ -201,7 +202,7 @@ function cropLocate(){
   $('.crop-window').css('top', (wHeight - cropWindowHei)/2);
 }
 
-function selectLocate(index){
+function selectFrameLocate(index){
   cropCoords = cropHints[index] || 0;
   var r = max(cropCoords.w, cropCoords.h) / 200;
   $('.small-frame').css({
@@ -265,4 +266,15 @@ function changeCoords(c){
     ch: jcrop_api.getBounds()[1]
   };
   showPreview(c);
+}
+
+function initJcrop($image){
+  $('#' + $image.id).Jcrop({
+    onChange: changeCoords,
+    onSelect: changeCoords,
+    // onRelease: clearCoords
+    aspectRatio: cropScale[cropScaleIndex]
+  },function(){
+    jcrop_api = this;
+  });
 }
