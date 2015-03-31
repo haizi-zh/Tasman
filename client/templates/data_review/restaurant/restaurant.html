@@ -1,0 +1,61 @@
+<template name="reviewRestaurant">
+  <!-- 左侧导航栏 -->
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="btn-group" role="group" aria-label="...">
+        <button type="button" class="btn btn-default china"><a href="/data-review/restaurant/china/" class="up-navi-btn-ct">国内</a></button>
+        <button type="button" class="btn btn-default foreign"><a href="/data-review/restaurant/abroad/" class="up-navi-btn-ct">国外</a></button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      {{#if isAbroad}}
+        <!-- 国外国家 -->
+        <div class="province-container">
+          {{> restForeignCountries}}
+        </div>
+        <!-- vs -->
+        <div class="city-container">
+          <ul class="list-group">
+            {{#each restaurants}}
+              <li class="city-name list-group-item"  id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      {{else}}
+        <!-- 国内省份 -->
+        <div class="province-container">
+          {{> restProvince}}
+        </div>
+        <!-- vs -->
+        <div class="city-container">
+          <ul class="list-group">
+            {{#each restaurants}}
+              <li class="city-name list-group-item"  id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      {{/if}}
+    </div>
+
+    {{#if nextPath}}
+      <a href="{{nextPath}}" class="load-more">加载更多</a>
+    {{else}}
+      {{#unless ready}}
+        {{> spinner}}
+      {{/unless}}
+    {{/if}}
+  </div>
+
+  <!-- 城市信息审核 -->
+  <div class="right-info-container">
+
+    <!-- 导航Tab -->
+    <div class="city-info-container">
+      {{> naviTabsRestaurant restaurantDetail=restaurantDetail}}
+    </div>
+  </div>
+
+</template>

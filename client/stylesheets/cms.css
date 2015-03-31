@@ -52,34 +52,23 @@
     margin-left: 600px;
 }
 
-.picture-zone {
-  margin: 10px auto;
-}
-
-.pictures-info {
-  margin: 10px auto;
-}
-
-.selectd-container {
-  display: block;
-}
-
-.raw-picture-container {
-  width: 200px;
-  height: 200px;
-  overflow: hidden;
-  margin: 5px;
-  display: inline-block;
-}
-
-.seleted-picture-container {
-  width: 100px;
-  height: 100px;
-  overflow: hidden;
-  margin: 3px;
-  display: inline-block;
-}
-
 .clean-float {
   overflow: auto;
+}
+
+span.selected_item {
+  padding: 3px 5px 3px 18px;
+  margin: 3px 0 3px 5px;
+  position: relative;
+  line-height: 13px;
+  color: #333;
+  cursor: default;
+  border: 1px solid #aaaaaa;
+  border-radius: 3px;
+  box-shadow: 0 0 2px #fff inset, 0 1px 0 rgba(0, 0, 0, 0.05);
+  background-clip: padding-box;
+}
+
+.add_to_compare {
+  margin: 10px auto;
 }

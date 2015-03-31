@@ -1,0 +1,28 @@
+<template name="userRightElement">
+  <tr>
+    <th scope="row">1</th>
+    <td>{{username}}</td>
+    <td>
+    {{#each rights}}
+      {{> rightElements}}
+    {{/each}}
+    </td>
+    <td>{{> rightOptions uid=_id._str}}</td>
+  </tr>
+</template>
+
+<template name="rightElements">
+  <span class="selected_item" id='{{this}}'>
+    <a href="#" onclick="return false;" class="glyphicon glyphicon-remove"></a>
+    {{this}}
+  </span>
+</template>
+
+<template name="rightOptions">
+  <select name="rightOptions" class="rightOptions" data-uid="{{uid}}">
+    <option value="empty" selected>选择权限</option>
+    <option value="admin">admin</option>
+    <option value="editor">editor</option>
+    <option value="root">root</option>
+  </select>
+</template>
