@@ -1,0 +1,15 @@
+/***
+Login page
+***/
+
+/* logo page */
+
+.login-content {
+  background-color:#fff; 
+  width: 291px;
+  margin: 0 auto; 
+  margin-bottom: 0px;
+  padding: 30px;  
+  padding-top: 20px;  
+  padding-bottom: 15px;  
+}

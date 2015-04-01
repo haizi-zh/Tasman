@@ -12,19 +12,19 @@ var naviBarConfig = [{
     routeName: "reviewCity"
   }, {
     name: "景点数据",
-    url: "/data-review/viewspot/china",
+    url: "/data-review/viewspot/china/北京",
     routeName: "reviewViewspot"
   }, {
     name: "美食数据",
-    url: "/data-review/food",
-    routeName: "reviewFood"
+    url: "/data-review/restaurant/china/北京",
+    routeName: "reviewRestaurant"
   }, {
     name: "购物数据",
-    url: "/data-review/shopping",
+    url: "/data-review/shopping/china/北京",
     routeName: "reviewShopping"
   }, {
     name: "酒店数据",
-    url: "/data-review/hotel",
+    url: "/data-review/hotel/china/北京",
     routeName: "reviewHotel"
   }]
 }, {
@@ -48,5 +48,19 @@ Template.header.helpers({
   naviBarConfig: function() {
     return naviBarConfig;
   },
-  activeTag: ''
+  activeTag: '',
+  admin : function(){
+    return _.indexOf(Meteor.user().rights, 'admin') !== -1
+  },
+});
+
+Template.header.events({
+  'click #logout': function(event, template) {
+    Meteor.logout(function(error){
+      if(error){
+        // TODO
+      }
+      Router.go('login');
+    });
+  }
 });

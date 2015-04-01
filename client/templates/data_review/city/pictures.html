@@ -1,90 +1,87 @@
 <template name="pictures">
+  <!-- <link rel="stylesheet" href="jquery.Jcrop.css"> -->
   <div class="picture-zone">
     <label>通过图片网络地址添加图片</label>
+    <button class="btn-pic-submit fr" type="button">提交</button>
     <div class="row">
       <div class="col-lg-8">
         <div class="input-group">
-          <input type="text" id="add-pic-url" class="form-control" placeholder="图片地址">
+          <input type="text" id="fet-pic-url" class="form-control" placeholder="图片地址">
           <span class="input-group-btn">
-            <button id="pic-url-textarea" class="btn btn-default" type="button">添加图片</button>
+            <button id="pic-fet-sub" class="btn btn-default" type="button">添加图片</button>
           </span>
         </div><!-- /input-group -->
       </div><!-- /.col-lg-6 -->
     </div><!-- /.row -->
 
     <!-- 已选图片略缩图 -->
-    <label>已选图片</label>
-    <div class="selectd-container">
-      <div class="seleted-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="seleted-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="seleted-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="seleted-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="seleted-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="seleted-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-    </div>
-
+    <label class="pic-top10">已选图片</label>
+    <button class="btn-pic-sort fr" type="button">排序</button>
+    <ul class="selected-container"></ul>
+    
     <!-- 可选图片 -->
     <label>可选图片</label>
-    <div class="pic-for-selection">
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
-      </div>
-      <div class="raw-picture-container">
-        <img src="http://img3.3lian.com/2013/v8/100/d/101.jpg" width="200" height="200" class="img-rounded">
+    <ul class="pic-for-selection">
+      {{#each imageList}}
+        <li class="raw-picture-container" id="{{index}}">
+          <div class="pic-shadow"></div>
+          <img src="{{url}}?imageView2/1/w/200/h/200" width="200px" height="200px" class="img-rounded" data-id="{{id}}" data-index="{{index}}">
+        </li>
+      {{/each}}
+    </ul>
+
+    <!-- 图片编辑容器 -->
+    <div class="crop-window">
+      <div class="crop-frame"></div>
+      <div class="crop-side">
+        <button class="crop-btn fr" id="crop-close" type="button">关闭</button>
+        <button class="crop-btn fl" id="crop-submit" type="button">确认</button>
+        <div class="small-container">
+          <div class="small-frame"></div>
+        </div>
+        <div class="crop-scale">
+          <b>裁剪比例(宽高比)：</b>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios1" value=0 unchecked>
+              1 : 1
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios2" value=1 unchecked>
+              3 : 2
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios3" value=2 unchecked>
+              4 : 3
+            </label>
+          </div>
+          <div class="radio">
+            <label>
+              <input type="radio" name="optionsRadios" id="optionsRadios3" value=3 unchecked>
+              2 : 1
+            </label>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <div class="form-group">
-    <label for="exampleInputFile">File input</label>
-    <input type="file" id="exampleInputFile">
-    <p class="help-block">Example block-level help text here.</p>
+    <!-- 编辑弹层的背景阴影 -->
+    <div class="crop-shadow"></div>
   </div>
+  
+  <form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up" style="display:inline-block;height:50px;" class="form-group">
+    <label for="exampleInputFile">File input</label>
+    <input name="key" type="hidden" value="" id="picUpKey">
+    <input name="token" type="hidden" value="" id="picUpToken">
+    <input name="file" type="file"/>
+    <p class="help-block">Example block-level help text here.</p>
+  </form>
+  <div id="pic-up-sub" style="display:inline-block;" class="btn btn-primary">提交</div>
+
   <div class="checkbox">
     <label>
       <input type="checkbox"> Check me out
