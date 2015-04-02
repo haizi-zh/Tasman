@@ -1,5 +1,6 @@
 <template name="naviTabsViewSpot">
   <form>
+
     <nav class="navbar navbar-default" role="navigation">
       <ul class="nav nav-tabs">
         <li role="navigation" class="basic-info"><a class="navi-tabs" href="#">基本信息</a></li>
@@ -13,11 +14,11 @@
     </nav>
 
     <div class="infos">
-      <div class="basic-info show">{{> cityBasicInfo vsDetail}}</div>
-      <div class="traffic hidden">{{> cityTraffic vsDetail}}</div>
-      <div class="special hidden">{{> cityCharacteristic vsDetail}}</div>
+      <div class="basic-info show">{{> vsBasicInfo vsDetail}}</div>
+      <div class="traffic hidden">{{> vsTraffic vsDetail}}</div>
+      <div class="special hidden">{{> vsCharacteristic vsDetail}}</div>
       <div class="pic hidden">{{> pictures}}</div>
     </div>
-    <button type="submit" class="btn btn-default">Submit</button>
+
   </form>
 </template>

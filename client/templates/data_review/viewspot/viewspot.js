@@ -13,6 +13,8 @@ Template.reviewViewspot.helpers({
     var detailInfo = ViewSpot.findOne({
       '_id': new Mongo.ObjectID(currentVsId)
     });
+    //createOriginTextMD5('ViewSpot', detailInfo);
+    //log(CryptoJS.MD5(detailInfo.desc).toString());
     return detailInfo;
   }
 });
@@ -45,6 +47,18 @@ Template.reviewViewspot.events({
 });
 
 
-isSubmitted = function(){
+isSubmitted = function() {
   return Session.get('submitted');
 }
+
+createOriginTextMD5 = function(type, data) {
+  check(type, String);
+  check(data, Object);
+  if(_.keys(reviewItems).indexOf(type) === -1) {
+    return ;
+  }
+  var tempArr = [];
+  reviewItems[type].map(function(x){tempArr.push({x: CryptoJS.MD5(data[x]).toString()})});
+  console.log(tempArr);
+  Session.set('oriTextMD5', tempArr);
+};

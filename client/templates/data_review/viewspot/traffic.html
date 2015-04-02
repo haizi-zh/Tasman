@@ -4,7 +4,7 @@
     <div>到达交通</div>
     {{#each remoteTraffic}}
       <label>方式: <b>{{title}}</b></label>
-      <textarea class="form-control" rows="5" id="remote-traffic" placeholder="毛驴...">{{desc}}</textarea>
+      {{> froalaReactive _onblur=updateMD5 language='zh_cn' inlineMode=false _value=desc}}
     {{/each}}
   </div>
 
@@ -12,7 +12,7 @@
     <div>当地交通</div>
     {{#each localTraffic}}
       <label>方式: <b>{{title}}</b></label>
-      <textarea class="form-control" rows="5" id="local-traffic" placeholder="毛驴...">{{desc}}</textarea>
+      {{> froalaReactive _onblur=updateMD5 language='zh_cn' inlineMode=false _value=desc}}
     {{/each}}
   </div>
 </template>
