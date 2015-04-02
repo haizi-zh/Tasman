@@ -1,10 +1,17 @@
 itemDataType = {
   'string': 'String',
   'url': 'Url',
-  'array': 'Array',     // special
+  'str_array': 'strArray',     // 字符串构成的数组
+  'obj_array': 'objArray',     // 字典对象构成的数组
   'object': 'Object',   // special
   'int': 'Int'
-}
+};
+
+itemClassify = {
+  'basic': 'basic',
+  'traffic': 'traffic',
+  'feature': 'feature'
+};
 
 
 reviewItems = {
@@ -22,10 +29,10 @@ reviewItems = {
       'trafficInfo': ['交通信息', itemDataType.string]
     },
     'feature': {
-      'tips': ['Tips', itemDataType.array, {
-        'title': ['提示', itemDataType.string],
-        'desc': ['内容', itemDataType.string]
+      'tips': ['Tips', itemDataType.obj_array, {
+        'title': ['提示的标题', itemDataType.string],
+        'desc': ['提示的内容', itemDataType.string]
       }]
     }
   }
-}
+};
