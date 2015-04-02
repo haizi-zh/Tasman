@@ -25,24 +25,31 @@
 
 .selected-picture-container {
   width: 100px;
-  height: 100px;
+  height: 116px;
   margin: 10px;
   float: left;
   background: #707070;
-color: #FFF;
-box-shadow: 0px 0px 10px #505050;
-border-radius: 5px;
+	color: #FFF;
+	box-shadow: 0px 0px 10px #505050;
+	border-radius: 5px;
 }
 /******* edit by @ck ***********/
 
 /******* edit by @lyn ***********/
+.selected-picture-container .glyphicon-minus{
+	width: 100px;
+	background-color: #337ab7;
+	text-align: center;
+	top: 0;
+}
+
 .btn-pic-submit{
 	margin-right: 40px;
 }
 
-.btn-pic-sort{
+/*.btn-pic-sort{
 	margin-right: 40px;
-}
+}*/
 
 .pic-for-selection{
 	padding-left: 10px;

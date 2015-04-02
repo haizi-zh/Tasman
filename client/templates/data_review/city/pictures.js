@@ -4,10 +4,9 @@ var cropCoords = {};//记录单个crop数据
 var index = -1;//记录第几个图片
 var selected = [];
 
-
 var AccessToken = "";
 var cropScale = [1, 2, 3/2, 4/3];//width:height
-var cropScaleIndex = 0;
+var cropScaleIndex = -1;
 
 Template.pictures.events({
   "dblclick .raw-picture-container": function(e){
@@ -16,19 +15,14 @@ Template.pictures.events({
     if ($picShadow.css("display") == "none"){
       //insert the cropped image
       $picShadow.show();
-      var imageElement = 
-        '<li class="selected-picture-container" data-index="' + this.index + '">' + 
-          '<img src="' + this.url + '?imageView2/1/w/100/h/100" width="100px" height="100px" class="img-rounded" data-id="' + this.id + '">' +
-        '</li>';
-      $(".selected-container").append(imageElement);
+      Blaze.renderWithData(Template.selectedPictures, this, $('ul.selected-container')[0]);
+      $('.selected-container').sortable().bind('sortupdate');
     }else{
       //delete the cropped image
       $picShadow.hide();
       var selected = $(".selected-picture-container");
-      var flag;
       for (var i = 0;i < selected.length;i++){
         if ($(selected[i]).attr("data-index") == this.index){
-          flag = true;
           $(selected[i]).remove();
           break;
         }
@@ -70,9 +64,9 @@ Template.pictures.events({
     $("#crop-close").trigger("click");
   },
 
-  "click .btn-pic-sort": function(e){
-    $('.selected-container').sortable().bind('sortupdate');
-  },
+  // "click .btn-pic-sort": function(e){
+  //   $('.selected-container').sortable().bind('sortupdate');
+  // },
 
   "click .btn-pic-submit": function(e){
     var selected = $(".selected-picture-container");
@@ -121,15 +115,14 @@ Template.pictures.events({
       }
       if (result){
         alert("成功上传图片！");
+        console.log(result);
+        // 将上传的图片加入 图片列表中，包括未选和已选
+        // 讲图片数据插入数据库中！
       }else{
         alert("上传图片失败，请再次上传或联系程序员！");   
       }
     });
-
-    // if (fetch){
-      // alert("保存成功,链接为:" + fetchUrl);
-    // }
-
+    
     // var encodedURL = "aHR0cHM6Ly9zczEuYmFpZHUuY29tLzl2bzNkU2FnX3hJNGtoR2tvOVdUQW5GNmhoeS9zdXBlci93aGZwZiUzRDQyNSUyQzI2MCUyQzUwL3NpZ249ZGNkOGUxODA3N2YwODIwMjJkYzdjMjdmMmRjNmNmZGYvZGM1NDU2NGU5MjU4ZDEwOWMyNGRhYzExZDU1OGNjYmY2ZDgxNGRlMi5qcGc=";
     // var encodedEntryURI = "aG9wZWxlZnQ6YWJjZGU=";
     // var path = '/fetch/' + encodedURL + '/to/' + encodedEntryURI;
@@ -172,6 +165,30 @@ Template.pictures.events({
     //   }
     // });
   },
+})
+
+Template.selectedPictures.events({
+  "click .glyphicon-minus": function(e){
+    $(e.target).parent().remove();
+    var picForSelect = $(".raw-picture-container");
+    for (var i = 0;i < picForSelect.length;i++){
+      if ($(picForSelect[i]).attr("id") == this.index){
+        $(picForSelect[i]).children(".pic-shadow").hide();
+        break;
+      }
+    }
+  },
+  "click img": function(e){
+    var $image = this;
+    index = this.index;
+    _time = setTimeout(function(){
+      cropShow($image);
+      cropLocate();
+      selectFrameLocate($image.index);
+      keyEvent();//enter&esc
+      initJcrop($image);
+    }, 400);
+  }
 })
 
 //show cropWindow
