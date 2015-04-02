@@ -1,23 +1,18 @@
 <template name="vsBasicInfo">
   <div class="form-group">
     <label>默认名称</label>
-    <textarea class="form-control" rows="1" id="default-name" placeholder="帝都...">{{zhName}}</textarea>
+    {{> froalaReactive _onblur=updateMD5 theme="royal" item="zhName" language='zh_cn' inlineMode=false _value=zhName}}
   </div>
   <div class="form-group">
     <label>城市描述</label>
-    <textarea class="form-control" rows="5" id="description" placeholder="城市...">{{desc}}</textarea>
+    {{> froalaReactive _onblur=updateMD5 language='zh_cn' item="desc" inlineMode=false _value=desc}}
   </div>
   <div class="form-group">
     <label>参考游玩时间</label>
-    <textarea class="form-control" row="1" id="suggest-travel-time" placeholder="1-2天...">{{timeCostDesc}}</textarea>
-
+    {{> froalaReactive _onblur=updateMD5 language='zh_cn' item="timeCostDesc" inlineMode=false _value=timeCostDesc}}
   </div>
   <div class="form-group">
     <label>最佳旅游时间</label>
-    <textarea class="form-control" row="2" id="best-travel-time" placeholder="春了个天...">{{travelMonth}}</textarea>
-  </div>
-  <div class="form-group">
-    <label>历史文化</label>
-    <textarea class="form-control" row="3" id="history-and-culture" placeholder="很久很久以前..."></textarea>
+    {{> froalaReactive _onblur=updateMD5 language='zh_cn' item="travelMonth" inlineMode=false _value=travelMonth}}
   </div>
 </template>
