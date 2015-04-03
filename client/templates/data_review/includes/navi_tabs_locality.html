@@ -6,7 +6,7 @@
           <li role="navigation" class="basic-info"><a class="navi-tabs" href="#">基本信息</a></li>
           <li role="navigation" class="traffic-info"><a class="navi-tabs" href="#">交通</a></li>
           <li role="navigation" class="feature-info"><a class="navi-tabs" href="#">特色</a></li>
-          <li role="navigation" class="pic"><a class="navi-tabs" href="#">图片筛选</a></li>
+          <li role="navigation" class="pic-info"><a class="navi-tabs" href="#">图片筛选</a></li>
             <!-- 动态改变 label-success -->
           <span class="label label-success">编辑状态</span>
           <botton id="submit-info" class="btn btn-default" type="button">提交信息</botton>
@@ -43,7 +43,9 @@
             {{/if}}
           {{/each}}
         </div>
-        <div class="pic hidden"></div>
+        <div class="pic hidden">
+          {{> pictures imageList}}
+        </div>
       </div>
     </form>
   </div>
