@@ -14,12 +14,23 @@
       </div><!-- /.col-lg-6 -->
     </div><!-- /.row -->
 
+    <div class="up-local-pic">
+      <div id="pic-up-sub" class="btn btn-primary">上传</div>
+      <label>上传本地图片</label>
+      <form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up" class="form-group">
+        <input name="key" type="hidden" value="" id="picUpKey">
+        <input name="token" type="hidden" value="" id="picUpToken">
+        <input name="file" type="file"/>
+      </form>
+    </div>
+
     <!-- 已选图片略缩图 -->
-    <label class="pic-top10">已选图片</label>
+    <div>已选图片</div>
     <!-- <button class="btn-pic-sort fr" type="button">排序</button> -->
     <ul class="selected-container"></ul>
     
     <!-- 可选图片 -->
+    <div>
     <label>可选图片</label>
     <ul class="pic-for-selection">
       {{#each imageList}}
@@ -29,6 +40,7 @@
         </li>
       {{/each}}
     </ul>
+    </div>
 
     <!-- 图片编辑容器 -->
     <div class="crop-window">
@@ -37,7 +49,10 @@
         <button class="crop-btn fr" id="crop-close" type="button">关闭</button>
         <button class="crop-btn fl" id="crop-submit" type="button">确认</button>
         <div class="small-container">
-          <div class="small-frame"></div>
+          <div class="small-frame" id="crop-small-1"></div>
+        </div>
+        <div class="small-container">
+          <div class="small-frame" id="crop-small-2"></div>
         </div>
         <div class="crop-scale">
           <b>裁剪比例(宽高比)：</b>
@@ -73,14 +88,6 @@
     <div class="crop-shadow"></div>
   </div>
   
-  <form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up" style="display:inline-block;height:50px;" class="form-group">
-    <label for="exampleInputFile">File input</label>
-    <input name="key" type="hidden" value="" id="picUpKey">
-    <input name="token" type="hidden" value="" id="picUpToken">
-    <input name="file" type="file"/>
-    <p class="help-block">Example block-level help text here.</p>
-  </form>
-  <div id="pic-up-sub" style="display:inline-block;" class="btn btn-primary">提交</div>
 
   <div class="checkbox">
     <label>
