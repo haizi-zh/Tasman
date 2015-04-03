@@ -5,7 +5,7 @@ var index = -1;//记录第几个图片
 var selected = [];
 
 var AccessToken = "";
-var cropScale = [1, 2, 3/2, 4/3];//width:height
+var cropScale = [1, 3/2, 4/3, 2];//width:height
 var cropScaleIndex = -1;
 
 Template.pictures.events({
@@ -33,13 +33,8 @@ Template.pictures.events({
   "click .raw-picture-container": function(e){
   	clearTimeout(_time);
     var $image = this;
-    index = this.index;
     _time = setTimeout(function(){
-      cropShow($image);
-      cropLocate();
-      selectFrameLocate($image.index);
-      keyEvent();//enter&esc
-      initJcrop($image);
+      loadJcrop($image);
     }, 400);
   },
 
@@ -180,31 +175,22 @@ Template.selectedPictures.events({
   },
   "click img": function(e){
     var $image = this;
-    index = this.index;
-    _time = setTimeout(function(){
-      cropShow($image);
-      cropLocate();
-      selectFrameLocate($image.index);
-      keyEvent();//enter&esc
-      initJcrop($image);
-    }, 400);
+    loadJcrop($image);
   }
 })
 
 //show cropWindow
 function cropShow($image){
   $('.crop-frame').empty();
-  $('.small-frame').empty();
   $('.crop-shadow').show();
-  $('.crop-window').show();      
+  $('.crop-window').show();
 
   //insert the image Element
   var imageElement = '<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" id="' + $image.id + '"/>';
   $(".crop-frame").append(imageElement);
-  $(".small-frame").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" id="preview"/>');
 }
 
-function cropLocate(){
+function cropLocation(){
   var wWidth = $(window).width();
   var wHeight = $(window).height();
 
@@ -219,19 +205,18 @@ function cropLocate(){
   $('.crop-window').css('top', (wHeight - cropWindowHei)/2);
 }
 
-function selectFrameLocate(index){
-  cropCoords = cropHints[index] || 0;
-  var r = max(cropCoords.w, cropCoords.h) / 200;
-  $('.small-frame').css({
-    width: Math.round(cropCoords.w / r) + 'px',
-    height: Math.round(cropCoords.h / r) + 'px'
+function showSmallFrame(coords, object){
+  var r = max(coords.w, coords.h) / 200;
+  $(object).css({
+    width: Math.round(coords.w / r) + 'px',
+    height: Math.round(coords.h / r) + 'px'
   });
 
-  $('#preview').css({
-    width: Math.round(cropCoords.cw / r) + 'px',
-    height: Math.round(cropCoords.ch / r) + 'px',
-    marginLeft: '-' + Math.round(cropCoords.x1 / r) + 'px',
-    marginTop: '-' + Math.round(cropCoords.y1 / r) + 'px'
+  $(object + ' .preview').css({
+    width: Math.round(coords.cw / r) + 'px',
+    height: Math.round(coords.ch / r) + 'px',
+    marginLeft: '-' + Math.round(coords.x1 / r) + 'px',
+    marginTop: '-' + Math.round(coords.y1 / r) + 'px'
   });
 }
 
@@ -256,21 +241,6 @@ function max(x, y){
   return (x > y) ? x : y;
 }
 
-function showPreview(coords){
-  var r = max(cropCoords.w, cropCoords.h) / 200;
-  $('.small-frame').css({
-    width: Math.round(cropCoords.w / r) + 'px',
-    height: Math.round(cropCoords.h / r) + 'px'
-  });
-
-  $('#preview').css({
-    width: Math.round(cropCoords.cw / r) + 'px',
-    height: Math.round(cropCoords.ch / r) + 'px',
-    marginLeft: '-' + Math.round(cropCoords.x1 / r) + 'px',
-    marginTop: '-' + Math.round(cropCoords.y1 / r) + 'px'
-  });
-}
-
 function changeCoords(c){
   cropCoords = {
     x1: c.x,
@@ -282,10 +252,10 @@ function changeCoords(c){
     cw: jcrop_api.getBounds()[0],
     ch: jcrop_api.getBounds()[1]
   };
-  showPreview(c);
+  showSmallFrame(cropCoords, '#crop-small-1');
 }
 
-function initJcrop($image){
+function createJcrop($image){
   $('#' + $image.id).Jcrop({
     onChange: changeCoords,
     onSelect: changeCoords,
@@ -294,4 +264,20 @@ function initJcrop($image){
   },function(){
     jcrop_api = this;
   });
+}
+
+function loadJcrop($image){  
+  index = $image.index;
+  cropShow($image);
+  cropCoords = {};
+  $('#crop-small-1').empty();
+  $('#crop-small-2').empty();
+  if (cropHints[$image.index]){
+    $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
+    showSmallFrame(cropHints[$image.index], '#crop-small-2');
+  }
+  $("#crop-small-1").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
+  cropLocation();
+  keyEvent();//enter&esc
+  createJcrop($image);
 }
