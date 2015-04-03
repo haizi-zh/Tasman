@@ -30,12 +30,12 @@
     float: right;
 }
 
-.up-navi-btn-ct {
-    padding: 0 30px;
+.city-info-container .navbar{
+  min-height: 43px;
 }
 
-.city-info-container {
-    margin-top: 10px;
+.up-navi-btn-ct {
+    padding: 0 30px;
 }
 
 .submit-btn {
