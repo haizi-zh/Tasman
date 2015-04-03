@@ -40,5 +40,6 @@ Template.reviewShopping.events({
     Meteor.subscribe("shoppingDetail", mid);
     initOriginMD5Session();
     initOplogSession();
+    Meteor.subscribe('Images', mid);
   },
 });

@@ -18,27 +18,6 @@ Template.reviewCity.helpers({
     createOriginTextMD5(vsDetail);
     return vsDetail;
   },
-
-  imageList: function() {
-    log('rerun------------');
-    var mid = Session.get('currentCityId');
-    var imageList = Images.find({
-      'itemIds': new Mongo.ObjectID(mid)
-    }).fetch();
-    var image,
-        images = [];
-    for (var i = 0;i < imageList.length;i++){
-      image = {
-        id: imageList[i]._id._str,
-        url: pictures_host + imageList[i].key,
-        index: i
-      }
-      images.push(image);
-    }
-    $('div.pic').empty();
-    log(images);
-    return images;
-  }
 });
 
 Template.reviewCity.events({
@@ -62,25 +41,6 @@ Template.reviewCity.events({
     Meteor.subscribe("cityDetail", mid);
     initOriginMD5Session();
     initOplogSession();
-    // $('div.basic-info').trigger('basic');
-    /************* for pictures by lyn ************/
-    Meteor.subscribe("Images", mid);
-    // var imageList = Images.find({
-    //   'itemIds': new Mongo.ObjectID(mid)
-    // }).fetch();
-    // var image,
-    //     images = [];
-    // for (var i = 0;i < imageList.length;i++){
-    //   image = {
-    //     id: imageList[i]._id._str,
-    //     url: pictures_host + imageList[i].key,
-    //     index: i
-    //   }
-    //   images.push(image);
-    // }
-    // $('div.pic').empty();
-    // log(images)
-    // Blaze.renderWithData(Template.pictures, {imageList:images}, $('div.pic')[0]);
-    /************* for pictures by lyn ************/
+    Meteor.subscribe('Images', mid);
   },
 });

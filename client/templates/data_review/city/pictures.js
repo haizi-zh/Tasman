@@ -8,6 +8,29 @@ var AccessToken = "";
 var cropScale = [1, 2, 3/2, 4/3];//width:height
 var cropScaleIndex = -1;
 
+Template.pictures.helpers({
+  imageList: function(task) {
+    var mid = Session.get('currentCityId') || Session.get('currentVsId')
+    || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+    log(mid);
+    var imageList = Images.find({
+      'itemIds': new Mongo.ObjectID(mid)
+    }).fetch();
+    var image,
+        images = [];
+    for (var i = 0;i < imageList.length;i++){
+      image = {
+        id: imageList[i]._id._str,
+        url: pictures_host + imageList[i].key,
+        index: i
+      }
+      images.push(image);
+    }
+    log(images)
+    return images;
+  }
+});
+
 Template.pictures.events({
   "dblclick .raw-picture-container": function(e){
   	clearTimeout(_time);
@@ -119,10 +142,10 @@ Template.pictures.events({
         // 将上传的图片加入 图片列表中，包括未选和已选
         // 讲图片数据插入数据库中！
       }else{
-        alert("上传图片失败，请再次上传或联系程序员！");   
+        alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
-    
+
     // var encodedURL = "aHR0cHM6Ly9zczEuYmFpZHUuY29tLzl2bzNkU2FnX3hJNGtoR2tvOVdUQW5GNmhoeS9zdXBlci93aGZwZiUzRDQyNSUyQzI2MCUyQzUwL3NpZ249ZGNkOGUxODA3N2YwODIwMjJkYzdjMjdmMmRjNmNmZGYvZGM1NDU2NGU5MjU4ZDEwOWMyNGRhYzExZDU1OGNjYmY2ZDgxNGRlMi5qcGc=";
     // var encodedEntryURI = "aG9wZWxlZnQ6YWJjZGU=";
     // var path = '/fetch/' + encodedURL + '/to/' + encodedEntryURI;
@@ -196,7 +219,7 @@ function cropShow($image){
   $('.crop-frame').empty();
   $('.small-frame').empty();
   $('.crop-shadow').show();
-  $('.crop-window').show();      
+  $('.crop-window').show();
 
   //insert the image Element
   var imageElement = '<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" id="' + $image.id + '"/>';
@@ -211,7 +234,7 @@ function cropLocate(){
   //init shadow
   $('.crop-shadow').css('width', wWidth);
   $('.crop-shadow').css('height', wHeight);
-  
+
   //fix crop-window
   var cropWindowWid = $('.crop-window').width();
   var cropWindowHei = $('.crop-window').height();
@@ -249,7 +272,7 @@ function keyEvent(){
           $("#crop-close").trigger("click");
           break;
       }
-  }); 
+  });
 }
 
 function max(x, y){
