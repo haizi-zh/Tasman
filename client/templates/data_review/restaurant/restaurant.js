@@ -6,7 +6,7 @@ Restaurant.initEasySearch('zhName', {
 
 Template.reviewRestaurant.helpers({
   restaurantDetail: function() {
-    var mid = Session.get('currentRestaurantId')
+    var mid = Session.get('currentRestaurantId');
     var detailInfo = Restaurant.findOne({
       '_id': new Mongo.ObjectID(mid)
     });
@@ -38,5 +38,6 @@ Template.reviewRestaurant.events({
     Meteor.subscribe("restaurantDetail", mid);
     initOriginMD5Session();
     initOplogSession();
+    Meteor.subscribe('Images', mid);
   },
 });

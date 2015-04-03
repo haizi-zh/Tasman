@@ -13,14 +13,6 @@
         </ul>
       </nav>
 
-      <!-- use hidden and show to implement tab selections -->
-      <!-- <div class="infos">
-        <div class="basic show">{{> cityBasicInfo cityDetails}}</div>
-        <div class="traffic hidden">{{> cityTraffic cityDetails}}</div>
-        <div class="feature hidden">{{> cityCharacteristic cityDetails}}</div>
-        <div class="pic hidden">{{> pictures}}</div>
-      </div> -->
-
       <div class="infos">
         <div class="basic show">
           {{#each cityDetails}}
@@ -44,7 +36,7 @@
           {{/each}}
         </div>
         <div class="pic hidden">
-          {{> pictures imageList}}
+          {{> pictures}}
         </div>
       </div>
     </form>
