@@ -12,7 +12,6 @@ Template.pictures.helpers({
   imageList: function(task) {
     var mid = Session.get('currentCityId') || Session.get('currentVsId')
     || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
-    log(mid);
     var imageList = Images.find({
       'itemIds': new Mongo.ObjectID(mid)
     }).fetch();
@@ -26,7 +25,6 @@ Template.pictures.helpers({
       }
       images.push(image);
     }
-    log(images)
     return images;
   }
 });
