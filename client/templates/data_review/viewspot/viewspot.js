@@ -6,102 +6,100 @@ ViewSpot.initEasySearch('zhName', {
 
 Template.reviewViewspot.helpers({
   vsDetail: function() {
-    
+    var mid = Session.get('currentVsId')
+    var detailInfo = ViewSpot.findOne({
+      '_id': new Mongo.ObjectID(mid)
+    });
+    var vsDetail = [];
+    review('ViewSpot', detailInfo, vsDetail);
+    createOriginTextMD5(vsDetail);
+    return vsDetail;
   }
 });
 
 Template.reviewViewspot.events({
   "click .city-name": function(e) {
-    // TODO 通过判断键位的设置来判断是否修改，未修改，可以自由切换
 
-    // 重复点击
     var mid = $(e.target).attr('id');
+    // 重复点击
     if (mid === Session.get('currentVsId')) {
       return;
-    }else{
-      Session.set('currentVsId', mid);
     }
-
-    // TODO 判断是否有改动
-    if (!Session.get('submitted')) {
-      // var res = confirm('尚未保存, 是否放弃本次编辑?');
-      // if (!res) {
-      //   return;
-      // }
+    // 是否做了修改
+    if (_.keys(Session.get('oplog')).length) {
+      var res = confirm('已做修改，尚未提交，放弃本次修改?');
+      if (!res) {
+        // 不放弃修改
+        return;
+      }
     }
-    Session.set('submitted', false);
-
+    Session.set('currentVsId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-
-    function display() {
-      var detailInfo = ViewSpot.findOne({
-        '_id': new Mongo.ObjectID(mid)
-      });
-      review('ViewSpot', detailInfo);
-    }
-
-    Session.set('oplog', {});
-
-    if (Session.get('vsIds')[mid] !== true) {
-      // 尚未订阅
-      Meteor.subscribe("vsDetail", mid, display);
-      var newSession = Session.get('vsIds');
-      newSession[mid]= true;
-      Session.set('vsIds', newSession);
-    }else {
-      // 已订阅
-      display();
-    }
+    Meteor.subscribe("vsDetail", mid);
+    initOriginMD5Session();
+    initOplogSession();
   },
 });
 
 
-createOriginTextMD5 = function(type, data) {
-  check(type, String);
-  check(data, Object);
-  if (_.keys(reviewItems).indexOf(type) === -1) {
-    return;
+createOriginTextMD5 = function(arrayData) {
+  var tempObj = {};
+  for (var i in arrayData) {
+    var temp = arrayData[i];
+    tempObj[temp.keyChain] = cmsMd5(temp.value);
   }
-  var tempArr = [];
-  reviewItems[type].map(function(x) {
-    tempArr.push({
-      x: CryptoJS.MD5(data[x]).toString()
-    })
-  });
-  console.log(tempArr);
-  Session.set('oriTextMD5', tempArr);
+  Session.set('originMD5', tempObj);
 };
 
 cmsMd5 = function(string) {
   return CryptoJS.MD5(string).toString();
-}
+};
+
+initOplogSession = function() {
+  Session.set('oplog', {});
+};
+
+initOriginMD5Session = function() {
+  Session.set('originMD5', {});
+};
 
 
 // 递归实现自动render模版，
-renderTplWithData = function(items, parentDom, data, keyChain){
+/**
+@params: {object} items
+@params: {Number} index 数组字段的元素索引
+*/
+organizeReviewData = function(items, tabName, data, outPutData, keyChain, index) {
   var inheritKey = keyChain || '';
-  var keys = _.keys(items);     // 当前dom要展示的数据的key
+  var keys = _.keys(items); // 当前dom要展示的数据的key
   for (var i in keys) {
     var key = keys[i];
-    var zhLabel = items[key][0];
-    var dataType = items[key][1];
+    var zhLabel = items[key][itemIndex.zhDesc];
+    var dataType = items[key][itemIndex.dataType];
     var tplData = {};
     if (dataType === itemDataType.string || dataType === itemDataType.int) {
+      var newKey = inheritKey ? (inheritKey + '-' + key) : key;
       tplData = {
-        'zhLabel': zhLabel,
-        'keyChain': inheritKey ? (inheritKey + '.' + key) : key,
-        'value': data[key]
-      }
-      //Blaze.renderWithData(Template.stringTpl, tplData, parentDom);
-      console.log('render done');
+          'zhLabel': zhLabel,
+          'keyChain': index ? newKey + '-' + (index -1) : newKey,
+          'value': data[key],
+          'tabName': {},
+          'index': index,
+          'richEditor': items[key][itemIndex.richEditor]
+        }
+        // 放入到特定的Tab中
+      tplData.tabName[tabName] = true;
+      outPutData.push(tplData);
     }
-    if(dataType === itemDataType.obj_array) {
-      var tempData = data[key];  //递归使用的数据
-      var tempItems = items[key][2];
-      for (var i in tempData){
+    if (dataType === itemDataType.obj_array) {
+      var tempData = data[key]; //递归使用的数据
+      var tempItems = items[key][itemIndex.childInfo];
+      var tempIndex = 0;
+      for (var i in tempData) {
         var element = tempData[i];
-        renderTplWithData(tempItems, parentDom, element, key);
+        tempIndex = tempIndex + 1;
+        organizeReviewData(tempItems, tabName, element, outPutData, key, tempIndex);
       }
     }
     // TODO 实现更多的规则
@@ -109,14 +107,12 @@ renderTplWithData = function(items, parentDom, data, keyChain){
 };
 
 
-review = function(type, data) {
+review = function(type, data, outPutData) {
   var itemsForReview = reviewItems[type];
   var classify = _.keys(itemsForReview);
-  for (var index in classify) {   // 选择dom区域
-    var type = classify[index];
-    var parentDom = $('div.' + type);
-    parentDom.empty();  // 清空dom
-    var items = itemsForReview[type];  // 当前dom要展示的数据
-    renderTplWithData(items, parentDom[0], data);
+  for (var index in classify) { // 选择dom区域
+    var tabName = classify[index];
+    var items = itemsForReview[tabName]; // 当前dom要展示的数据
+    organizeReviewData(items, tabName, data, outPutData);
   }
 };

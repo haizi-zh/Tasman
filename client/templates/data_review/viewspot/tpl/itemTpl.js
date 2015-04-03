@@ -1,20 +1,55 @@
 Template.stringTpl.helpers({
-  updateMD5: function() {
-    var self = this;
-    return function (e, editor) {
-
+  UpdateMD5: function() {
+    return function(e, editor) {
       var curHTML = editor.getHTML(); // 嵌入了编译器的标签
-      var curText = editor.getText();    // 去除了所有html标签（包括本身就带有的），只有纯文本，
-      var oriContent = editor.options._value;  // 最开始的值
-      if (cmsMd5(oriContent) !== cmsMd5(curText)) {
-        var keyChain = editor.options.keyChain;
-        var newSession = Session.get('oplog');
-        newSession[keyChain] = curHTML;
-        Session.set('oplog', newSession);
-        log(Session.get('oplog'));
-      }
-
+      var curText = editor.getText(); // 去除了所有html标签（包括本身就带有的），只有纯文本，
+      var keyChain = editor.options.keyChain;
+      // var index = editor.options.index;
+      updateOplog(keyChain, curHTML);
       return false; // Stop Froala Editor from POSTing to the Save URL
     }
   }
 });
+
+Template.stringTpl.onRendered(function() {
+  if (!this.data.richEditor) {
+    var keyChain = this.data.keyChain;
+    $('textarea#' + keyChain).on('blur', function(e) {
+      var curText = $(e.target).val();
+      updateOplog(keyChain, curText);
+    })
+  }
+});
+
+/*
+@ key: 数据库中的字段名
+@ value: 当前值
+*/
+
+updateOplog = function(key, value) {
+  var dotKey = formatDot(key); // 'xxx-xx-x' >>>> 'xxx.xx.x'
+  if (cmsMd5(value) !== Session.get('originMD5')[key]) {
+    log(dotKey)
+    addOplog(dotKey, value);
+    log(Session.get('oplog'));
+  } else {
+    deleteOplog(dotKey);
+    log(Session.get('oplog'));
+  }
+};
+
+addOplog = function(key, value) {
+  var newSession = Session.get('oplog');
+  newSession[key] = value;
+  Session.set('oplog', newSession);
+};
+
+deleteOplog = function(key) {
+  var newSession = Session.get('oplog');
+  newSession[key] = undefined;
+  Session.set('oplog', newSession);
+};
+
+formatDot = function(str) {
+  return str.replace(/-/g, '.');
+};

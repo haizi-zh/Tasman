@@ -13,16 +13,28 @@
       </ul>
     </nav>
 
-    <!-- <div class="infos">
-      <div class="basic show">{{> vsBasicInfo vsDetail}}</div>
-      <div class="traffic hidden">{{> vsTraffic vsDetail}}</div>
-      <div class="feature hidden">{{> vsCharacteristic vsDetail}}</div>
-      <div class="pic hidden">{{> pictures}}</div>
-    </div> -->
     <div class="infos">
-      <div class="basic show"></div>
-      <div class="traffic hidden"></div>
-      <div class="feature hidden"></div>
+      <div class="basic show">
+        {{#each vsDetail}}
+          {{#if this.tabName.basic}}
+            {{> stringTpl this}}
+          {{/if}}
+        {{/each}}
+      </div>
+      <div class="traffic hidden">
+        {{#each vsDetail}}
+          {{#if this.tabName.traffic}}
+            {{> stringTpl this}}
+          {{/if}}
+        {{/each}}
+      </div>
+      <div class="feature hidden">
+        {{#each vsDetail}}
+          {{#if this.tabName.feature}}
+            {{> stringTpl this}}
+          {{/if}}
+        {{/each}}
+      </div>
       <div class="pic hidden"></div>
     </div>
   </form>

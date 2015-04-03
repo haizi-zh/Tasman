@@ -3,7 +3,7 @@ Template.compare.helpers({
 });
 
 Template.compare.onRendered(function() {
-  Sesssion.set('compareItems', ['location for items type']);
+  Session.set('compareItems', ['location for items type']);
 });
 
 Template.compare.events({
