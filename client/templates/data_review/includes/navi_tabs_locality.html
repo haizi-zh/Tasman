@@ -4,8 +4,8 @@
       <nav class="navbar navbar-default" role="navigation">
         <ul class="nav nav-tabs">
           <li role="navigation" class="basic-info"><a class="navi-tabs" href="#">基本信息</a></li>
-          <li role="navigation" class="traffic"><a class="navi-tabs" href="#">交通</a></li>
-          <li role="navigation" class="special"><a class="navi-tabs" href="#">特色</a></li>
+          <li role="navigation" class="traffic-info"><a class="navi-tabs" href="#">交通</a></li>
+          <li role="navigation" class="feature-info"><a class="navi-tabs" href="#">特色</a></li>
           <li role="navigation" class="pic"><a class="navi-tabs" href="#">图片筛选</a></li>
             <!-- 动态改变 label-success -->
           <span class="label label-success">编辑状态</span>
@@ -14,14 +14,37 @@
       </nav>
 
       <!-- use hidden and show to implement tab selections -->
-      <div class="infos">
-        <div class="basic-info show">{{> cityBasicInfo cityDetails}}</div>
+      <!-- <div class="infos">
+        <div class="basic show">{{> cityBasicInfo cityDetails}}</div>
         <div class="traffic hidden">{{> cityTraffic cityDetails}}</div>
-        <div class="special hidden">{{> cityCharacteristic cityDetails}}</div>
-        <div class="pic hidden"><!-- {{> pictures}} --></div>
-      </div>
+        <div class="feature hidden">{{> cityCharacteristic cityDetails}}</div>
+        <div class="pic hidden">{{> pictures}}</div>
+      </div> -->
 
-      <button type="submit" class="btn btn-default">Submit</button>
+      <div class="infos">
+        <div class="basic show">
+          {{#each cityDetails}}
+            {{#if this.tabName.basic}}
+              {{> stringTpl this}}
+            {{/if}}
+          {{/each}}
+        </div>
+        <div class="traffic hidden">
+          {{#each cityDetails}}
+            {{#if this.tabName.traffic}}
+              {{> stringTpl this}}
+            {{/if}}
+          {{/each}}
+        </div>
+        <div class="feature hidden">
+          {{#each cityDetails}}
+            {{#if this.tabName.feature}}
+              {{> stringTpl this}}
+            {{/if}}
+          {{/each}}
+        </div>
+        <div class="pic hidden"></div>
+      </div>
     </form>
   </div>
 </template>

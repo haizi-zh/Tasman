@@ -1,45 +1,47 @@
 Locality = new Mongo.Collection('Locality');
-
 Images = new Mongo.Collection('Images');
+
+Locality.initEasySearch('zhName', {
+  'limit': 5,
+  'use': 'mongo-db'
+});
+
 
 Template.reviewCity.helpers({
   cityDetails: function() {
-    var currentCityId = Session.get('currentCityId');
-    console.log('hello world');
-    if (currentCityId == undefined) {
-      return;
-    }
-    var cityDetailInfo = Locality.findOne({
-      '_id': new Mongo.ObjectID(currentCityId)
+    var mid = Session.get('currentCityId');
+    var detailInfo = Locality.findOne({
+      '_id': new Mongo.ObjectID(mid)
     });
-    return cityDetailInfo;
-  }
+    var vsDetail = [];
+    review('Locality', detailInfo, vsDetail);
+    createOriginTextMD5(vsDetail);
+    return vsDetail;
+  },
 });
 
 Template.reviewCity.events({
   "click .city-name": function(e) {
-    // TODO 通过判断键位的设置来判断是否修改，未修改，可以自由切换
-
-    // 重复点击
     var mid = $(e.target).attr('id');
+    // 重复点击
     if (mid === Session.get('currentCityId')) {
       return;
     }
-
-    // 是否提交
-    if (!Session.get('submitted')) {
-      var res = confirm('尚未保存, 是否放弃本次编辑?');
-      if(!res){
+    // 是否做了修改
+    if (_.keys(Session.get('oplog')).length) {
+      var res = confirm('已做修改，尚未提交，放弃本次修改?');
+      if (!res) {
+        // 不放弃修改
         return;
       }
     }
-    Session.set('submitted', false);
-    Meteor.subscribe("cityDetail", mid);
     Session.set('currentCityId', mid);
-
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-
+    Meteor.subscribe("cityDetail", mid);
+    initOriginMD5Session();
+    initOplogSession();
+    $('div.basic-info').trigger('basic');
     /************* for pictures by lyn ************/
     Meteor.subscribe("Images", mid);
     var imageList = Images.find({
@@ -60,7 +62,3 @@ Template.reviewCity.events({
     /************* for pictures by lyn ************/
   },
 });
-
-isSubmitted = function(){
-  return Session.get('submitted');
-}

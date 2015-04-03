@@ -16,6 +16,8 @@ audit-argument-checks
 mrt:mongodb-aggregation
 matteodem:easy-search
 reactive-var
-natestrauser:select2
 http
 jaywon:meteor-node-uuid
+froala:editor-reactive
+jparker:crypto-md5
+agnito:autogrow

@@ -1,0 +1,10 @@
+<template name="stringTpl">
+  <div class="form-group">
+    <label>{{zhLabel}}</label>
+    {{#if richEditor}}
+      {{> froalaReactive _onblur=UpdateMD5 keyChain=keyChain inlineMode=false _value=value _buttons=buttons}}
+    {{else}}
+      <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}"></textarea>
+    {{/if}}
+  </div>
+</template>
