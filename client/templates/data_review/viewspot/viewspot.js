@@ -36,9 +36,31 @@ Template.reviewViewspot.events({
     Session.set('currentVsId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
+
     Meteor.subscribe("vsDetail", mid);
     initOriginMD5Session();
     initOplogSession();
+
+
+    /************* for pictures by lyn ************/
+    Meteor.subscribe("Images", mid);
+    var imageList = Images.find({
+      'itemIds': new Mongo.ObjectID(mid)
+    }).fetch();
+    var image,
+        images = [];
+    for (var i = 0;i < imageList.length;i++){
+      image = {
+        id: imageList[i]._id._str,
+        url: pictures_host + imageList[i].key,
+        index: i
+      }
+      images.push(image);
+    }
+    $('div.pic').empty();
+    Blaze.renderWithData(Template.pictures, {imageList:images}, $('div.pic')[0]);
+    /************* for pictures by lyn ************/
+
   },
 });
 

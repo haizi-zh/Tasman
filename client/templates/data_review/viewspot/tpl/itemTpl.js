@@ -29,7 +29,6 @@ Template.stringTpl.onRendered(function() {
 updateOplog = function(key, value) {
   var dotKey = formatDot(key); // 'xxx-xx-x' >>>> 'xxx.xx.x'
   if (cmsMd5(value) !== Session.get('originMD5')[key]) {
-    log(dotKey)
     addOplog(dotKey, value);
     log(Session.get('oplog'));
   } else {
