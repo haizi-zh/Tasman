@@ -10,7 +10,7 @@ var cropScaleIndex = -1;
 
 Template.pictures.helpers({
   imageList: function(task) {
-    var mid = Session.get('currentCityId') || Session.get('currentVsId')
+    var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
     || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
     var imageList = Images.find({
       'itemIds': new Mongo.ObjectID(mid)

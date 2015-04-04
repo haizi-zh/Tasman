@@ -1,5 +1,5 @@
 // var needed?
-var OplogCol = new Mongo.Collection('Oplog');
+CmsOplog = new Mongo.Collection('CmsOplog');
 
 /**
  * 发布oplog信息
@@ -9,11 +9,19 @@ var OplogCol = new Mongo.Collection('Oplog');
  */
 Meteor.publish('oplog', function(ns, pk, count) {
   var query = {'ns': ns, 'pk': pk};
-  if (range === undefined) {
-    return OplogCol.find(query, {sort: {ts: -1}});
+  if (count === undefined) {
+    return CmsOplog.find(query, {sort: {ts: -1}});
   } else {
-    return OplogCol.find(query, {sort: {ts: -1}, limit: count});
+    return CmsOplog.find(query, {sort: {ts: -1}, limit: count});
   }
 });
 
 // TODO allow settings
+CmsOplog.allow({
+  insert: function(){
+    return true;
+  },
+  update: function(){
+    return true;
+  }
+});
