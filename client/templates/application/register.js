@@ -1,9 +1,5 @@
 Template.register.events({
-  'click #register-back-btn': function(event, template){
-    Router.go('login');
-  },
-
-  'submit .register-form': function(event, template) {
+  'click #register': function(event, template) {
     event.preventDefault();
 
     var username = template.find('input[name=username]').value,
