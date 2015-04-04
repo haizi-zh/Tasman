@@ -9,7 +9,7 @@ Locality.initEasySearch('zhName', {
 
 Template.reviewCity.helpers({
   cityDetails: function() {
-    var mid = Session.get('currentCityId');
+    var mid = Session.get('currentLocalityId');
     var detailInfo = Locality.findOne({
       '_id': new Mongo.ObjectID(mid)
     });
@@ -24,7 +24,7 @@ Template.reviewCity.events({
   "click .city-name": function(e) {
     var mid = $(e.target).attr('id');
     // 重复点击
-    if (mid === Session.get('currentCityId')) {
+    if (mid === Session.get('currentLocalityId')) {
       return;
     }
     // 是否做了修改
@@ -35,7 +35,7 @@ Template.reviewCity.events({
         return;
       }
     }
-    Session.set('currentCityId', mid);
+    Session.set('currentLocalityId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
     Meteor.subscribe("cityDetail", mid);

@@ -8,5 +8,9 @@ Template.naviTabsRestaurant.events({
 
     $('div.' + clsName).removeClass('hidden').addClass("show");
     $('div.' + clsName).siblings().removeClass('show').addClass("hidden");
+  },
+  'click #submit-info': function(e) {
+    log('Hello World');
+    submitOplog();
   }
 });
