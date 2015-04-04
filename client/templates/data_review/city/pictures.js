@@ -25,6 +25,7 @@ Template.pictures.helpers({
       }
       images.push(image);
     }
+    log(images.length > 0);
     return images;
   }
 });
