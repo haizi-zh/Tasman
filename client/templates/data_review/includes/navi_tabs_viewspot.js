@@ -30,11 +30,12 @@ submitOplog = function() {
     pk = info['pk'],
     oriData = info['oriData'];
 
-  op = opLogFormat(oriData, op);
+  //op = opLogFormat(op, oriData);
+  op = opLogFormat(op);
 
   var o = 'u';
   var custom = {
-    'zhName': $('li#' + pk).text()
+    'zhName': oriData.zhName,
   }
   storageEngine.update(ns, pk, o, op, custom);
 }
@@ -86,29 +87,39 @@ sessionInfo = function() {
 
 
 // 格式化oplog，特别是处理数组字段被改变的情况
-// 只适合二级查询 xxx.xx
-opLogFormat = function(oriData, op) {
-  check(oriData, Object);
+opLogFormat = function(op) {
   var filteredKeys = keyWithDot(op);
   var specailKeys = [];
+  /* 最大化提取修改数据 , 补充oriData参数*/
   // 修改oriData中对应key
+  // for (index in filteredKeys) {
+  //   var tempEle = filteredKeys[index];
+  //   var tempKeyArr = tempEle.split('.');
+  //   var mainKey = tempKeyArr[0];
+  //   specailKeys.push(mainKey);
+  //   var index = parseInt(tempKeyArr[2]);
+  //   var subKey = tempKeyArr[1];
+  //   oriData[mainKey][index][subKey] = op[tempEle];
+  //   delete op[tempEle]; // 删除不再需要
+  // }
+  // // 更改op
+  // for (key in specailKeys) {
+  //   var tempMainKey = specailKeys[key];
+  //   op[tempMainKey] = oriData[tempMainKey];
+  // }
+
+  /* 最小化提取数据 */
   for (index in filteredKeys) {
     var tempEle = filteredKeys[index];
     var tempKeyArr = tempEle.split('.');
-    var mainKey = tempKeyArr[0];
-    specailKeys.push(mainKey);
-    var index = parseInt(tempKeyArr[2]);
-    var subKey = tempKeyArr[1];
-    oriData[mainKey][index][subKey] = op[tempEle];
+    var formatedKeys = tempKeyArr[0] + '.' + tempKeyArr[2] + '.' + tempKeyArr[1];
+    op[formatedKeys] = op[tempEle];
     delete op[tempEle]; // 删除不再需要
   }
-  // 更改op
-  for (key in specailKeys) {
-    var tempMainKey = specailKeys[key];
-    op[tempMainKey] = oriData[tempMainKey];
-  }
-  log(op);
-  return op;
+
+  return JSON.stringify({
+    '$set': op
+  });
 }
 
 keyWithDot = function(op) {
