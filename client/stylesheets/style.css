@@ -158,3 +158,8 @@ body {
   margin-bottom: 5px;
   pointer-events: auto;
 }
+
+.province-container{
+  height: 460px;
+  overflow: auto;
+}

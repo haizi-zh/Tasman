@@ -25,24 +25,31 @@
 
 .selected-picture-container {
   width: 100px;
-  height: 100px;
+  height: 116px;
   margin: 10px;
   float: left;
   background: #707070;
-color: #FFF;
-box-shadow: 0px 0px 10px #505050;
-border-radius: 5px;
+	color: #FFF;
+	box-shadow: 0px 0px 10px #505050;
+	border-radius: 5px;
 }
 /******* edit by @ck ***********/
 
 /******* edit by @lyn ***********/
+.selected-picture-container .glyphicon-minus{
+	width: 100px;
+	background-color: #337ab7;
+	text-align: center;
+	top: 0;
+}
+
 .btn-pic-submit{
 	margin-right: 40px;
 }
 
-.btn-pic-sort{
+/*.btn-pic-sort{
 	margin-right: 40px;
-}
+}*/
 
 .pic-for-selection{
 	padding-left: 10px;
@@ -94,7 +101,7 @@ border-radius: 5px;
 }
 
 .crop-btn{
-	margin: 20px 10px;
+	margin: 10px 10px;
 	width: 80px;
 	height: 30px;
 	text-align: center;
@@ -118,9 +125,8 @@ border-radius: 5px;
 .small-container{
 	display: inline-block;
 	width: 200px;
-	height: 200px;
+	height: 210px;
 	margin-left: 10px;
-	margin-top: 60px;
 }
 
 .small-frame{
@@ -130,7 +136,6 @@ border-radius: 5px;
 }
 
 .crop-scale{
-	margin-top: 40px;
 	margin-left: 20px;
 }
 /******* edit by @lyn ***********/
@@ -149,4 +154,17 @@ border-radius: 5px;
 	/*box-shadow: 0px 0px 10px #505050;*/
 	/*border-radius: 5px;*/
 	/*padding: 0px;*/
+}
+
+#pic-up-sub{
+	display:inline-block;
+	float: right;
+	margin-top: 5px;
+}
+
+.up-local-pic{
+	margin-top: 10px;
+	overflow: hidden;
+	display: inline-block;
+	width: 400px;
 }

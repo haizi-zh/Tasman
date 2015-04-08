@@ -1,58 +1,42 @@
 <template name="register">
-  <div class="login-content">
-    <!-- BEGIN REGISTRATION FORM -->
-    <form class="register-form">
-      <h3 class="">注册</h3>
-      <div class="control-group">
-        <div class="controls">
-          <div class="input-icon left">
-            <i class="icon-user"></i>
-            <input class="m-wrap placeholder-no-fix" type="text" placeholder="用户名" name="username"/>
+  <body class="register-page">
+    <div class="register-box">
+      <div class="register-logo">
+        <a href="#"><b>旅行派</b>CMS</a>
+      </div>
+
+      <div class="register-box-body">
+        <p class="login-box-msg">Register a new membership</p>
+        <form action="">
+          <div class="form-group has-feedback">
+            <input name="username" type="text" class="form-control" placeholder="Full name"/>
+            <span class="glyphicon glyphicon-user form-control-feedback"></span>
           </div>
-        </div>
-      </div>
-      <div class="control-group">
-        <div class="controls">
-          <div class="input-icon left">
-            <i class="icon-lock"></i>
-            <input class="m-wrap placeholder-no-fix" type="password" id="register_password" placeholder="不短于六位的数字、字母组合" name="password"/>
+          <div class="form-group has-feedback">
+            <input name="email" type="text" class="form-control" placeholder="Email"/>
+            <span class="glyphicon glyphicon-envelope form-control-feedback"></span>
           </div>
-        </div>
-      </div>
-      <div class="control-group">
-        <div class="controls">
-          <div class="input-icon left">
-            <i class="icon-ok"></i>
-            <input class="m-wrap placeholder-no-fix" type="password" placeholder="再次输入密码" name="rpassword"/>
+          <div class="form-group has-feedback">
+            <input name="password" type="password" class="form-control" placeholder="Password"/>
+            <span class="glyphicon glyphicon-lock form-control-feedback"></span>
           </div>
-        </div>
-      </div>
-      <div class="control-group">
-        <label class="control-label visible-ie8 visible-ie9">邮箱</label>
-        <div class="controls">
-          <div class="input-icon left">
-            <i class="icon-envelope"></i>
-            <input class="m-wrap placeholder-no-fix" type="text" placeholder="Email" name="email"/>
+          <div class="form-group has-feedback">
+            <input name="rpassword" type="password" class="form-control" placeholder="Retype password"/>
+            <span class="glyphicon glyphicon-log-in form-control-feedback"></span>
           </div>
-        </div>
-      </div>
-      <div class="control-group">
-        <div class="controls">
-          <label class="checkbox">
-          <input type="checkbox" name="tnc"/> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
-          </label>
-          <div id="register_tnc_error"></div>
-        </div>
-      </div>
-      <div class="form-actions">
-        <button id="register-back-btn" type="button" class="btn">
-        <i class="m-icon-swapleft"></i>  返回
-        </button>
-        <button type="submit" id="register-submit-btn" class="btn green pull-right">
-        注册 <i class="m-icon-swapright m-icon-white"></i>
-        </button>
-      </div>
-    </form>
-    <!-- END REGISTRATION FORM -->
-  </div>
+          <div class="row">
+            <div class="col-xs-12">
+              <button type="submit" id="register" class="btn btn-primary btn-block btn-flat" style="margin: 0 auto;">Register</button>
+            </div><!-- /.col -->
+            <div class="col-xs-12" style="text-align:center;">
+              <br>
+              <span>
+                quit to <a href="{{pathFor 'login'}}" class="text-center">Login</a>
+              </span>
+            </div>
+          </div>
+        </form>
+      </div><!-- /.form-box -->
+    </div><!-- /.register-box -->
+  </body>
 </template>

@@ -4,10 +4,31 @@ var cropCoords = {};//记录单个crop数据
 var index = -1;//记录第几个图片
 var selected = [];
 
-
 var AccessToken = "";
-var cropScale = [1, 2, 3/2, 4/3];//width:height
-var cropScaleIndex = 0;
+var cropScale = [1, 3/2, 4/3, 2];//width:height
+var cropScaleIndex = -1;
+
+Template.pictures.helpers({
+  imageList: function(task) {
+    var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
+    || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+    var imageList = Images.find({
+      'itemIds': new Mongo.ObjectID(mid)
+    }).fetch();
+    var image,
+        images = [];
+    for (var i = 0;i < imageList.length;i++){
+      image = {
+        id: imageList[i]._id._str,
+        url: pictures_host + imageList[i].key,
+        index: i
+      }
+      images.push(image);
+    }
+    log(images.length > 0);
+    return images;
+  }
+});
 
 Template.pictures.events({
   "dblclick .raw-picture-container": function(e){
@@ -16,19 +37,14 @@ Template.pictures.events({
     if ($picShadow.css("display") == "none"){
       //insert the cropped image
       $picShadow.show();
-      var imageElement = 
-        '<li class="selected-picture-container" data-index="' + this.index + '">' + 
-          '<img src="' + this.url + '?imageView2/1/w/100/h/100" width="100px" height="100px" class="img-rounded" data-id="' + this.id + '">' +
-        '</li>';
-      $(".selected-container").append(imageElement);
+      Blaze.renderWithData(Template.selectedPictures, this, $('ul.selected-container')[0]);
+      $('.selected-container').sortable().bind('sortupdate');
     }else{
       //delete the cropped image
       $picShadow.hide();
       var selected = $(".selected-picture-container");
-      var flag;
       for (var i = 0;i < selected.length;i++){
         if ($(selected[i]).attr("data-index") == this.index){
-          flag = true;
           $(selected[i]).remove();
           break;
         }
@@ -39,13 +55,8 @@ Template.pictures.events({
   "click .raw-picture-container": function(e){
   	clearTimeout(_time);
     var $image = this;
-    index = this.index;
     _time = setTimeout(function(){
-      cropShow($image);
-      cropLocate();
-      selectFrameLocate($image.index);
-      keyEvent();//enter&esc
-      initJcrop($image);
+      loadJcrop($image);
     }, 400);
   },
 
@@ -70,9 +81,9 @@ Template.pictures.events({
     $("#crop-close").trigger("click");
   },
 
-  "click .btn-pic-sort": function(e){
-    $('.selected-container').sortable().bind('sortupdate');
-  },
+  // "click .btn-pic-sort": function(e){
+  //   $('.selected-container').sortable().bind('sortupdate');
+  // },
 
   "click .btn-pic-submit": function(e){
     var selected = $(".selected-picture-container");
@@ -121,14 +132,13 @@ Template.pictures.events({
       }
       if (result){
         alert("成功上传图片！");
+        console.log(result);
+        // 将上传的图片加入 图片列表中，包括未选和已选
+        // 讲图片数据插入数据库中！
       }else{
-        alert("上传图片失败，请再次上传或联系程序员！");   
+        alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
-
-    // if (fetch){
-      // alert("保存成功,链接为:" + fetchUrl);
-    // }
 
     // var encodedURL = "aHR0cHM6Ly9zczEuYmFpZHUuY29tLzl2bzNkU2FnX3hJNGtoR2tvOVdUQW5GNmhoeS9zdXBlci93aGZwZiUzRDQyNSUyQzI2MCUyQzUwL3NpZ249ZGNkOGUxODA3N2YwODIwMjJkYzdjMjdmMmRjNmNmZGYvZGM1NDU2NGU5MjU4ZDEwOWMyNGRhYzExZDU1OGNjYmY2ZDgxNGRlMi5qcGc=";
     // var encodedEntryURI = "aG9wZWxlZnQ6YWJjZGU=";
@@ -174,27 +184,42 @@ Template.pictures.events({
   },
 })
 
+Template.selectedPictures.events({
+  "click .glyphicon-minus": function(e){
+    $(e.target).parent().remove();
+    var picForSelect = $(".raw-picture-container");
+    for (var i = 0;i < picForSelect.length;i++){
+      if ($(picForSelect[i]).attr("id") == this.index){
+        $(picForSelect[i]).children(".pic-shadow").hide();
+        break;
+      }
+    }
+  },
+  "click img": function(e){
+    var $image = this;
+    loadJcrop($image);
+  }
+})
+
 //show cropWindow
 function cropShow($image){
   $('.crop-frame').empty();
-  $('.small-frame').empty();
   $('.crop-shadow').show();
-  $('.crop-window').show();      
+  $('.crop-window').show();
 
   //insert the image Element
   var imageElement = '<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" id="' + $image.id + '"/>';
   $(".crop-frame").append(imageElement);
-  $(".small-frame").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" id="preview"/>');
 }
 
-function cropLocate(){
+function cropLocation(){
   var wWidth = $(window).width();
   var wHeight = $(window).height();
 
   //init shadow
   $('.crop-shadow').css('width', wWidth);
   $('.crop-shadow').css('height', wHeight);
-  
+
   //fix crop-window
   var cropWindowWid = $('.crop-window').width();
   var cropWindowHei = $('.crop-window').height();
@@ -202,19 +227,18 @@ function cropLocate(){
   $('.crop-window').css('top', (wHeight - cropWindowHei)/2);
 }
 
-function selectFrameLocate(index){
-  cropCoords = cropHints[index] || 0;
-  var r = max(cropCoords.w, cropCoords.h) / 200;
-  $('.small-frame').css({
-    width: Math.round(cropCoords.w / r) + 'px',
-    height: Math.round(cropCoords.h / r) + 'px'
+function showSmallFrame(coords, object){
+  var r = max(coords.w, coords.h) / 200;
+  $(object).css({
+    width: Math.round(coords.w / r) + 'px',
+    height: Math.round(coords.h / r) + 'px'
   });
 
-  $('#preview').css({
-    width: Math.round(cropCoords.cw / r) + 'px',
-    height: Math.round(cropCoords.ch / r) + 'px',
-    marginLeft: '-' + Math.round(cropCoords.x1 / r) + 'px',
-    marginTop: '-' + Math.round(cropCoords.y1 / r) + 'px'
+  $(object + ' .preview').css({
+    width: Math.round(coords.cw / r) + 'px',
+    height: Math.round(coords.ch / r) + 'px',
+    marginLeft: '-' + Math.round(coords.x1 / r) + 'px',
+    marginTop: '-' + Math.round(coords.y1 / r) + 'px'
   });
 }
 
@@ -232,26 +256,11 @@ function keyEvent(){
           $("#crop-close").trigger("click");
           break;
       }
-  }); 
+  });
 }
 
 function max(x, y){
   return (x > y) ? x : y;
-}
-
-function showPreview(coords){
-  var r = max(cropCoords.w, cropCoords.h) / 200;
-  $('.small-frame').css({
-    width: Math.round(cropCoords.w / r) + 'px',
-    height: Math.round(cropCoords.h / r) + 'px'
-  });
-
-  $('#preview').css({
-    width: Math.round(cropCoords.cw / r) + 'px',
-    height: Math.round(cropCoords.ch / r) + 'px',
-    marginLeft: '-' + Math.round(cropCoords.x1 / r) + 'px',
-    marginTop: '-' + Math.round(cropCoords.y1 / r) + 'px'
-  });
 }
 
 function changeCoords(c){
@@ -265,10 +274,10 @@ function changeCoords(c){
     cw: jcrop_api.getBounds()[0],
     ch: jcrop_api.getBounds()[1]
   };
-  showPreview(c);
+  showSmallFrame(cropCoords, '#crop-small-1');
 }
 
-function initJcrop($image){
+function createJcrop($image){
   $('#' + $image.id).Jcrop({
     onChange: changeCoords,
     onSelect: changeCoords,
@@ -277,4 +286,20 @@ function initJcrop($image){
   },function(){
     jcrop_api = this;
   });
+}
+
+function loadJcrop($image){  
+  index = $image.index;
+  cropShow($image);
+  cropCoords = {};
+  $('#crop-small-1').empty();
+  $('#crop-small-2').empty();
+  if (cropHints[$image.index]){
+    $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
+    showSmallFrame(cropHints[$image.index], '#crop-small-2');
+  }
+  $("#crop-small-1").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
+  cropLocation();
+  keyEvent();//enter&esc
+  createJcrop($image);
 }

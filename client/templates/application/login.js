@@ -1,5 +1,5 @@
 Template.login.events({
-  'submit .login-form': function(event, template) {
+  'click #login': function(event, template) {
     event.preventDefault();
 
     var password = template.find('input[name=password]').value,
@@ -14,11 +14,12 @@ Template.login.events({
     });
   },
 
-  'click #forget-password': function(event, template) {
-    Router.go('forgetPassword');
-  },
+});
 
-  'click #register': function(event, template) {
-    Router.go('register');
-  }
+Template.login.onRendered(function(){
+  $('#remenber-me').iCheck({
+    checkboxClass: 'icheckbox_minimal',
+    radioClass: 'iradio_minimal',
+    increaseArea: '20%' // optional
+  });
 });
