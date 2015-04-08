@@ -54,10 +54,11 @@
                 <b class="caret"></b>
               </a>
               <ul class="dropdown-menu">
+                <li class=""><a href="{{pathFor 'userProfile'}}">个人配置</a></li>
                 {{#if admin}}
                   <li class=""><a href="{{pathFor 'admin'}}">用户管理</a></li>
+                  <li class=""><a href="{{pathFor 'recheck'}}">复审数据</a></li>
                 {{/if}}
-                <li class=""><a href="{{pathFor 'userProfile'}}">个人配置</a></li>
                 <li class=""><a id="logout">退出</a></li>
               </ul>
             </li>

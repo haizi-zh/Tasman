@@ -1,0 +1,24 @@
+<template name="aizouTag">
+  <div class="aizouTag-wrapper">
+    <span class="aizouTag-container" >
+      <ul class="at-selection">
+        <li class="at-search-inline">
+          <input type="textarea" name="search-input" class="at-search-input">
+        </li>
+      </ul>
+    </span>
+    <div class="suggestionItems" style="display: none;">
+      {{#each source}}
+        <div class="at-sugg-item" id="atTag-{{_id}}" data-uid="{{_id}}">{{username}}</div>
+      {{/each}}
+    </div>
+
+  </div>
+</template>
+
+<template name="aizouTag_selected_item">
+  <li class="at-selected-item" uid='{{uid}}'>
+    <span class="at-selected-remove" role="presentation">×</span>
+    {{username}}
+  </li>
+</template>
