@@ -1,50 +1,123 @@
-var _time = null;
-var cropHints = [];//记录多个crop结果
-var cropCoords = {};//记录单个crop数据
-var index = -1;//记录第几个图片
-var selected = [];
+var _time, cropCoords, index, cropScale, cropScaleIndex;
 
-var AccessToken = "";
-var cropScale = [1, 3/2, 4/3, 2];//width:height
-var cropScaleIndex = -1;
+var cropHints, selectedCropHints;
+
+function initial(){
+  _time = null;
+  cropCoords = {};//记录单个crop数据
+  index = -1;//记录第几个图片
+  cropScale = [1, 3/2, 4/3, 2];//width:height
+  cropScaleIndex = -1;
+
+  cropHints = [];//记录多个crop结果
+  selectedCropHints = [];//原有已选图片的crophint
+  $('.selected-container').empty();
+};
 
 Template.pictures.helpers({
-  imageList: function(task) {
-    var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
-    || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
-    var imageList = Images.find({
-      'itemIds': new Mongo.ObjectID(mid)
-    }).fetch();
-    var image,
-        images = [];
-    for (var i = 0;i < imageList.length;i++){
+  //原有已选择图片
+  selectedImageList: function(){
+    initial();
+    var selectedImageList = sessionInfo().oriData.images;
+    if (!selectedImageList)
+      return null;
+    var image, images = [], cropHint;
+    for (var i = 0;i < selectedImageList.length;i++){
+      //模板的数据
       image = {
-        id: imageList[i]._id._str,
-        url: pictures_host + imageList[i].key,
-        index: i
+        url: pictures_host + selectedImageList[i].key,
+        key: selectedImageList[i].key,
+        w: selectedImageList[i].w,
+        h: selectedImageList[i].h,
+        index: i,
+        source: "geo"
       }
       images.push(image);
-    }
-    log(images.length > 0);
+
+      //存储已选图片的原有的数据
+      cropHint = {
+        ow: selectedImageList[i].w,
+        oh: selectedImageList[i].h,
+        key: selectedImageList[i].key
+      }
+      selectedCropHints[i] = cropHint;
+      if (selectedImageList[i].cropHint)
+        selectedCropHints[i] = _.extend(selectedCropHints[i], selectedImageList[i].cropHint);
+
+      Blaze.renderWithData(Template.selectedPicture, image, $('ul.selected-container')[0]);
+      $('.selected-container').sortable().bind('sortupdate');
+    };
+    return images;
+  },
+  //可选择图片
+  imageList: function() {
+    var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
+        || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+    var imageList = Images.find({ 'itemIds': new Mongo.ObjectID(mid) }).fetch();
+    var image, images = [], cropHint;
+
+    for (var i = 0;i < imageList.length;i++){
+      image = {
+        // id: imageList[i]._id._str,
+        url: pictures_host + imageList[i].key,
+        w: imageList[i].w,
+        h: imageList[i].h,
+        key: imageList[i].key,
+        index: i,
+        source: "imageStore"
+      }
+      images.push(image);
+
+      cropHint = {
+        ow: imageList[i].w,
+        oh: imageList[i].h,
+        key: imageList[i].key
+      }
+      cropHints[i] = cropHint;
+    };
     return images;
   }
 });
+
 
 Template.pictures.events({
   "dblclick .raw-picture-container": function(e){
   	clearTimeout(_time);
     var $picShadow = $(e.target).parent().children(".pic-shadow");
-    if ($picShadow.css("display") == "none"){
-      //insert the cropped image
-      $picShadow.show();
-      Blaze.renderWithData(Template.selectedPictures, this, $('ul.selected-container')[0]);
-      $('.selected-container').sortable().bind('sortupdate');
-    }else{
-      //delete the cropped image
-      $picShadow.hide();
+
+    if ($picShadow.length <= 0){  //加入已选择队列
+      //判断是否存在相同的！若有，则提示已有！
+      var selected = $(".selected-picture-container");
+      var flag = true;
+      for (var i = 0;i < selected.length;i++){
+        if ($(selected[i]).attr("data-key") == this.key){
+          flag = false;
+          break;
+        }
+      }
+      if (flag){
+        $(e.target).parent().prepend('<div class="pic-shadow"></div>');
+
+        if (this.source == "geo"){
+          selectedCropHints[this.index] = (selectedCropHints[this.index]) 
+            ? _.extend(selectedCropHints[this.index], {ow: this.w, oh: this.h, key: this.key}) 
+            : {ow: this.w, oh: this.h, key: this.key};
+        }else{
+          cropHints[this.index] = (cropHints[this.index]) 
+            ? _.extend(cropHints[this.index], {ow: this.w, oh: this.h, key: this.key}) 
+            : {ow: this.w, oh: this.h, key: this.key};  
+        }
+
+        Blaze.renderWithData(Template.selectedPicture, this, $('ul.selected-container')[0]);
+        $('.selected-container').sortable().bind('sortupdate');
+      }else{
+        alert("该图已选择！");
+      } 
+    }else{  //从已选择队列中删除
+      $picShadow.remove();
       var selected = $(".selected-picture-container");
       for (var i = 0;i < selected.length;i++){
-        if ($(selected[i]).attr("data-index") == this.index){
+        if ($(selected[i]).attr("data-key") == this.key){
           $(selected[i]).remove();
           break;
         }
@@ -77,21 +150,56 @@ Template.pictures.events({
   },
 
   "click #crop-submit": function(e){
-    cropHints[index] = cropCoords;
+    if(this.source == "geo")
+      selectedCropHints[index] = selectedCropHints[index] ? _.extend(selectedCropHints[index], cropCoords) : selectedCropHints[index] = cropCoords;
+    else
+      cropHints[index] = cropHints[index] ? _.extend(cropHints[index], cropCoords) : cropHints[index] = cropCoords;
     $("#crop-close").trigger("click");
   },
 
-  // "click .btn-pic-sort": function(e){
-  //   $('.selected-container').sortable().bind('sortupdate');
-  // },
-
   "click .btn-pic-submit": function(e){
     var selected = $(".selected-picture-container");
-    console.log(cropHints);
+    var subImages = [];
+    var subImage, cropHint;
+    var left, right, top, bottom, r, coord;
     for (var i = 0;i < selected.length;i++){
-      console.log($(selected[i]).attr("data-index"));
-      console.log(cropHints[ $(selected[i]).attr("data-index") ]);
+      if ($(selected[i]).attr("data-from") == "geo")
+        cropHint = selectedCropHints[$(selected[i]).attr("data-index")];
+      else
+        cropHint = cropHints[$(selected[i]).attr("data-index")];
+      if (cropHint.x1){
+        r = cropHint.ow / cropHint.cw;
+        //对于裁剪的图像返回偶数数据
+        left = parseInt(cropHint.x1 * r);
+        left = (left % 2) ? (left + 1) : left;
+        right = parseInt(cropHint.x2 * r);
+        right = (right % 2) ? (right - 1) : right;
+        top = parseInt(cropHint.y1 * r);
+        top = (top % 2) ? (top + 1) : top;
+        bottom = parseInt(cropHint.y2 * r);
+        bottom = (bottom % 2) ? (bottom - 1) : bottom;
+
+        coord = {
+          left: left,
+          right: right,
+          top: top,
+          bottom: bottom
+        };
+      }else{
+        coord = {};//没有裁剪返回空对象
+      }
+      subImage = {
+        h: cropHint.oh,
+        w: cropHint.ow,
+        key: cropHint.key,
+        cropHint: coord
+      }
+      subImages.push(subImage);
     }
+    var tempOplog = Session.get('oplog');
+    tempOplog.images = subImages;
+    Session.set('oplog', tempOplog);
+    log(tempOplog);
   },
 
   "click #pic-up-sub": function(e){
@@ -139,61 +247,23 @@ Template.pictures.events({
         alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
-
-    // var encodedURL = "aHR0cHM6Ly9zczEuYmFpZHUuY29tLzl2bzNkU2FnX3hJNGtoR2tvOVdUQW5GNmhoeS9zdXBlci93aGZwZiUzRDQyNSUyQzI2MCUyQzUwL3NpZ249ZGNkOGUxODA3N2YwODIwMjJkYzdjMjdmMmRjNmNmZGYvZGM1NDU2NGU5MjU4ZDEwOWMyNGRhYzExZDU1OGNjYmY2ZDgxNGRlMi5qcGc=";
-    // var encodedEntryURI = "aG9wZWxlZnQ6YWJjZGU=";
-    // var path = '/fetch/' + encodedURL + '/to/' + encodedEntryURI;
-    // var accessToken = 'TchpexGkbyuY0nMt-T1_xIpbsgN90lBg3QyD3utE:7-GNext63FOeELw-ahdI8I-4p34=';
-
-    // var url = 'http://iovip.qbox.me' + path;
-    // var options = {
-    //   headers: {
-    //     'Authorization': 'QBox TchpexGkbyuY0nMt-T1_xIpbsgN90lBg3QyD3utE:7-GNext63FOeELw-ahdI8I-4p34=',
-    //     'Content-Type': 'application/x-www-form-urlencoded',
-    //   }
-    // };
-
-    // $.ajax({
-    //   type: 'post',
-    //   url: 'http://iovip.qbox.me' + path,
-    //   beforeSend:function(xhr){
-    //     xhr.setRequestHeader('Authorization', "QBox " + accessToken);
-    //     console.log(xhr);
-    //   },
-    //   // POST /fetch/<EncodedURL>/to/<EncodedEntryURI>
-    //   // async: false,
-    //   // cache: false,
-    //   // contentType: false,
-    //   contentType: 'application/x-www-form-urlencoded',
-    //   // processData: false,
-    //   // data: form_data,
-    //   // data: null,
-    //   // Authorization: QBox <AccessToken>,
-    //   // headers: {
-    //   //   'Authorization': "QBox " + AccessToken
-    //   // },
-    //   // beforeSend:function(xhr){
-    //   //   xhr.setRequestHeader('Authorization', "QBox " + AccessToken);
-    //   //   console.log(xhr);
-    //   // },
-    //   success: function(data) {
-    //     var image_url = "http://7xi9ns.com1.z0.glb.clouddn.com/";
-    //     console.log(image_url + "abcde");
-    //   }
-    // });
-  },
+  }
 })
 
-Template.selectedPictures.events({
+Template.selectedPicture.events({
   "click .glyphicon-minus": function(e){
-    $(e.target).parent().remove();
-    var picForSelect = $(".raw-picture-container");
+    var picForSelect;
+    if (this.source == "geo")
+      picForSelect = $(".pre-selected-container .raw-picture-container");
+    else
+      picForSelect = $(".pic-for-selection .raw-picture-container");
     for (var i = 0;i < picForSelect.length;i++){
-      if ($(picForSelect[i]).attr("id") == this.index){
-        $(picForSelect[i]).children(".pic-shadow").hide();
+      if ($(picForSelect[i]).attr("data-key") == this.key){
+        $(picForSelect[i]).children(".pic-shadow").remove();
         break;
       }
     }
+    $(e.target).parent().remove();
   },
   "click img": function(e){
     var $image = this;
@@ -291,12 +361,18 @@ function createJcrop($image){
 function loadJcrop($image){  
   index = $image.index;
   cropShow($image);
-  cropCoords = {};
   $('#crop-small-1').empty();
   $('#crop-small-2').empty();
-  if (cropHints[$image.index]){
-    $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
-    showSmallFrame(cropHints[$image.index], '#crop-small-2');
+  if ($image.source == "geo"){
+    if (selectedCropHints[$image.index] && selectedCropHints[$image.index].h){
+      $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
+      showSmallFrame(selectedCropHints[$image.index], '#crop-small-2');
+    }
+  }else{
+    if (cropHints[$image.index] && cropHints[$image.index].h){
+      $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
+      showSmallFrame(cropHints[$image.index], '#crop-small-2');
+    }
   }
   $("#crop-small-1").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
   cropLocation();
