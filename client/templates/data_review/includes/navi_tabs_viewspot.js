@@ -12,7 +12,7 @@ Template.naviTabsViewSpot.events({
 
   'click #submit-info': function(e) {
     e.preventDefault();
-    log('Hello World');
+    log('上传数据!');
     submitOplog();
   }
 });
@@ -80,7 +80,7 @@ sessionInfo = function() {
   }
   return {
     ns: ns,
-    pk: pk,
+    pk: new Mongo.ObjectID(pk),
     oriData: oriData
   }
 };
