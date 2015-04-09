@@ -10,7 +10,7 @@ Template.naviTabsShopping.events({
     $('div.' + clsName).siblings().removeClass('show').addClass("hidden");
   },
   'click #submit-info': function(e) {
-    log('Hello World');
+    log('上传数据');
     submitOplog();
   }
 });

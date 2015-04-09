@@ -7,9 +7,12 @@ ViewSpot.initEasySearch('zhName', {
 Template.reviewViewspot.helpers({
   vsDetail: function() {
     var mid = Session.get('currentVsId')
-    var detailInfo = ViewSpot.findOne({
-      '_id': new Mongo.ObjectID(mid)
-    });
+    // var detailInfo = ViewSpot.findOne({
+    //   '_id': new Mongo.ObjectID(mid)
+    // });
+
+    var detailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(mid));
+
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);

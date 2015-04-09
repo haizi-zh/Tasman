@@ -12,7 +12,7 @@ Template.naviTabsViewSpot.events({
 
   'click #submit-info': function(e) {
     e.preventDefault();
-    log('Hello World');
+    log('上传数据!');
     submitOplog();
   }
 });
@@ -37,7 +37,11 @@ submitOplog = function() {
   var custom = {
     'zhName': oriData.zhName,
   }
-  storageEngine.update(ns, pk, o, op, custom);
+  var res = storageEngine.update(ns, pk, o, op, custom);
+  // 上传成功，删除oplog记录
+  if(res) {
+    Session.set('oplog', {})
+  }
 }
 
 // @return: 没有编辑，返回null， 否则返回编辑纪录数据
@@ -80,7 +84,7 @@ sessionInfo = function() {
   }
   return {
     ns: ns,
-    pk: pk,
+    pk: new Mongo.ObjectID(pk),
     oriData: oriData
   }
 };

@@ -8,8 +8,11 @@ CmsOplog = new Mongo.Collection('CmsOplog');
  * @param  {int} count 取最后多少条记录。如果为undefined，则取所有记录
  */
 Meteor.publish('oplog', function(ns, pk, count) {
+  check(ns, String);
+  check(pk, Meteor.Collection.ObjectID);
+  check(count, Number);
   var query = {'ns': ns, 'pk': pk};
-  if (count === undefined) {
+  if (count === 0) {
     return CmsOplog.find(query, {sort: {ts: -1}});
   } else {
     return CmsOplog.find(query, {sort: {ts: -1}, limit: count});
