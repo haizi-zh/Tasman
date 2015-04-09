@@ -17,9 +17,5 @@ Template.login.events({
 });
 
 Template.login.onRendered(function(){
-  $('#remenber-me').iCheck({
-    checkboxClass: 'icheckbox_minimal',
-    radioClass: 'iradio_minimal',
-    increaseArea: '20%' // optional
-  });
+  $.material.radio();
 });
