@@ -1,0 +1,42 @@
+<template name="naviTabsRestaurant">
+  <form>
+    <nav class="navbar navbar-default" role="navigation">
+      <ul class="nav nav-tabs">
+        <li role="navigation" class="basic-info"><a class="navi-tabs" href="#">基本信息</a></li>
+        <li role="navigation" class="traffic-info"><a class="navi-tabs" href="#">交通</a></li>
+        <li role="navigation" class="feature-info"><a class="navi-tabs" href="#">特色</a></li>
+        <li role="navigation" class="pic"><a class="navi-tabs" href="#">图片筛选</a></li>
+          <!-- 动态改变 label-success -->
+        <span class="label label-success">编辑状态</span>
+        <botton id="submit-info" class="btn btn-default" type="button">提交信息</botton>
+      </ul>
+    </nav>
+
+    <div class="infos">
+      <div class="basic show">
+        {{#each restaurantDetail}}
+          {{#if this.tabName.basic}}
+            {{> stringTpl this}}
+          {{/if}}
+        {{/each}}
+      </div>
+      <div class="traffic hidden">
+        {{#each restaurantDetail}}
+          {{#if this.tabName.traffic}}
+            {{> stringTpl this}}
+          {{/if}}
+        {{/each}}
+      </div>
+      <div class="feature hidden">
+        {{#each restaurantDetail}}
+          {{#if this.tabName.feature}}
+            {{> stringTpl this}}
+          {{/if}}
+        {{/each}}
+      </div>
+      <div class="pic hidden">
+        {{> pictures}}
+      </div>
+    </div>
+  </form>
+</template>

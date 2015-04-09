@@ -1,0 +1,9 @@
+<template name="home">
+  {{#if currentUser}}
+    <h1>Welcome
+      <b>{{currentUser.username}} ^_^</b>
+    </h1>
+  {{/if}}
+  <p>富文本测试</p>
+  {{> froalaReactive _onblur=updateMD5 language='zh_cn' inlineMode=false _value="Hello World"}}
+</template>

@@ -1,0 +1,21 @@
+<template name="recheck">
+  <div class="filter-data">
+    <label>筛选</label>
+    <div class="editor">
+      <span>用户:</span>
+      {{> aizouTag source=editor}}
+    </div>
+    <div class="date">
+      <span>时间:</span>
+      <input type="radio" name="time-filter" value="0"> 不限
+      <input type="radio" name="time-filter" value="1"> 一天
+      <input type="radio" name="time-filter" value="2"> 一周
+    </div>
+    <div class="data-type">
+      <span>数据类型:</span>
+      {{#each collections}}
+        <input type="checkbox" value="{{conn}}">{{name}}
+      {{/each}}
+    </div>
+  </div>
+</template>

@@ -14,3 +14,12 @@ ian:accounts-ui-bootstrap-3
 accounts-password
 audit-argument-checks
 mrt:mongodb-aggregation
+matteodem:easy-search
+reactive-var
+http
+jaywon:meteor-node-uuid
+froala:editor-reactive
+jparker:crypto-md5
+agnito:autogrow
+tkornblit:icheck
+jeremy:selectize
