@@ -1,11 +1,14 @@
-var _time, cropCoords, index, cropScale, cropScaleIndex;
-
+var _time, cropCoords, currentIndex, currentSource, cropScale, cropScaleIndex;
 var cropHints, selectedCropHints;
+//w,h:裁剪的宽高（对应于cw,ch的）
+//cw,ch:现在的宽高（最大值为800）
+//ow,oh:原有的宽高
 
 function initial(){
   _time = null;
   cropCoords = {};//记录单个crop数据
-  index = -1;//记录第几个图片
+  currentIndex = -1;//记录第几个图片
+  currentSource = "geo";//记录当前的图片来源,默认为geo
   cropScale = [1, 3/2, 4/3, 2];//width:height
   cropScaleIndex = -1;
 
@@ -21,7 +24,8 @@ Template.pictures.helpers({
     var selectedImageList = sessionInfo().oriData.images;
     if (!selectedImageList)
       return null;
-    var image, images = [], cropHint;
+    var image, images = [], cropHint, selectedCropHint;
+    var r, x1, x2, y1, y2, w, h, cw, ch;
     for (var i = 0;i < selectedImageList.length;i++){
       //模板的数据
       image = {
@@ -41,8 +45,42 @@ Template.pictures.helpers({
         key: selectedImageList[i].key
       }
       selectedCropHints[i] = cropHint;
-      if (selectedImageList[i].cropHint)
-        selectedCropHints[i] = _.extend(selectedCropHints[i], selectedImageList[i].cropHint);
+
+      if (selectedImageList[i].cropHint){//原有裁剪的尺寸
+        selectedCropHint = selectedImageList[i].cropHint;
+        if (cropHint.ow >= 800 || cropHint.oh >= 800){
+          var r = max(cropHint.ow/800, cropHint.oh/800);
+          //对于裁剪的图像返回偶数数据
+          x1 = parseInt(selectedCropHint.left / r);
+          x1 = (x1 % 2) ? (x1 + 1) : x1;
+          x2 = parseInt(selectedCropHint.right / r);
+          x2 = (x2 % 2) ? (x2 - 1) : x2;
+          y1 = parseInt(selectedCropHint.top / r);
+          y1 = (y1 % 2) ? (y1 + 1) : y1;
+          y2 = parseInt(selectedCropHint.bottom / r);
+          y2 = (y2 % 2) ? (y2 - 1) : y2;
+          cw = parseInt(cropHint.ow / r);
+          ch = parseInt(cropHint.oh / r);
+        }else{
+          x1 = selectedCropHint.left;
+          x2 = selectedCropHint.right;
+          y1 = selectedCropHint.top;
+          y2 = selectedCropHint.bottom;
+          cw = cropHint.ow;
+          ch = cropHint.oh;
+        }
+        selectedCropHint = {
+          x1: x1,
+          x2: x2,
+          y1: y1,
+          y2: y2,
+          cw: cw,
+          ch: ch,
+          w: x2 - x1,
+          h: y2 - y1
+        };
+        selectedCropHints[i] = _.extend(selectedCropHints[i], selectedCropHint);
+      }
 
       Blaze.renderWithData(Template.selectedPicture, image, $('ul.selected-container')[0]);
       $('.selected-container').sortable().bind('sortupdate');
@@ -150,10 +188,10 @@ Template.pictures.events({
   },
 
   "click #crop-submit": function(e){
-    if(this.source == "geo")
-      selectedCropHints[index] = selectedCropHints[index] ? _.extend(selectedCropHints[index], cropCoords) : selectedCropHints[index] = cropCoords;
+    if(currentSource == "geo")
+      selectedCropHints[currentIndex] = selectedCropHints[currentIndex] ? _.extend(selectedCropHints[currentIndex], cropCoords) : selectedCropHints[index] = cropCoords;
     else
-      cropHints[index] = cropHints[index] ? _.extend(cropHints[index], cropCoords) : cropHints[index] = cropCoords;
+      cropHints[currentIndex] = cropHints[currentIndex] ? _.extend(cropHints[currentIndex], cropCoords) : cropHints[currentIndex] = cropCoords;
     $("#crop-close").trigger("click");
   },
 
@@ -358,14 +396,15 @@ function createJcrop($image){
   });
 }
 
-function loadJcrop($image){  
-  index = $image.index;
+function loadJcrop($image){
+  currentIndex = $image.index;
+  currentSource = $image.source;
   cropShow($image);
   $('#crop-small-1').empty();
   $('#crop-small-2').empty();
   if ($image.source == "geo"){
     if (selectedCropHints[$image.index] && selectedCropHints[$image.index].h){
-      $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
+      $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
       showSmallFrame(selectedCropHints[$image.index], '#crop-small-2');
     }
   }else{
