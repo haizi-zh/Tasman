@@ -8,9 +8,10 @@ Shopping.initEasySearch('zhName', {
 Template.reviewShopping.helpers({
   shoppingDetail: function() {
     var mid = Session.get('currentShoppingId')
-    var detailInfo = Shopping.findOne({
-      '_id': new Mongo.ObjectID(mid)
-    });
+    // var detailInfo = Shopping.findOne({
+    //   '_id': new Mongo.ObjectID(mid)
+    // });
+    var detailInfo = storageEngine.snapshot('poi.Shopping', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Shopping', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
