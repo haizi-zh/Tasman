@@ -7,9 +7,10 @@ Restaurant.initEasySearch('zhName', {
 Template.reviewRestaurant.helpers({
   restaurantDetail: function() {
     var mid = Session.get('currentRestaurantId');
-    var detailInfo = Restaurant.findOne({
-      '_id': new Mongo.ObjectID(mid)
-    });
+    // var detailInfo = Restaurant.findOne({
+    //   '_id': new Mongo.ObjectID(mid)
+    // });
+    var detailInfo = storageEngine.snapshot('poi.Restaurant', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Restaurant', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);

@@ -10,9 +10,10 @@ Locality.initEasySearch('zhName', {
 Template.reviewCity.helpers({
   cityDetails: function() {
     var mid = Session.get('currentLocalityId');
-    var detailInfo = Locality.findOne({
-      '_id': new Mongo.ObjectID(mid)
-    });
+    // var detailInfo = Locality.findOne({
+    //   '_id': new Mongo.ObjectID(mid)
+    // });
+    var detailInfo = storageEngine.snapshot('geo.Locality', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Locality', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);

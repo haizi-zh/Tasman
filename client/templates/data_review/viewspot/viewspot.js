@@ -12,8 +12,6 @@ Template.reviewViewspot.helpers({
     // });
 
     var detailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(mid));
-    log('out put data:');
-    log(detailInfo);
 
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
