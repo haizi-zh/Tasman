@@ -1,4 +1,4 @@
-/******* edit by @ck ***********/
+
 .pic-top10{margin-top: 10px;}
 
 .picture-zone {
@@ -9,11 +9,12 @@
   margin: 10px auto;
 }
 
-.raw-picture-container {
+.raw-picture-container{
   width: 200px;
   height: 200px;
   margin: 5px;
   display: inline-block;
+  position: relative;
 }
 
 .selected-container {
@@ -33,9 +34,7 @@
 	box-shadow: 0px 0px 10px #505050;
 	border-radius: 5px;
 }
-/******* edit by @ck ***********/
 
-/******* edit by @lyn ***********/
 .selected-picture-container .glyphicon-minus{
 	width: 100px;
 	background-color: #337ab7;
@@ -47,16 +46,11 @@
 	margin-right: 40px;
 }
 
-/*.btn-pic-sort{
-	margin-right: 40px;
-}*/
-
-.pic-for-selection{
+.pic-for-selection, .pre-selected-container{
 	padding-left: 10px;
 }
 
 .pic-shadow{
-	display: none;
 	width: 200px;
 	height: 200px;
  	position: absolute;
@@ -67,10 +61,6 @@
  	-moz-box-sizing: border-box;/* Firefox */
  	-webkit-box-sizing: border-box;/* Safari */
  }
-
-.raw-picture-container{
-	position: relative;
-}
 
 .crop-window{
 	display: none;
@@ -138,7 +128,7 @@
 .crop-scale{
 	margin-left: 20px;
 }
-/******* edit by @lyn ***********/
+
 .gbin1-list {
 	list-style: none;
 }
