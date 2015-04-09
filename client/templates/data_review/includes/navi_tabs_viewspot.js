@@ -40,7 +40,11 @@ submitOplog = function() {
   var res = storageEngine.update(ns, pk, o, op, custom);
   // 上传成功，删除oplog记录
   if(res) {
-    Session.set('oplog', {})
+    Session.set('oplog', {});
+    alert("提交成功！");
+  }else{
+    alert("提交失败！");
+    //...
   }
 }
 
@@ -60,28 +64,18 @@ sessionInfo = function() {
   if (Session.get('currentVsId')) {
     ns = 'poi.ViewSpot';
     pk = Session.get('currentVsId');
-    oriData = ViewSpot.findOne({
-      '_id': new Mongo.ObjectID(pk)
-    });
   } else if (Session.get('currentShoppingId')) {
     ns = 'poi.Shopping';
     pk = Session.get('currentShoppingId');
-    oriData = Shopping.findOne({
-      '_id': new Mongo.ObjectID(pk)
-    });
   } else if (Session.get('currentLocalityId')) {
     ns = 'geo.Locality';
     pk = Session.get('currentLocalityId');
-    oriData = Locality.findOne({
-      '_id': new Mongo.ObjectID(pk)
-    });
   } else if (Session.get('currentRestaurantId')) {
     ns = 'poi.Restaurant';
     pk = Session.get('currentRestaurantId');
-    oriData = Restaurant.findOne({
-      '_id': new Mongo.ObjectID(pk)
-    });
   }
+  oriData = storageEngine.snapshot(ns, new Mongo.ObjectID(pk));
+  console.log(oriData);
   return {
     ns: ns,
     pk: new Mongo.ObjectID(pk),
