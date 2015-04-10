@@ -1,5 +1,5 @@
-// var needed?
 CmsOplog = new Mongo.Collection('CmsOplog');
+OplogPkList = new Mongo.Collection('OplogPkList');
 
 /**
  * 发布oplog信息
@@ -21,6 +21,32 @@ Meteor.publish('oplog', function(ns, pk, count) {
 
 // TODO allow settings
 CmsOplog.allow({
+  insert: function(){
+    return true;
+  },
+  update: function(){
+    return true;
+  }
+});
+
+
+Meteor.methods({
+  'OplogPkList.update': function(ts, ns, userId, pk){
+    check(ts, Number);
+    check(ns, String);
+    check(userId, String);
+    check(pk, Meteor.Collection.ObjectID);
+    var query = {'ns': ns, 'pk': pk._str};
+    OplogPkList.update(query, {'$set': {'ts': ts}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+  },
+});
+
+Meteor.publish('oplog-pk-list', function(){
+
+});
+
+// TODO allow settings
+OplogPkList.allow({
   insert: function(){
     return true;
   },
