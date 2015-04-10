@@ -22,7 +22,11 @@
                   </a>
                   <ul class="dropdown-menu">
                     {{#each subItem}}
-                      <li class="{{activeTag}}" route="{{routeName}}"><a href="{{url}}">{{name}}</a></li>
+                      {{#if disable}}
+                        <li class="{{activeTag}}" route="{{routeName}}" style="cursor:no-drop"><a>{{name}}</a></li>
+                      {{else}}
+                        <li class="{{activeTag}}" route="{{routeName}}"><a href="{{url}}">{{name}}</a></li>
+                      {{/if}}
                     {{/each}}
                   </ul>
                 </li>

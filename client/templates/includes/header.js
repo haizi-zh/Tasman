@@ -3,10 +3,6 @@ var naviBarConfig = [{
   url: "/data-review",
   routeName: "dataReview",
   subItem: [{
-    name: "国家数据",
-    url: "/data-review/country",
-    routeName: "reviewCountry"
-  }, {
     name: "城市数据",
     url: "/data-review/city/china",
     routeName: "reviewCity"
@@ -23,9 +19,10 @@ var naviBarConfig = [{
     url: "/data-review/shopping/china/北京",
     routeName: "reviewShopping"
   }, {
-    name: "酒店数据",
+    name: "酒店数据－暂无",
     url: "/data-review/hotel/china/北京",
-    routeName: "reviewHotel"
+    routeName: "reviewHotel",
+    disable: true
   }]
 }, {
   name: "IM运营",
