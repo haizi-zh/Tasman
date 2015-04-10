@@ -17,8 +17,6 @@ Template.naviTabsViewSpot.events({
   }
 });
 
-CmsOplog = new Mongo.Collection('CmsOplog');
-
 submitOplog = function() {
   // 判断是否做了改动
   var op = checkEditStatus();
