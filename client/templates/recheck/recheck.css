@@ -1,0 +1,14 @@
+.recheck-page {
+  width: 100%;
+}
+.recheck-left-wrapper {
+  width: 30%;
+  border: solid 1px #ddd;
+  float: left;
+}
+
+.recheck-right-wrapper {
+  width: 69%;
+  border: solid 1px #ddd;
+  float: right;
+}
