@@ -9,14 +9,12 @@ Meteor.publish('Images', function(geoId) {
   return Images.find({'itemIds': new Mongo.ObjectID(geoId)});
 });
 
-
-
-var Qiniu = new QiniuSDK();
+var Qiniu = new QiniuSDK(accessKey, secretKey);
 Meteor.methods({
   'fetchPic': function(fetchUrl){
     check(fetchUrl, String);
-    var fetchInfo = Qiniu.getFetchInfo(fetchUrl/*, "hopeleft"*/);
-
+    var fetchInfo = Qiniu.getFetchInfo(fetchUrl);
+    // var fetchInfo = Qiniu.getFetchInfo(fetchUrl, "hopeleft");
     var postUrl = 'http://iovip.qbox.me' + fetchInfo.path;
     var options = {
       headers: {
