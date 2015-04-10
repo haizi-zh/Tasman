@@ -75,27 +75,48 @@ reviewItems = {
     }
   },
 
-  // 购物
-  'Shopping': {
-    'basic': {
-      'zhName': ['名字', itemDataType.string, false],
-      'address': ['地址', itemDataType.string, false],
-      'style': ['风格', itemDataType.string, false],
-    },
-    'traffic': {
-
-    },
-    'feature': {
-
-    }
-  },
-
   // 餐馆
   'Restaurant': {
     'basic': {
       'zhName': ['名字', itemDataType.string, false],
       'address': ['地址', itemDataType.string, false],
       'style': ['风格', itemDataType.string, false],
+      'openTime': ['开放时间', itemDataType.string, false],
+      'tel': ['电话', itemDataType.string, false],
+      'price': ['人均消费', itemDataType.int, false],
+    },
+    'traffic': {
+
+    },
+    'feature': {
+      // 'specials': ['特色菜', itemDataType.str_array, false, {
+      // }]
+    }
+  },
+
+  // 购物
+  'Shopping': {
+    'basic': {
+      'zhName': ['名字', itemDataType.string, false],
+      'address': ['地址', itemDataType.string, false],
+      'style': ['风格', itemDataType.string, false],
+      'desc': ['简介', itemDataType.string, false]
+    },
+    'traffic': {
+
+    },
+    'feature': {
+      // 'tags': ['标签', itemDataType.str_array, false, {
+      // }]
+    }
+  },
+
+  // 酒店
+  'Hotel': {
+    'basic': {
+      'zhName': ['名字', itemDataType.string, false],
+      'address': ['地址', itemDataType.string, false],
+      'priceDesc': ['人均价格', itemDataType.string, false],
     },
     'traffic': {
 
