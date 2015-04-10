@@ -2,6 +2,9 @@
 .meteor/meteorite
 
 lib/db_settings.js
+server/publications/a_db_settings.js
+server/db_settings.js
+server/a_db_settings.js
 
 */.DS_Store
 
