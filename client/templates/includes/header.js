@@ -19,10 +19,10 @@ var naviBarConfig = [{
     url: "/data-review/shopping/china/北京",
     routeName: "reviewShopping"
   }, {
-    name: "酒店数据－暂无",
+    name: "酒店数据",
     url: "/data-review/hotel/china/北京",
-    routeName: "reviewHotel",
-    disable: true
+    routeName: "reviewHotel"
+    // disable: true
   }]
 }, {
   name: "IM运营",

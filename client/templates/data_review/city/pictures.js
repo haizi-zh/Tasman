@@ -25,7 +25,7 @@ Template.pictures.helpers({
     if (!selectedImageList)
       return null;
     var image, images = [], cropHint, selectedCropHint;
-    var r, x1, x2, y1, y2, w, h, cw, ch;
+    var r, x1, x2, y1, y2, cw, ch;
     for (var i = 0;i < selectedImageList.length;i++){
       //模板的数据
       image = {
@@ -48,6 +48,7 @@ Template.pictures.helpers({
 
       if (selectedImageList[i].cropHint){//原有裁剪的尺寸
         selectedCropHint = selectedImageList[i].cropHint;
+
         if (cropHint.ow >= 800 || cropHint.oh >= 800){
           var r = max(cropHint.ow/800, cropHint.oh/800);
           //对于裁剪的图像返回偶数数据
@@ -69,6 +70,7 @@ Template.pictures.helpers({
           cw = cropHint.ow;
           ch = cropHint.oh;
         }
+
         selectedCropHint = {
           x1: x1,
           x2: x2,
@@ -80,8 +82,9 @@ Template.pictures.helpers({
           h: y2 - y1
         };
         selectedCropHints[i] = _.extend(selectedCropHints[i], selectedCropHint);
+      }else{
+        //...原数据没有crophint，则对应crophint为空！
       }
-
       Blaze.renderWithData(Template.selectedPicture, image, $('ul.selected-container')[0]);
       $('.selected-container').sortable().bind('sortupdate');
     };
@@ -223,14 +226,20 @@ Template.pictures.events({
           top: top,
           bottom: bottom
         };
-      }else{
-        coord = {};//没有裁剪返回空对象
       }
-      subImage = {
-        h: cropHint.oh,
-        w: cropHint.ow,
-        key: cropHint.key,
-        cropHint: coord
+      if (coord){
+        subImage = {
+          h: cropHint.oh,
+          w: cropHint.ow,
+          key: cropHint.key,
+          cropHint: coord
+        }
+      }else{
+        subImage = {
+          h: cropHint.oh,
+          w: cropHint.ow,
+          key: cropHint.key
+        }
       }
       subImages.push(subImage);
     }
