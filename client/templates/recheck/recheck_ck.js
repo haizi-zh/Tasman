@@ -1,10 +1,10 @@
 Template.recheck.onRendered(function(){
-  Session.set('recheckItem', undefined);
+  Session.set('recheckItem', {});
 });
 
 
 Template.recheck.helpers({
-  collections: function(){
+  collections: function() {
     return [
       {
         'conn': 'poi.ViewSpot',
@@ -28,20 +28,36 @@ Template.recheck.helpers({
       },
     ]
   },
-
-  // items: function(){
-  //   return [
-  //     {'pk': 1, 'zhName': 'Hello', 'opCount': 3},
-  //     {'pk': 2, 'zhName': 'World', 'opCount': 7}
-  //   ]
-  // }
+  timeLimits: function() {
+    return [
+      {
+        'timeLimit': moment().day(-3).unix() * 1000 + moment().milliseconds(),
+        'name': '最近三天',
+        'operator': '$gt'
+      },
+      {
+        'timeLimit': moment().day(-7).unix() * 1000 + moment().milliseconds(),
+        'name': '最近一周',
+        'operator': '$gt'
+      },
+      {
+        'timeLimit': moment().day(-14).unix() * 1000 + moment().milliseconds(),
+        'name': '最近两周',
+        'operator': '$gt'
+      }
+    ]
+  },
 });
-// Session.set('aizouTag', {});
 
 Template.recheck.events({
   'click .recheck-items': function(event, template) {
     var mid = $(event.target).attr('id');
-    // TODO 判断session的改变，触发helper运行
-
+    if(Session.get('recheckItem') && Session.get('recheckItem').pk === mid) {
+      return;
+    }
+    var ns = $(event.target).attr('data-ns');
+    Session.set('recheckItem', {'pk': mid, 'ns': ns});
+    log('当前的recheckItem Session');
+    log(Session.get('recheckItem'));
   },
 });

@@ -12,3 +12,17 @@
   border: solid 1px #ddd;
   float: right;
 }
+
+.recheck-filter-wrapper {
+    border-bottom: 1px solid #ccc;
+    padding-bottom: 3px;
+}
+
+.selected-filter-wrap {
+    padding-bottom: 3px;
+    border-bottom: 1px solid #ccc;
+}
+
+.recheck-itemlist-wrapper {
+    padding-top: 5px;
+}
