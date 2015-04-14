@@ -38,7 +38,7 @@ Template.aizouTag.helpers({
 });
 
 Template.aizouTag.onRendered(function() {
-  Session.set('aizouTag', {})
+  Session.set('aizouTag', {});
 
   $('.at-sugg-item').each(function(i, obj) {
     $(obj).hover(
