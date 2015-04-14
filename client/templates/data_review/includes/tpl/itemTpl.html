@@ -4,6 +4,9 @@
     {{#if richEditor}}
       {{> froalaReactive _onblur=UpdateMD5 keyChain=keyChain inlineMode=false _value=value _buttons=buttons}}
     {{else}}
+      {{#if strArray}}
+        <span>(以下数据请使用半角逗号","分隔各项)</span>
+      {{/if}}
       <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}"></textarea>
     {{/if}}
   </div>

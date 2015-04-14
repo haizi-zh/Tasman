@@ -54,7 +54,9 @@ createOriginTextMD5 = function(arrayData) {
   for (var i in arrayData) {
     var temp = arrayData[i];
     var tempValue = temp.value;
-    tempObj[temp.keyChain] = cmsMd5(tempValue.toString());
+
+    //假如该数据的该字段没有定义，则temp.value为undefined
+    tempObj[temp.keyChain] = tempValue ? cmsMd5(tempValue.toString()) : tempValue;
   }
   Session.set('originMD5', tempObj);
 };
@@ -94,7 +96,9 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
     var zhLabel = items[key][itemIndex.zhDesc];
     var dataType = items[key][itemIndex.dataType];
     var tplData = {};
-    if (dataType === itemDataType.string || dataType === itemDataType.int) {
+
+    //当前数据为字符串(string), 整型(int), 字符串数组(str_array)时
+    if (dataType === itemDataType.string || dataType === itemDataType.int || dataType === itemDataType.str_array) {
       var newKey = inheritKey ? (inheritKey + '-' + key) : key;
       tplData = {
           'zhLabel': zhLabel,
@@ -102,12 +106,15 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
           'value': data[key],
           'tabName': {},
           'index': index,
-          'richEditor': items[key][itemIndex.richEditor]
+          'richEditor': items[key][itemIndex.richEditor],
+          'strArray': dataType === itemDataType.str_array
         }
         // 放入到特定的Tab中
       tplData.tabName[tabName] = true;
       outPutData.push(tplData);
     }
+
+    //当前数据为对象数组(obj_array)时
     if (dataType === itemDataType.obj_array) {
       var tempData = data[key]; //递归使用的数据
       var tempItems = items[key][itemIndex.childInfo];
@@ -118,17 +125,7 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
         organizeReviewData(tempItems, tabName, element, outPutData, key, tempIndex);
       }
     }
-    // if (dataType === itemDataType.str_array) {
-    //   var tempData = data[key]; //递归使用的数据
-    //   var tempItems = items[key][itemIndex.childInfo];
-    //   var tempIndex = 0;
 
-    //   for (var i in tempData) {
-    //     var element = tempData[i];
-    //     tempIndex = tempIndex + 1;
-    //     organizeReviewData(tempItems, tabName, element, outPutData, key, tempIndex);
-    //   }
-    // }
     // TODO 实现更多的规则
   }
 };
