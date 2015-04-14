@@ -84,8 +84,6 @@ Meteor.FilterCollections = function (collection, settings) {
       }
 
       var query = self.query.get();
-      log('当前的query:');
-      log(query);
 
       if (_.isFunction(_callbacks.beforeSubscribe))
         query = _callbacks.beforeSubscribe(query) || query;
@@ -245,8 +243,6 @@ Meteor.FilterCollections = function (collection, settings) {
         offsetStart: offsetStart,
         offsetEnd: offsetEnd
       });
-      log('new pager');
-      log(_pager);
 
       if (triggerUpdate)
         this.run();
@@ -259,8 +255,7 @@ Meteor.FilterCollections = function (collection, settings) {
 
       _query.options.skip = _pager.offsetStart;
       _query.options.limit = _pager.itemsPerPage;
-      log('新的query');
-      log(_query);
+
       self.query.set(_query);
 
       return;
@@ -417,13 +412,10 @@ Meteor.FilterCollections = function (collection, settings) {
 
       if (!_.has(_filters, key))
         throw new Error("Filter Collection Error: " + key + " is not a valid filter.");
-      log(_filters[key]);
       _filters[key] = _.extend(_filters[key], filter);
-      log(_filters[key]);
       _filters[key].active = _filters[key].active ? false : true;
 
       if(triggerUpdate) {
-        log('run...');
         this.run();
       }
 
@@ -507,7 +499,6 @@ Meteor.FilterCollections = function (collection, settings) {
     },
     run: function(){
       _query.selector = this.getSelector();
-      log(_query.selector);
       self.query.set(_query);
       self.pager.moveTo(1);
 
@@ -651,14 +642,10 @@ Meteor.FilterCollections = function (collection, settings) {
       _deps.query.depend();
       var q = _.clone(_query);
       // q.options = _.omit(q.options, 'skip', 'limit');
-      log(q);
       if (_.isFunction(_callbacks.beforeResults))
         q = _callbacks.beforeResults(q) || q;
-      // log(q.options);
       var cursor = self._collection.find(q.selector, q.options);
-      log('新的查询结果：');
-      log(q);
-      log(cursor.fetch());
+
       if (_.isFunction(_callbacks.afterResults))
         cursor = _callbacks.afterResults(cursor) || cursor;
 
@@ -782,8 +769,6 @@ Meteor.FilterCollections = function (collection, settings) {
         if (alias)
           filter['alias'] = alias;
 
-        log(field);
-        log(filter);
         self.filter.set(field, filter);
       },
       'click .fc-filter-clear': function (event) {

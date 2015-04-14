@@ -23,9 +23,6 @@ Meteor.FilterCollections.publish = function (collection, options) {
     check(query, Object);
     var allow = true;
 
-    log('publish result query:');
-    log(query);
-
     if (callbacks.allow && _.isFunction(callbacks.allow))
       allow = callbacks.allow(query, this);
 
@@ -48,8 +45,6 @@ Meteor.FilterCollections.publish = function (collection, options) {
 
     var cursor = collection.find(query.selector, query.options);
 
-    log('publish results:');
-    log(cursor.fetch());
 
     if (callbacks.afterPublish && _.isFunction(callbacks.afterPublish))
       cursor = callbacks.afterPublish('results', cursor, this) || cursor;

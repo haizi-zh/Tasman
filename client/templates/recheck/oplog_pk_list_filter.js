@@ -16,10 +16,10 @@ HomeFilter = new Meteor.FilterCollections(OplogPkList, {
       searchable: 'true'
     },
     "ts": {
-      title: 'Random Number',
+      title: '编辑时间',
       condition: '$and',
       transform: function (value) {
-        return parseFloat(value);
+        return parseInt(value);
       },
       sort: 'desc'
     },

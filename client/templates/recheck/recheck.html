@@ -2,9 +2,9 @@
   <div class="recheck-page">
 
     <div class="recheck-left-wrapper">
-      <div class="recheck-filter-wrapper">
+      <div class="recheck-filter-wrapper" style="">
 
-        <strong>用户</strong>
+        <strong>用户:</strong>
         <br>
         {{#each editors}}
           <button href="# "
@@ -17,7 +17,8 @@
           </button>
         {{/each}}
         <br>
-        <strong>种类</strong>
+
+        <strong>数据类型:</strong>
         <br>
         {{#each collections}}
           <button href="# "
@@ -30,9 +31,25 @@
           </button>
         {{/each}}
 
-      <!-- 清除筛选 -->
         <br>
-        <strong>筛选条件</strong>
+        <strong>编辑时间:</strong>
+        <br>
+        {{#each timeLimits}}
+          <button href="# "
+            class="btn btn-default fc-filter"
+            data-fc-filter-field="ts"
+            data-fc-filter-value="{{timeLimit}}"
+            data-fc-filter-alias="{{name}}"
+            data-fc-filter-operator="{{operator}}"
+          >
+            {{name}}
+          </button>
+        {{/each}}
+      </div>
+
+      <!-- 清除筛选 -->
+      <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
         <br>
         {{#each fcFilterActive}}
           <button href="#" class=" btn btn-default fc-filter-clear">
@@ -40,22 +57,24 @@
           </button>
         {{/each}}
         <br>
-        <button href="#" class="btn btn-default fc-filter-reset">清楚筛选</button>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div>
 
-      <div class="recheck-itemlist-wrapper">
+      <div class="recheck-itemlist-wrapper text-center">
         <div class="recheck-itemlist">
-          <ul class="list recheck-itemlist-ul">
+          <ul class="list recheck-itemlist-ul" style="padding: 0">
             {{#each fcResults}}
-              <li class="recheck-items list-group-item" id="{{pk}}">{{zhName}}<span class="badge">{{opCount}}</span></li>
+              <li class="recheck-items list-group-item" id="{{pk}}" data-ns="{{ns}}">{{zhName}}<span class="badge">{{opCount}}</span></li>
             {{/each}}
           </ul>
         </div>
       </div>
-      <div class="col-md-7 text-center">
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center">
         {{#if fcPager.pages}}
         <!-- numbered pager -->
-          <ul class="pagination">
+          <ul class="pagination pagination-sm">
             <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
             <li><a href="#" class="fc-pager-previous">&lt;</a></li>
             {{#each fcPager.pages}}
@@ -64,7 +83,6 @@
             <li><a href="#" class="fc-pager-next">&gt;</a></li>
             <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
           </ul>
-        <!-- /numbered pager -->
         {{/if}}
       </div>
     </div>
