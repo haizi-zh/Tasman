@@ -1,5 +1,5 @@
 Shopping = new Mongo.Collection('Shopping');
-Shopping.initEasySearch('zhName', {
+Shopping.initEasySearch('alias', {
   'limit' : 5,
   'use' : 'mongo-db'
 });

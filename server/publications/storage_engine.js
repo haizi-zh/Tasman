@@ -1,4 +1,4 @@
-CmsOplog = new Mongo.Collection('CmsOplog');
+// CmsOplog = new Mongo.Collection('CmsOplog');
 // OplogPkList = new Mongo.Collection('OplogPkList');
 
 /**

@@ -1,7 +1,6 @@
 ViewSpot = new Mongo.Collection('ViewSpot');
-ViewSpot.initEasySearch('zhName', {
-  'limit': 5,
-  'use': 'mongo-db'
+ViewSpot.initEasySearch(['alias'], {
+  'use': 'mongo-db',
 });
 
 Template.reviewViewspot.helpers({
