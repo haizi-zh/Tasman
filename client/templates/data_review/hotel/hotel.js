@@ -1,8 +1,4 @@
 Hotel = new Mongo.Collection('Hotel');
-Hotel.initEasySearch('zhName', {
-  'limit' : 5,
-  'use' : 'mongo-db'
-});
 
 
 Template.reviewHotel.helpers({

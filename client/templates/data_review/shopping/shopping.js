@@ -1,8 +1,4 @@
 Shopping = new Mongo.Collection('Shopping');
-Shopping.initEasySearch('zhName', {
-  'limit' : 5,
-  'use' : 'mongo-db'
-});
 
 
 Template.reviewShopping.helpers({

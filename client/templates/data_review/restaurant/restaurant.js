@@ -1,8 +1,4 @@
 Restaurant = new Mongo.Collection('Restaurant');
-Restaurant.initEasySearch('zhName', {
-  'limit' : 5,
-  'use' : 'mongo-db'
-});
 
 Template.reviewRestaurant.helpers({
   restaurantDetail: function() {

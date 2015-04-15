@@ -1,13 +1,3 @@
-var mongoPoiUrl = mongoUrlGen(dbAuth.poi.db, dbAuth.poi.username, dbAuth.poi.password, dbAuth.poi.host, dbAuth.poi.port);
-
-var poi = new MongoInternals.RemoteCollectionDriver(mongoPoiUrl);
-
-Hotel = new Mongo.Collection("Hotel", { _driver: poi });
-
-Hotel.initEasySearch(['zhName', '_id'], {
-  'limit': 5,
-  'use': 'mongo-db'
-});
 
 Meteor.publish('hotels', function(isAbroad, zoneName, pageLimit) {
   check(isAbroad, Boolean);
