@@ -1,7 +1,4 @@
 ViewSpot = new Mongo.Collection('ViewSpot');
-ViewSpot.initEasySearch(['alias'], {
-  'use': 'mongo-db',
-});
 
 Template.reviewViewspot.helpers({
   vsDetail: function() {

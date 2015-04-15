@@ -1,12 +1,6 @@
 Locality = new Mongo.Collection('Locality');
 Images = new Mongo.Collection('Images');
 
-Locality.initEasySearch('zhName', {
-  'limit': 5,
-  'use': 'mongo-db'
-});
-
-
 Template.reviewCity.helpers({
   cityDetails: function() {
     var mid = Session.get('currentLocalityId');
