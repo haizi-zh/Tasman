@@ -10,7 +10,7 @@ ViewSpot.initEasySearch(['zhName', '_id'], {
   'use' : 'mongo-db'
 });
 
-Meteor.publish('vs', function(isAbroad, zoneName, pageLimit) {
+Meteor.publish('viewspot', function(isAbroad, zoneName, pageLimit) {
   check(isAbroad, Boolean);
   check(zoneName, String);
   check(pageLimit, Number);
@@ -21,7 +21,7 @@ Meteor.publish('vs', function(isAbroad, zoneName, pageLimit) {
   }
 });
 
-Meteor.publish('vsDetail', function(mid) {
+Meteor.publish('viewspotDetail', function(mid) {
   check(mid, String);
   return ViewSpot.find({'_id': new Mongo.ObjectID(mid)});
 });

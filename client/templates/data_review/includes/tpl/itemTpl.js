@@ -30,7 +30,6 @@ Template.stringTpl.onRendered(function() {
   }
 });
 
-
 /**
  * [updateOplog description]
  * @param  {[type]}  key    数据库中的字段名

@@ -1,0 +1,57 @@
+<template name="compareWrapper">
+  {{#if itemData}}
+	<div class="recheck-right-wrapper">
+    <div>
+      <button id="edit-pic-btn">编辑图片</button>
+      <button id="submit-info">使用当前编辑</button>
+    </div>
+    <div class="recheck-base-wrapper">
+      <label>当前数据</label>
+      {{#each baseData}}
+        <div class="form-group">
+          <label>{{zhLabel}}</label>
+            {{#if strArray}}
+              <span>(请使用半角逗号","分隔)</span>
+            {{/if}}
+            <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}" disabled="{{#if notWrite}}disabled{{/if}}"></textarea>
+        </div>
+      {{/each}}
+      <label>图片列表</label>
+      <ul class="pic-list">
+        {{#each basePic}}
+          <li class="pic-wrap">
+            <img src="{{url}}?imageView2/1/w/100/h/100">
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="recheck-compare-wrapper">
+      <label>编辑结果</label>
+      {{#each compareData}}
+        {{> stringTpl this}}
+      {{/each}}
+      <label>图片列表</label>
+      <ul class="pic-list">
+        {{#each comparePic}}
+          <li class="pic-wrap">
+            <img src="{{url}}?imageView2/1/w/100/h/100">
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+    <div class="recheck-diff-wrapper">
+      <label>对比结果</label>
+      {{#each diffData}}
+        <div class="form-group">
+          <label>{{zhLabel}}</label>
+          <div class="diff-wrapper copy-form-control">
+            {{#each value}}
+              <span class="{{diffClass}}">{{diffValue}}</span>
+            {{/each}}
+          </div>
+        </div>
+      {{/each}}
+    </div>
+	</div>
+  {{/if}}
+</template>

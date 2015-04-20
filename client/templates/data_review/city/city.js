@@ -40,7 +40,7 @@ Template.reviewCity.events({
     Session.set('currentLocalityId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe("cityDetail", mid);
+    Meteor.subscribe("localityDetail", mid);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

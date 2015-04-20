@@ -40,7 +40,7 @@ Template.reviewViewspot.events({
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
 
-    Meteor.subscribe("vsDetail", mid);
+    Meteor.subscribe("viewspotDetail", mid);
     initOriginMD5Session();
     initOplogSession();
 
@@ -130,7 +130,13 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
   }
 };
 
-
+/**
+ * [review description]
+ * @param  {[type]} type       [description]
+ * @param  {[type]} data       [description]
+ * @param  {[type]} outPutData 返回的数据
+ * @return {[type]}            [description]
+ */
 review = function(type, data, outPutData) {
   var itemsForReview = reviewItems[type];
   var classify = _.keys(itemsForReview);

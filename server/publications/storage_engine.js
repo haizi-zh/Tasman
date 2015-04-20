@@ -35,6 +35,7 @@ Meteor.methods({
     check(ts, Number);
     check(ns, String);
     check(userId, String);
+    console.log(pk);
     check(pk, Meteor.Collection.ObjectID);
     check(zhName, String);
     var query = {'ns': ns, 'pk': pk._str};
