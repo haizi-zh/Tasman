@@ -21,7 +21,8 @@ Template.pictures.helpers({
   //原有已选择图片
   selectedImageList: function(){
     initial();
-    var selectedImageList = sessionInfo().oriData.images;
+    var nsAndPk = getNsAndPk();
+    var selectedImageList = sessionInfo(nsAndPk.ns, nsAndPk.pk).oriData.images;
     if (!selectedImageList)
       return null;
     var image, images = [], cropHint, selectedCropHint;

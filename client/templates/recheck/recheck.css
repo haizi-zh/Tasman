@@ -26,3 +26,73 @@
 .recheck-itemlist-wrapper {
     padding-top: 5px;
 }
+
+/*recheck-right-wrapper内的样式*/
+.recheck-right-wrapper ul.pic-list{
+  padding: 0;
+  list-style: none;
+  display: block;
+  overflow: hidden;
+}
+
+.recheck-right-wrapper ul.pic-list li{
+  float: left;
+  width: 100px;
+  height: 100px;
+  margin: 0 10px 10px 5px;
+}
+
+.recheck-base-wrapper, .recheck-compare-wrapper, .recheck-diff-wrapper{
+  width: 33%;
+  display: inline-block;
+  vertical-align: top;
+}
+
+/*此处需要统一pre和textarea的样式！！！*/
+.flex-text-wrap pre{
+  padding: 6px 12px;
+  font-size: 14px;
+}
+
+.added{
+  color: #090;
+}
+
+.added, .removed, .common{
+  /*文本中的回车换行！*/
+  white-space: pre-wrap;
+}
+
+.removed{
+  color: #f00;
+  text-decoration: line-through;
+}
+
+.common{
+  color: #999;
+}
+
+
+.recheck-diff-wrapper .copy-form-control{
+  /*重要*/
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.7;
+
+  display: block;
+  width: 100%;
+  color: #555555;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  border-radius: 4px;
+  -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
+  -webkit-transition: border-color ease-in-out .15s, -webkit-box-shadow ease-in-out .15s;
+  -o-transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+
+  border-radius: 0 !important;
+  box-shadow: none;
+  border-color: #d2d6de;
+}

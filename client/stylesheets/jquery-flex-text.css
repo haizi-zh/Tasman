@@ -14,12 +14,18 @@ textarea,
     *padding-bottom: 0 !important;
 }
 
+.flex-text-wrap pre span{
+    white-space: pre-wrap;
+}
+
 .flex-text-wrap textarea,
 .flex-text-wrap pre {
     /*extra*/
     line-height: 1.7;
 
-    white-space: pre-wrap;
+    /*white-space: pre-wrap;*/
+
+    min-height: 40px;
     width: 100%;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -32,6 +38,7 @@ textarea,
 .flex-text-wrap textarea {
     overflow: hidden;
     position: absolute;
+    /*display: none;*/
     top: 0;
     left: 0;
     height: 100%;
@@ -39,8 +46,8 @@ textarea,
     resize: none;
 
     /* IE7 box-sizing fudge factor */
-    *height: 94%;
-    *width: 94%;
+    /**height: 94%;
+    *width: 94%;*/
 }
 
 .flex-text-wrap pre {
