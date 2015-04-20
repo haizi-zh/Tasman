@@ -224,6 +224,7 @@ Template.compareWrapper.events({
 
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
-    window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
+    // window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
+    window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
   }
 })
