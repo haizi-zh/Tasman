@@ -6,6 +6,7 @@ var mongoPoiUrl = mongoUrlGen(dbAuth.poi.db, dbAuth.poi.username, dbAuth.poi.pas
 var poi = new MongoInternals.RemoteCollectionDriver(mongoPoiUrl);
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
+Country = new Mongo.Collection("Country", { _driver: geo })
 
 Hotel = new Mongo.Collection("Hotel", { _driver: poi });
 Restaurant = new Mongo.Collection("Restaurant", { _driver: poi });

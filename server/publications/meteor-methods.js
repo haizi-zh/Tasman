@@ -18,5 +18,10 @@ Meteor.methods({
       curDB = Restaurant;
     }
     return curDB.find({'alias': {'$regex': re}}, {fields: {zhName: 1, desc: 1}, sort: {hotness: -1}}).fetch();
+  },
+  // 根据洲的名字，查找国家
+  'getCountriesByContinent': function(zhName) {
+    check(zhName, String);
+    return Country.find({'zhCont': zhName});
   }
 });
