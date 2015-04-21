@@ -1,4 +1,3 @@
-ViewSpot = new Mongo.Collection('ViewSpot');
 
 Template.reviewViewspot.helpers({
   vsDetail: function() {
@@ -13,7 +12,7 @@ Template.reviewViewspot.helpers({
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
     return vsDetail;
-  }
+  },
 });
 
 Template.reviewViewspot.events({
@@ -36,7 +35,7 @@ Template.reviewViewspot.events({
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
 
-    Meteor.subscribe("viewspotDetail", mid);
+    // Meteor.subscribe("viewspotDetail", mid);
     initOriginMD5Session();
     initOplogSession();
 

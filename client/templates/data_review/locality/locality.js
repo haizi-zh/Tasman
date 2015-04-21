@@ -1,7 +1,7 @@
-Locality = new Mongo.Collection('Locality');
+
 Images = new Mongo.Collection('Images');
 
-Template.reviewCity.helpers({
+Template.reviewLocality.helpers({
   cityDetails: function() {
     var mid = Session.get('currentLocalityId');
 
@@ -16,7 +16,7 @@ Template.reviewCity.helpers({
   },
 });
 
-Template.reviewCity.events({
+Template.reviewLocality.events({
   "click .city-name": function(e) {
     var mid = $(e.target).attr('id');
     // 重复点击
@@ -34,7 +34,6 @@ Template.reviewCity.events({
     Session.set('currentLocalityId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe("localityDetail", mid);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

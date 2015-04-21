@@ -1,5 +1,3 @@
-Restaurant = new Mongo.Collection('Restaurant');
-
 Template.reviewRestaurant.helpers({
   restaurantDetail: function() {
     var mid = Session.get('currentRestaurantId');
@@ -32,7 +30,6 @@ Template.reviewRestaurant.events({
     Session.set('currentRestaurantId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe("restaurantDetail", mid);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

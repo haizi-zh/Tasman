@@ -1,6 +1,3 @@
-Hotel = new Mongo.Collection('Hotel');
-
-
 Template.reviewHotel.helpers({
   hotelDetail: function() {
     var mid = Session.get('currentHotelId');
@@ -31,7 +28,6 @@ Template.reviewHotel.events({
     Session.set('currentHotelId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe("hotelDetail", mid);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

@@ -5,6 +5,7 @@ Meteor.FilterCollections = function (collection, settings) {
   var _settings = settings || {};
   var _initialized = false;
   var _EJSONQuery = {};
+  var _fields = settings.fields || {};
 
   self._collection = collection || {};
 
@@ -88,7 +89,7 @@ Meteor.FilterCollections = function (collection, settings) {
       if (_.isFunction(_callbacks.beforeSubscribe))
         query = _callbacks.beforeSubscribe(query) || query;
 
-      _subs.results = Meteor.subscribe(_subscriptionResultsId, query, {
+      _subs.results = Meteor.subscribe(_subscriptionResultsId, query, _fields, {
         onError: function(error){
           if (_.isFunction(_callbacks.afterSubscribe))
             _callbacks.afterSubscribe(error, this);
@@ -641,11 +642,10 @@ Meteor.FilterCollections = function (collection, settings) {
     getResults: function(){
       _deps.query.depend();
       var q = _.clone(_query);
-      // q.options = _.omit(q.options, 'skip', 'limit');
+      q.options = _.omit(q.options, 'skip', 'limit');
       if (_.isFunction(_callbacks.beforeResults))
         q = _callbacks.beforeResults(q) || q;
       var cursor = self._collection.find(q.selector, q.options);
-
       if (_.isFunction(_callbacks.afterResults))
         cursor = _callbacks.afterResults(cursor) || cursor;
 
