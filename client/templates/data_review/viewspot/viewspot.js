@@ -1,4 +1,3 @@
-// ViewSpot = new Mongo.Collection('ViewSpot');
 
 Template.reviewViewspot.helpers({
   vsDetail: function() {
@@ -13,13 +12,6 @@ Template.reviewViewspot.helpers({
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
     return vsDetail;
-  },
-  province: function() {
-    return province;
-  },
-  continent: function() {
-    var countries = continent;
-    
   },
 });
 

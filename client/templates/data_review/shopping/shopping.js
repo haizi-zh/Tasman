@@ -1,6 +1,3 @@
-Shopping = new Mongo.Collection('Shopping');
-
-
 Template.reviewShopping.helpers({
   shoppingDetail: function() {
     var mid = Session.get('currentShoppingId')
@@ -34,7 +31,6 @@ Template.reviewShopping.events({
     Session.set('currentShoppingId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe("shoppingDetail", mid);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

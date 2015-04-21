@@ -20,8 +20,12 @@ Meteor.methods({
     return curDB.find({'alias': {'$regex': re}}, {fields: {zhName: 1, desc: 1}, sort: {hotness: -1}}).fetch();
   },
   // 根据洲的名字，查找国家
-  'getCountriesByContinent': function(zhName) {
-    check(zhName, String);
-    return Country.find({'zhCont': zhName});
+  'getCountriesByContinent': function(continents) {
+    check(continents, Array);
+    continents.map(function(ct) {
+      var name = ct['continentName'];
+      ct['countries'] = Country.find({'zhCont': name},  {'fields': {'zhName': 1, '_id': 1}}).fetch();
+    })
+    return continents;
   }
 });

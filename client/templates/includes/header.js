@@ -4,23 +4,23 @@ var naviBarConfig = [{
   routeName: "dataReview",
   subItem: [{
     name: "城市数据",
-    url: "/data-review/city/china",
+    url: "/data-review/city",
     routeName: "reviewCity"
   }, {
     name: "景点数据",
-    url: "/data-review/viewspot/china/北京",
+    url: "/data-review/viewspot",
     routeName: "reviewViewspot"
   }, {
     name: "美食数据",
-    url: "/data-review/restaurant/china/北京",
+    url: "/data-review/restaurant",
     routeName: "reviewRestaurant"
   }, {
     name: "购物数据",
-    url: "/data-review/shopping/china/北京",
+    url: "/data-review/shopping",
     routeName: "reviewShopping"
   }, {
     name: "酒店数据",
-    url: "/data-review/hotel/china/北京",
+    url: "/data-review/hotel",
     routeName: "reviewHotel"
     // disable: true
   }]

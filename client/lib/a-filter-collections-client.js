@@ -642,14 +642,10 @@ Meteor.FilterCollections = function (collection, settings) {
     getResults: function(){
       _deps.query.depend();
       var q = _.clone(_query);
-      console.log('输出query');
-      console.log(q);
       q.options = _.omit(q.options, 'skip', 'limit');
       if (_.isFunction(_callbacks.beforeResults))
         q = _callbacks.beforeResults(q) || q;
-      console.log(q.selector);
       var cursor = self._collection.find(q.selector, q.options);
-      console.log(cursor.fetch());
       if (_.isFunction(_callbacks.afterResults))
         cursor = _callbacks.afterResults(cursor) || cursor;
 
