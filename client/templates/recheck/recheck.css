@@ -42,6 +42,11 @@
   margin: 0 10px 10px 5px;
 }
 
+.recheck-right-wrapper ul.pic-list li img{
+  width: 100px;
+  height: 100px;
+}
+
 .recheck-base-wrapper, .recheck-compare-wrapper, .recheck-diff-wrapper{
   width: 33%;
   display: inline-block;

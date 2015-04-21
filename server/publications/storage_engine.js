@@ -31,6 +31,15 @@ CmsOplog.allow({
 
 
 Meteor.methods({
+  /**
+   * 更新OplogPkList
+   * @param  {[type]} ts     timestamp,时间戳
+   * @param  {[type]} ns     namespace,如poi.ViewSpot
+   * @param  {[type]} userId [description]
+   * @param  {[type]} pk     [description]
+   * @param  {[type]} zhName [description]
+   * @return {[type]}        [description]
+   */
   'OplogPkList.update': function(ts, ns, userId, pk, zhName){
     check(ts, Number);
     check(ns, String);

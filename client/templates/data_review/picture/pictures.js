@@ -1,5 +1,5 @@
 var _time, cropCoords, currentIndex, currentSource, cropScale, cropScaleIndex;
-var cropHints, selectedCropHints;
+var cropHints, selectedCropHints, upCropHints;
 //w,h:裁剪的宽高（对应于cw,ch的）
 //cw,ch:现在的宽高（最大值为800）
 //ow,oh:原有的宽高
@@ -12,8 +12,9 @@ function initial(){
   cropScale = [1, 3/2, 4/3, 2];//width:height
   cropScaleIndex = -1;
 
-  cropHints = [];//记录多个crop结果
-  selectedCropHints = [];//原有已选图片的crophint
+  cropHints = [];//记录可选图片的crophints
+  selectedCropHints = [];//记录原有已选图片的crophints
+  upCropHints = [];//记录上传图片的crophints
   $('.selected-container').empty();
 };
 
@@ -47,7 +48,8 @@ Template.pictures.helpers({
       }
       selectedCropHints[i] = cropHint;
 
-      if (selectedImageList[i].cropHint){//原有裁剪的尺寸
+      //假如已有裁剪的尺寸
+      if (selectedImageList[i].cropHint){
         selectedCropHint = selectedImageList[i].cropHint;
 
         if (cropHint.ow >= 800 || cropHint.oh >= 800){
@@ -91,6 +93,7 @@ Template.pictures.helpers({
     };
     return images;
   },
+
   //可选择图片
   imageList: function() {
     var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
@@ -191,11 +194,14 @@ Template.pictures.events({
     $("#crop-close").trigger("click");
   },
 
+  //更新裁剪结果
   "click #crop-submit": function(e){
     if(currentSource == "geo")
       selectedCropHints[currentIndex] = selectedCropHints[currentIndex] ? _.extend(selectedCropHints[currentIndex], cropCoords) : selectedCropHints[index] = cropCoords;
-    else
+    else if (currentSource == "imageStore")
       cropHints[currentIndex] = cropHints[currentIndex] ? _.extend(cropHints[currentIndex], cropCoords) : cropHints[currentIndex] = cropCoords;
+    else if (currentSource == "upload")
+      upCropHints[currentIndex] = upCropHints[currentIndex] ? _.extend(upCropHints[currentIndex], cropCoords) : upCropHints[currentIndex] = cropCoords;
     $("#crop-close").trigger("click");
   },
 
@@ -207,8 +213,10 @@ Template.pictures.events({
     for (var i = 0;i < selected.length;i++){
       if ($(selected[i]).attr("data-from") == "geo")
         cropHint = selectedCropHints[$(selected[i]).attr("data-index")];
-      else
+      else if ($(selected[i]).attr("data-from") == "imageStore")
         cropHint = cropHints[$(selected[i]).attr("data-index")];
+      else if ($(selected[i]).attr("data-from") == "upload")
+        cropHint = upCropHints[$(selected[i]).attr("data-index")];
       if (cropHint.x1){
         r = cropHint.ow / cropHint.cw;
         //对于裁剪的图像返回偶数数据
@@ -251,6 +259,7 @@ Template.pictures.events({
   },
 
   "click #pic-up-sub": function(e){
+    //从服务器获取token和key
     Meteor.call('getPicUpToken', function(error, result) {
       if (error) {
         return throwError(error.reason);
@@ -268,9 +277,25 @@ Template.pictures.events({
           processData: false,
           data: form_data,
           success: function(data) {
-            var image_url = "http://7xi9ns.com1.z0.glb.clouddn.com/";
-            console.log(data);
-            alert("上传成功！链接：" + image_url + data.key);
+            //data中有w,h,size,hash值
+            alert("上传成功！链接：" + result.url);
+
+            //初始化新增图片的crophint
+            var cropHint = {
+              ow: data.w,
+              oh: data.h,
+              key: result.key
+            };
+            upCropHints.push(cropHint);
+
+            //新增已选图片
+            var imageInfo = {
+              key: result.key,
+              index: upCropHints.length - 1,
+              source: "upload",
+              url: result.url
+            };
+            Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
           }
         });
       }else{
@@ -287,10 +312,24 @@ Template.pictures.events({
         return throwError(error.reason);
       }
       if (result){
-        alert("成功上传图片！");
-        console.log(result);
-        // 将上传的图片加入 图片列表中，包括未选和已选
-        // 讲图片数据插入数据库中！
+        alert("上传成功！链接：" + result.url);
+
+        //初始化新增图片的crophint
+        var cropHint = {
+          ow: result.w,
+          oh: result.h,
+          key: result.key
+        };
+        upCropHints.push(cropHint);
+
+        //新增已选图片
+        var imageInfo = {
+          key: result.key,
+          index: upCropHints.length - 1,
+          source: "upload",
+          url: result.url
+        };
+        Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
       }else{
         alert("上传图片失败，请再次上传或联系程序员！");
       }
@@ -299,20 +338,29 @@ Template.pictures.events({
 })
 
 Template.selectedPicture.events({
+  //删除已选图片事件
   "click .glyphicon-minus": function(e){
     var picForSelect;
     if (this.source == "geo")
+      //当图片为geo中已选图片时
       picForSelect = $(".pre-selected-container .raw-picture-container");
-    else
+    else if (this.source == "imageStore")
+      //当图片为imagestore中可选图片时
       picForSelect = $(".pic-for-selection .raw-picture-container");
+    else if (this.source == "upload")
+      //当图片为上传图片时
+      picForSelect = [];
+
     for (var i = 0;i < picForSelect.length;i++){
       if ($(picForSelect[i]).attr("data-key") == this.key){
         $(picForSelect[i]).children(".pic-shadow").remove();
         break;
       }
     }
+
     $(e.target).parent().remove();
   },
+  
   "click img": function(e){
     var $image = this;
     loadJcrop($image);
@@ -417,10 +465,15 @@ function loadJcrop($image){
       $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
       showSmallFrame(selectedCropHints[$image.index], '#crop-small-2');
     }
-  }else{
+  }else if ($image.source == "imageStore"){
     if (cropHints[$image.index] && cropHints[$image.index].h){
       $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>'); 
       showSmallFrame(cropHints[$image.index], '#crop-small-2');
+    }
+  }else if ($image.source == "upload"){
+    if (upCropHints[$image.index] && upCropHints[$image.index].h){
+      $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
+      showSmallFrame(upCropHints[$image.index], '#crop-small-2');
     }
   }
   $("#crop-small-1").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
