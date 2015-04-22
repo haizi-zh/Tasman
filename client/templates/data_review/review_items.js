@@ -20,6 +20,7 @@ reviewItems = {
   'Locality': {
     'basic': {
       'zhName': ['名字：', itemDataType.string, false],
+      'alias': ['别称(包含原名)', itemDataType.str_array, false],
       'desc': ['描述：', itemDataType.string, false],
       'timeCostDesc': ['建议游玩时间：', itemDataType.string, false],
       'travelMonth': ['最佳旅游季节：', itemDataType.string, false],
@@ -58,6 +59,7 @@ reviewItems = {
   'ViewSpot': {
     'basic': {
       'zhName': ['名字', itemDataType.string, false],
+      'alias': ['别称(包含原名)', itemDataType.str_array, false],
       'desc': ['描述', itemDataType.string, false],
       'openTime': ['开放时间', itemDataType.string, false],
       'timeCostDesc': ['建议游玩时长', itemDataType.string, false],
@@ -75,27 +77,53 @@ reviewItems = {
     }
   },
 
-  // 购物
-  'Shopping': {
+  // 餐馆
+  'Restaurant': {
     'basic': {
       'zhName': ['名字', itemDataType.string, false],
+      'alias': ['别称(包含原名)', itemDataType.str_array, false],
       'address': ['地址', itemDataType.string, false],
       'style': ['风格', itemDataType.string, false],
+      'openTime': ['开放时间', itemDataType.string, false],
+      'tel': ['电话', itemDataType.string, false],
+      'price': ['人均消费', itemDataType.int, false],
+      'tags': ['标签', itemDataType.str_array, false]
     },
     'traffic': {
 
     },
     'feature': {
-
+      'specials': ['特色菜', itemDataType.str_array, false]
     }
   },
 
-  // 餐馆
-  'Restaurant': {
+  // 购物
+  'Shopping': {
+    'basic': {
+      'zhName': ['名字', itemDataType.string, false],
+      'alias': ['别称(包含原名)', itemDataType.str_array, false],
+      'address': ['地址', itemDataType.string, false],
+      'style': ['风格', itemDataType.string, false],
+      'tel': ['电话', itemDataType.string, false],
+      'tags': ['标签', itemDataType.str_array, false],
+      'desc': ['简介', itemDataType.string, false]
+    },
+    'traffic': {
+
+    },
+    'feature': {
+    }
+  },
+
+  // 酒店
+  'Hotel': {
     'basic': {
       'zhName': ['名字', itemDataType.string, false],
       'address': ['地址', itemDataType.string, false],
-      'style': ['风格', itemDataType.string, false],
+      'tel': ['电话', itemDataType.string, false],
+      'priceDesc': ['人均价格', itemDataType.string, false],
+      'rank': ['星级', itemDataType.int, false],
+      'desc': ['简介', itemDataType.string, false]
     },
     'traffic': {
 

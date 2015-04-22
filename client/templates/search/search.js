@@ -13,8 +13,23 @@ Template.searchTpl.events({
   'change .sort-select': function(e) {
     var curCol = $(e.target).val();
     Session.set('curSearchCollection', curCol);
+  },
+  'click .search-btn': function(e) {
+    e.preventDefault();
+
+    var curSearchCollection = Session.get('curSearchCollection'),
+        curSearchContent = $('#searchContent').val();
+
+    Meteor.call('search', curSearchCollection, curSearchContent, function(err, result) {
+      result && result.length && result.map(function(x){x.collection = curSearchCollection});
+      Session.set('searchResults', result);
+      Router.go('/searchResult');
+    });
+
   }
 });
+
+
 
 
 // searchResult
@@ -28,6 +43,9 @@ Template.searchResult.helpers({
   },
   hasCompareItem: function() {
     return Session.get('compareItems').length > 1;
+  },
+  searchResults: function() {
+    return Session.get('searchResults');
   }
 });
 

@@ -163,3 +163,7 @@ body {
   height: 460px;
   overflow: auto;
 }
+
+textarea{
+  overflow-y:visible;
+}

@@ -17,18 +17,23 @@ Template.naviTabsViewSpot.events({
   }
 });
 
-CmsOplog = new Mongo.Collection('CmsOplog');
-
-submitOplog = function() {
+submitOplog = function(ns, pk) {
   // 判断是否做了改动
   var op = checkEditStatus();
   if (!op) {
     return;
   }
-  var info = sessionInfo();
-  var ns = info['ns'],
-    pk = info['pk'],
-    oriData = info['oriData'];
+
+  //假如没有传ns,pk 需要从session中获取
+  if (!ns || !pk){
+    var nsAndPk = getNsAndPk();
+    ns = nsAndPk.ns;
+    pk = nsAndPk.pk;
+  }
+
+  var info = sessionInfo(ns, pk);
+  var oriData = info['oriData'];
+  pk = new Mongo.ObjectID(pk);
 
   //op = opLogFormat(op, oriData);
   op = opLogFormat(op);
@@ -59,8 +64,22 @@ checkEditStatus = function() {
 };
 
 
-sessionInfo = function() {
-  var ns, pk, oriData;
+sessionInfo = function(ns, pk) {
+  // var ns, pk, oriData;
+  // var coll = "Shopping";
+  // var mid = Session.get('current' + coll + 'Id');
+  var oriData = storageEngine.snapshot(ns, new Mongo.ObjectID(pk));
+  console.log(oriData);
+  return {
+    ns: ns,
+    pk: new Mongo.ObjectID(pk),
+    oriData: oriData
+  }
+};
+
+//根据session分离出ns,pk
+getNsAndPk = function() {
+  var ns, pk;
   if (Session.get('currentVsId')) {
     ns = 'poi.ViewSpot';
     pk = Session.get('currentVsId');
@@ -73,15 +92,15 @@ sessionInfo = function() {
   } else if (Session.get('currentRestaurantId')) {
     ns = 'poi.Restaurant';
     pk = Session.get('currentRestaurantId');
+  } else if (Session.get('currentHotelId')) {
+    ns = 'poi.Hotel';
+    pk = Session.get('currentHotelId');
   }
-  oriData = storageEngine.snapshot(ns, new Mongo.ObjectID(pk));
-  console.log(oriData);
   return {
     ns: ns,
-    pk: new Mongo.ObjectID(pk),
-    oriData: oriData
-  }
-};
+    pk: pk
+  };
+}
 
 
 // 格式化oplog，特别是处理数组字段被改变的情况

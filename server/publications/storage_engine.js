@@ -1,5 +1,5 @@
-// var needed?
-CmsOplog = new Mongo.Collection('CmsOplog');
+// CmsOplog = new Mongo.Collection('CmsOplog');
+// OplogPkList = new Mongo.Collection('OplogPkList');
 
 /**
  * 发布oplog信息
@@ -21,6 +21,43 @@ Meteor.publish('oplog', function(ns, pk, count) {
 
 // TODO allow settings
 CmsOplog.allow({
+  insert: function(){
+    return true;
+  },
+  update: function(){
+    return true;
+  }
+});
+
+
+Meteor.methods({
+  /**
+   * 更新OplogPkList
+   * @param  {[type]} ts     timestamp,时间戳
+   * @param  {[type]} ns     namespace,如poi.ViewSpot
+   * @param  {[type]} userId [description]
+   * @param  {[type]} pk     [description]
+   * @param  {[type]} zhName [description]
+   * @return {[type]}        [description]
+   */
+  'OplogPkList.update': function(ts, ns, userId, pk, zhName){
+    check(ts, Number);
+    check(ns, String);
+    check(userId, String);
+    console.log(pk);
+    check(pk, Meteor.Collection.ObjectID);
+    check(zhName, String);
+    var query = {'ns': ns, 'pk': pk._str};
+    OplogPkList.update(query, {'$set': {'ts': ts, 'zhName': zhName}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+  },
+});
+
+Meteor.publish('oplog-pk-list', function(){
+  return OplogPkList.find({});
+});
+
+// TODO allow settings
+OplogPkList.allow({
   insert: function(){
     return true;
   },

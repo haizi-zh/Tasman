@@ -1,0 +1,499 @@
+<template name="ViewSpotleftRegionNavi">
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="domestic-or-abroad" role="group" aria-label="...">
+        <button type="button" class="btn" id="tag-domestic">国内</button>
+        <button type="button" class="btn" id="tag-abroad">国外</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      <!-- 国外 -->
+      <div class="abroad hidden">
+        <!-- 洲导航Tab -->
+        {{#if continent}}
+          {{#each continent}}
+            <span style="" class="continent-tag" id="{{continentName}}">{{continentName}}</span>
+          {{/each}}
+
+          {{#each continent}}
+            <div id="countries-{{continentName}}" class="hidden" style="border: 1px solid #ccc; margin:3px">
+              {{#each countries}}
+                <a href="# "
+                  style="text-decoration: none;margin:1px 3px"
+                  class="fc-filter filter-options"
+                  data-fc-filter-field="locList.zhName"
+                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-alias="{{zhName}}"
+                  id="{{_id._str}}"
+                >
+                  {{zhName}}
+                </a>
+              {{/each}}
+            </div>
+          {{/each}}
+        {{else}}
+          {{> spinner}}
+        {{/if}}
+      </div>
+
+      <!-- 国内 -->
+      <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        {{#each province}}
+          <a href="# "
+            style="text-decoration: none;margin:1px 3px"
+            class="fc-filter filter-options"
+            data-fc-filter-field="targets"
+            data-fc-filter-value="{{_id}}"
+            data-fc-filter-alias="{{zhName}}"
+            id="{{_id}}"
+          >
+            {{zhName}}
+          </a>
+        {{/each}}
+      </div>
+
+      <!-- <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
+        <br>
+        {{#each fcFilterActive}}
+          <label class="selected-filter fc-filter-clear">
+            {{alias}}
+          </label>
+        {{/each}}
+        <br>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
+      </div> -->
+      <!-- 用于切换国内国外时，清空筛选条件 -->
+      <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
+
+      <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
+        <div class="recheck-itemlist">
+          <ul class="recheck-itemlist-ul list-group" style="padding: 0">
+            {{#each fcResults}}
+              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center ">
+        {{#if fcPager.pages}}
+        <!-- numbered pager -->
+          <ul class="pagination pagination-sm">
+            <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+            {{#each fcPager.pages}}
+              <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+            {{/each}}
+            <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+          </ul>
+        {{/if}}
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+<template name="LocalityleftRegionNavi">
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="domestic-or-abroad" role="group" aria-label="...">
+        <button type="button" class="btn" id="tag-domestic">国内</button>
+        <button type="button" class="btn" id="tag-abroad">国外</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      <!-- 国外 -->
+      <div class="abroad hidden">
+        <!-- 洲导航Tab -->
+        {{#if continent}}
+          {{#each continent}}
+            <span style="" class="continent-tag" id="{{continentName}}">{{continentName}}</span>
+          {{/each}}
+
+          {{#each continent}}
+            <div id="countries-{{continentName}}" class="hidden" style="border: 1px solid #ccc; margin:3px">
+              {{#each countries}}
+                <a href="# "
+                  style="text-decoration: none;margin:1px 3px"
+                  class="fc-filter filter-options"
+                  data-fc-filter-field="locList.zhName"
+                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-alias="{{zhName}}"
+                  id="{{_id._str}}"
+                >
+                  {{zhName}}
+                </a>
+              {{/each}}
+            </div>
+          {{/each}}
+        {{else}}
+          {{> spinner}}
+        {{/if}}
+      </div>
+
+      <!-- 国内 -->
+      <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        {{#each province}}
+          <a href="# "
+            style="text-decoration: none;margin:1px 3px"
+            class="fc-filter filter-options"
+            data-fc-filter-field="targets"
+            data-fc-filter-value="{{_id}}"
+            data-fc-filter-alias="{{zhName}}"
+            id="{{_id}}"
+          >
+            {{zhName}}
+          </a>
+        {{/each}}
+      </div>
+
+      <!-- <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
+        <br>
+        {{#each fcFilterActive}}
+          <label class="selected-filter fc-filter-clear">
+            {{alias}}
+          </label>
+        {{/each}}
+        <br>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
+      </div> -->
+      <!-- 用于切换国内国外时，清空筛选条件 -->
+      <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
+
+      <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
+        <div class="recheck-itemlist">
+          <ul class="recheck-itemlist-ul list-group" style="padding: 0">
+            {{#each fcResults}}
+              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center ">
+        {{#if fcPager.pages}}
+        <!-- numbered pager -->
+          <ul class="pagination pagination-sm">
+            <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+            {{#each fcPager.pages}}
+              <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+            {{/each}}
+            <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+          </ul>
+        {{/if}}
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+<template name="HotelleftRegionNavi">
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="domestic-or-abroad" role="group" aria-label="...">
+        <button type="button" class="btn" id="tag-domestic">国内</button>
+        <button type="button" class="btn" id="tag-abroad">国外</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      <!-- 国外 -->
+      <div class="abroad hidden">
+        <!-- 洲导航Tab -->
+        {{#if continent}}
+          {{#each continent}}
+            <span style="" class="continent-tag" id="{{continentName}}">{{continentName}}</span>
+          {{/each}}
+
+          {{#each continent}}
+            <div id="countries-{{continentName}}" class="hidden" style="border: 1px solid #ccc; margin:3px">
+              {{#each countries}}
+                <a href="# "
+                  style="text-decoration: none;margin:1px 3px"
+                  class="fc-filter filter-options"
+                  data-fc-filter-field="locList.zhName"
+                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-alias="{{zhName}}"
+                  id="{{_id._str}}"
+                >
+                  {{zhName}}
+                </a>
+              {{/each}}
+            </div>
+          {{/each}}
+        {{else}}
+          {{> spinner}}
+        {{/if}}
+      </div>
+
+      <!-- 国内 -->
+      <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        {{#each province}}
+          <a href="# "
+            style="text-decoration: none;margin:1px 3px"
+            class="fc-filter filter-options"
+            data-fc-filter-field="targets"
+            data-fc-filter-value="{{_id}}"
+            data-fc-filter-alias="{{zhName}}"
+            id="{{_id}}"
+          >
+            {{zhName}}
+          </a>
+        {{/each}}
+      </div>
+
+      <!-- <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
+        <br>
+        {{#each fcFilterActive}}
+          <label class="selected-filter fc-filter-clear">
+            {{alias}}
+          </label>
+        {{/each}}
+        <br>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
+      </div> -->
+      <!-- 用于切换国内国外时，清空筛选条件 -->
+      <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
+
+      <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
+        <div class="recheck-itemlist">
+          <ul class="recheck-itemlist-ul list-group" style="padding: 0">
+            {{#each fcResults}}
+              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center ">
+        {{#if fcPager.pages}}
+        <!-- numbered pager -->
+          <ul class="pagination pagination-sm">
+            <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+            {{#each fcPager.pages}}
+              <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+            {{/each}}
+            <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+          </ul>
+        {{/if}}
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+<template name="ShoppingleftRegionNavi">
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="domestic-or-abroad" role="group" aria-label="...">
+        <button type="button" class="btn" id="tag-domestic">国内</button>
+        <button type="button" class="btn" id="tag-abroad">国外</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      <!-- 国外 -->
+      <div class="abroad hidden">
+        <!-- 洲导航Tab -->
+        {{#if continent}}
+          {{#each continent}}
+            <span style="" class="continent-tag" id="{{continentName}}">{{continentName}}</span>
+          {{/each}}
+
+          {{#each continent}}
+            <div id="countries-{{continentName}}" class="hidden" style="border: 1px solid #ccc; margin:3px">
+              {{#each countries}}
+                <a href="# "
+                  style="text-decoration: none;margin:1px 3px"
+                  class="fc-filter filter-options"
+                  data-fc-filter-field="locList.zhName"
+                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-alias="{{zhName}}"
+                  id="{{_id._str}}"
+                >
+                  {{zhName}}
+                </a>
+              {{/each}}
+            </div>
+          {{/each}}
+        {{else}}
+          {{> spinner}}
+        {{/if}}
+      </div>
+
+      <!-- 国内 -->
+      <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        {{#each province}}
+          <a href="# "
+            style="text-decoration: none;margin:1px 3px"
+            class="fc-filter filter-options"
+            data-fc-filter-field="targets"
+            data-fc-filter-value="{{_id}}"
+            data-fc-filter-alias="{{zhName}}"
+            id="{{_id}}"
+          >
+            {{zhName}}
+          </a>
+        {{/each}}
+      </div>
+
+      <!-- <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
+        <br>
+        {{#each fcFilterActive}}
+          <label class="selected-filter fc-filter-clear">
+            {{alias}}
+          </label>
+        {{/each}}
+        <br>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
+      </div> -->
+      <!-- 用于切换国内国外时，清空筛选条件 -->
+      <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
+
+      <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
+        <div class="recheck-itemlist">
+          <ul class="recheck-itemlist-ul list-group" style="padding: 0">
+            {{#each fcResults}}
+              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center ">
+        {{#if fcPager.pages}}
+        <!-- numbered pager -->
+          <ul class="pagination pagination-sm">
+            <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+            {{#each fcPager.pages}}
+              <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+            {{/each}}
+            <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+          </ul>
+        {{/if}}
+      </div>
+
+    </div>
+
+  </div>
+</template>
+
+<template name="RestaurantleftRegionNavi">
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="domestic-or-abroad" role="group" aria-label="...">
+        <button type="button" class="btn" id="tag-domestic">国内</button>
+        <button type="button" class="btn" id="tag-abroad">国外</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      <!-- 国外 -->
+      <div class="abroad hidden">
+        <!-- 洲导航Tab -->
+        {{#if continent}}
+          {{#each continent}}
+            <span style="" class="continent-tag" id="{{continentName}}">{{continentName}}</span>
+          {{/each}}
+
+          {{#each continent}}
+            <div id="countries-{{continentName}}" class="hidden" style="border: 1px solid #ccc; margin:3px">
+              {{#each countries}}
+                <a href="# "
+                  style="text-decoration: none;margin:1px 3px"
+                  class="fc-filter filter-options"
+                  data-fc-filter-field="locList.zhName"
+                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-alias="{{zhName}}"
+                  id="{{_id._str}}"
+                >
+                  {{zhName}}
+                </a>
+              {{/each}}
+            </div>
+          {{/each}}
+        {{else}}
+          {{> spinner}}
+        {{/if}}
+      </div>
+
+      <!-- 国内 -->
+      <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        {{#each province}}
+          <a href="# "
+            style="text-decoration: none;margin:1px 3px"
+            class="fc-filter filter-options"
+            data-fc-filter-field="targets"
+            data-fc-filter-value="{{_id}}"
+            data-fc-filter-alias="{{zhName}}"
+            id="{{_id}}"
+          >
+            {{zhName}}
+          </a>
+        {{/each}}
+      </div>
+
+      <!-- <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
+        <br>
+        {{#each fcFilterActive}}
+          <label class="selected-filter fc-filter-clear">
+            {{alias}}
+          </label>
+        {{/each}}
+        <br>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
+      </div> -->
+      <!-- 用于切换国内国外时，清空筛选条件 -->
+      <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
+
+      <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
+        <div class="recheck-itemlist">
+          <ul class="recheck-itemlist-ul list-group" style="padding: 0">
+            {{#each fcResults}}
+              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center ">
+        {{#if fcPager.pages}}
+        <!-- numbered pager -->
+          <ul class="pagination pagination-sm">
+            <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+            {{#each fcPager.pages}}
+              <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+            {{/each}}
+            <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+          </ul>
+        {{/if}}
+      </div>
+
+    </div>
+
+  </div>
+</template>

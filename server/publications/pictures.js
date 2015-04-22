@@ -9,14 +9,16 @@ Meteor.publish('Images', function(geoId) {
   return Images.find({'itemIds': new Mongo.ObjectID(geoId)});
 });
 
-
-
-var Qiniu = new QiniuSDK();
+var Qiniu = new QiniuSDK(accessKey, secretKey);
 Meteor.methods({
+
+  //TODO 此处应该把发送http请求部分也封装！！！
+  //
+  //
   'fetchPic': function(fetchUrl){
     check(fetchUrl, String);
-    var fetchInfo = Qiniu.getFetchInfo(fetchUrl/*, "hopeleft"*/);
-
+    var fetchInfo = Qiniu.getFetchInfo(fetchUrl);
+    // var fetchInfo = Qiniu.getFetchInfo(fetchUrl, "hopeleft");
     var postUrl = 'http://iovip.qbox.me' + fetchInfo.path;
     var options = {
       headers: {
@@ -27,11 +29,20 @@ Meteor.methods({
 
     try{
       var result = HTTP.call('POST', postUrl, options);
-      return result.statusCode === 200 && fetchInfo.url;
+      var imageInfo = Qiniu.getImageBasicInfo(fetchInfo.key);
+      // return result.statusCode === 200 && fetchInfo.url;
+      return {
+        key: fetchInfo.key,
+        w: imageInfo.width,
+        h: imageInfo.height,
+        url: fetchInfo.url
+      };
     }catch(e){
+      console.log("Fail in fetching images from remote url to qiniu!");
       console.log(e);
       return false;
     }
+
   },
   'getPicUpToken': function(){
     var options = {

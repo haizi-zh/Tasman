@@ -1,21 +1,96 @@
 <template name="recheck">
-  <div class="filter-data">
-    <label>筛选</label>
-    <div class="editor">
-      <span>用户:</span>
-      {{> aizouTag source=editor}}
+  <div class="recheck-page">
+
+    <div class="recheck-left-wrapper">
+      <div class="recheck-filter-wrapper" style="">
+
+        <strong>用户:</strong>
+        <br>
+        {{#each editors}}
+          <button href="# "
+            class="btn btn-default fc-filter {{#if fcFilterObj.isActive 'editorId' '{{_id}}'}}active{{/if}}"
+            data-fc-filter-field="editorId"
+            data-fc-filter-value="{{_id}}"
+            data-fc-filter-alias="{{username}}"
+          >
+            {{username}}
+          </button>
+        {{/each}}
+        <br>
+
+        <strong>数据类型:</strong>
+        <br>
+        {{#each collections}}
+          <button href="# "
+            class="btn btn-default fc-filter"
+            data-fc-filter-field="ns"
+            data-fc-filter-value="{{conn}}"
+            data-fc-filter-alias="{{name}}"
+          >
+            {{name}}
+          </button>
+        {{/each}}
+
+        <br>
+        <strong>编辑时间:</strong>
+        <br>
+        {{#each timeLimits}}
+          <button href="# "
+            class="btn btn-default fc-filter"
+            data-fc-filter-field="ts"
+            data-fc-filter-value="{{timeLimit}}"
+            data-fc-filter-alias="{{name}}"
+            data-fc-filter-operator="{{operator}}"
+          >
+            {{name}}
+          </button>
+        {{/each}}
+      </div>
+
+      <!-- 清除筛选 -->
+      <div class="selected-filter-wrap">
+        <strong>筛选条件:</strong>
+        <br>
+        {{#each fcFilterActive}}
+          <button href="#" class=" btn btn-default fc-filter-clear">
+            {{alias}}
+          </button>
+        {{/each}}
+        <br>
+        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
+      </div>
+
+      <div class="recheck-itemlist-wrapper text-center">
+        <div class="recheck-itemlist">
+          <ul class="recheck-itemlist-ul list-group" style="padding: 0">
+            {{#each fcResults}}
+              <li class="recheck-items list-group-item" id="{{pk}}" data-ns="{{ns}}">{{zhName}}<span class="badge">{{opCount}}</span></li>
+            {{/each}}
+          </ul>
+        </div>
+      </div>
+
+      <!-- 分页 -->
+      <div class="col-md-12 text-center">
+        {{#if fcPager.pages}}
+        <!-- numbered pager -->
+          <ul class="pagination pagination-sm">
+            <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+            <li><a href="#" class="fc-pager-previous">&lt;</a></li>
+            {{#each fcPager.pages}}
+              <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+            {{/each}}
+            <li><a href="#" class="fc-pager-next">&gt;</a></li>
+            <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+          </ul>
+        {{/if}}
+      </div>
     </div>
-    <div class="date">
-      <span>时间:</span>
-      <input type="radio" name="time-filter" value="0"> 不限
-      <input type="radio" name="time-filter" value="1"> 一天
-      <input type="radio" name="time-filter" value="2"> 一周
-    </div>
-    <div class="data-type">
-      <span>数据类型:</span>
-      {{#each collections}}
-        <input type="checkbox" value="{{conn}}">{{name}}
-      {{/each}}
-    </div>
+    <!--  -->
+    <!--  -->
+    <!--  -->
+    {{> compareWrapper}}
   </div>
+
+
 </template>
