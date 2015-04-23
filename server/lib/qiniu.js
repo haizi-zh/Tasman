@@ -2,8 +2,10 @@
 var crypto = Npm.require('crypto');
 
 //当前默认空间(bucket)以及对应的默认host
-var defaultBucket = "hopeleft";
-var defaultPicHost = "http://7xi9ns.com1.z0.glb.clouddn.com/"; //在外面有用到
+// var defaultBucket = "hopeleft";
+// var defaultPicHost = "http://7xi9ns.com1.z0.glb.clouddn.com/"; //在外面有用到
+var defaultBucket = bucket;
+var defaultPicHost = pictures_host; //在外面有用到
 
 QiniuSDK = function (ak, sk){
   this.accessKey = ak;
