@@ -73,7 +73,8 @@ reviewItems = {
       'tips': ['Tips', itemDataType.obj_array, false, {
         'title': ['提示的标题', itemDataType.string, false],
         'desc': ['提示的内容', itemDataType.string, true]
-      }]
+      }],
+      'antiPit': ['防坑攻略', itemDataType.string, true],
     }
   },
 

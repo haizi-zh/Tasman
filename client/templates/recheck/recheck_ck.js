@@ -31,17 +31,17 @@ Template.recheck.helpers({
   timeLimits: function() {
     return [
       {
-        'timeLimit': moment().day(-3).unix() * 1000 + moment().milliseconds(),
+        'timeLimit': moment().subtract(3, 'd').startOf('day').unix() * 1000,
         'name': '最近三天',
         'operator': '$gt'
       },
       {
-        'timeLimit': moment().day(-7).unix() * 1000 + moment().milliseconds(),
+        'timeLimit': moment().subtract(7, 'd').startOf('day').unix() * 1000,
         'name': '最近一周',
         'operator': '$gt'
       },
       {
-        'timeLimit': moment().day(-14).unix() * 1000 + moment().milliseconds(),
+        'timeLimit': moment().subtract(14, 'd').startOf('day').unix() * 1000,
         'name': '最近两周',
         'operator': '$gt'
       }
