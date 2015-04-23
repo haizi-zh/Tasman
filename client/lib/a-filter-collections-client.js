@@ -281,6 +281,9 @@ Meteor.FilterCollections = function (collection, settings) {
 
       return;
     },
+    getCurrentPage: function(){
+      return _pager.currentPage;
+    },
     getOptions: function () {
       var options = [];
       var totalItems = _pager.totalItems;
@@ -343,6 +346,14 @@ Meteor.FilterCollections = function (collection, settings) {
 
       return pages;
     },
+    getTotalPagesCount: function(){
+      _deps.pager.depend();
+      return _pager.totalPages;
+    },
+    getTotalItemsCount: function(){
+      _deps.pager.depend();
+      return _pager.totalItems;
+    },
     setTotals: function(res){
       _pager.totalItems = res.count;
       _pager.totalPages = Math.ceil(_pager.totalItems / _pager.itemsPerPage);
@@ -404,6 +415,7 @@ Meteor.FilterCollections = function (collection, settings) {
    */
   self.filter = {
     get: function () {
+      _deps.filter.depend();
       var filters = _filters;
       return filters;
     },
@@ -419,6 +431,7 @@ Meteor.FilterCollections = function (collection, settings) {
       if(triggerUpdate) {
         this.run();
       }
+      _deps.filter.changed();
 
       return;
     },
@@ -739,7 +752,19 @@ Meteor.FilterCollections = function (collection, settings) {
       fcPagerObj: function(){
         _deps.query.depend();
         return self.pager;
-      }
+      },
+      fcTotalPage: function(){
+        _deps.query.depend();
+        return self.pager.getTotalPagesCount();
+      },
+      fcTotalItems: function(){
+        _deps.query.depend();
+        return self.pager.getTotalItemsCount();
+      },
+      fcCurrentPage: function() {
+        _deps.query.depend();
+        return self.pager.getCurrentPage();
+      },
     });
 
     /** Template events. **/
@@ -839,6 +864,22 @@ Meteor.FilterCollections = function (collection, settings) {
       'click .fc-pager-last': function (event) {
         event.preventDefault();
         self.pager.moveLast();
+      },
+      'click .go-specific-pager': function(event) {
+        event.preventDefault();
+        var page = $("input[id='go-specific-pager']").val();
+        $("input[id='go-specific-pager']").val('');
+        if (parseInt(page)) {
+          page = parseInt(page);
+        }else{
+          alert('请输入数字，介于' + '1 ~ ' + _pager.totalPages + '之间');
+          return;
+        }
+        if (page < 1 || page > _pager.totalPages) {
+          alert('当前只能够选择:' + '1 ~ ' + _pager.totalPages + '之间的数字');
+          return;
+        }
+        self.pager.moveTo(page);
       },
 
       /** Sort **/

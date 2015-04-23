@@ -1,0 +1,21 @@
+.backToTop {
+    display: none;
+    width: 50px;
+    height: 50px;
+    line-height: 1.2;
+    background-image: url(back_to_top.gif);
+    background-color: #23527c;
+    background-repeat: no-repeat;
+    background-size: 50px 50px;;
+    color: #fff;
+    font-size: 18px;
+    text-align: center;
+    position: fixed;
+    _position: absolute;
+    right: 10px;
+    bottom: 100px;
+    _bottom: "auto";
+    cursor: pointer;
+    opacity: .6;
+    filter: Alpha(opacity=60);
+}
