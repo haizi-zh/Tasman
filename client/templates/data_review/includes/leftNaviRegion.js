@@ -8,10 +8,17 @@ var helpers = {
     var countries = continent;
     Meteor.call('getCountriesByContinent', countries, function(error, result) {
       Session.set('countries', result);
-      return result;
     });
     return Session.get('countries');
   },
+  cities: function() {
+    var mid = Session.get('curFilterTag');
+    console.log('输出Id' + mid);
+    Meteor.call('getCitiesByLocalityId', mid, Session.get('abroad'), function(err, res){
+      Session.set('navi-cities', res);
+    });
+    return Session.get('navi-cities');
+  }
 };
 
 var events = {
@@ -51,6 +58,7 @@ var events = {
 
   'click a.filter-options': function(event) {
     var id = $(event.target).attr('id');
+    Session.set('abroad', $(event.target).attr('data-abroad') == '1');
     var lastActive;
     if(id === Session.get('curFilterTag')){
       return;
@@ -61,6 +69,20 @@ var events = {
     }
     $(event.target).css({'background-color': '#337ab7', 'color': '#ffffff'});
     Session.set('curFilterTag', id);
+  },
+  // 点击城市
+  'click a.filter-city': function(event) {
+    var id = $(event.target).attr('id');
+    var lastActive;
+    if(id === Session.get('curFilterCityTag')){
+      return;
+    }
+    if(Session.get('curFilterCityTag')){
+      lastActive = Session.get('curFilterCityTag');
+      $('#' + lastActive).css({'background-color': 'transparent', 'color': '#23527c'});
+    }
+    $(event.target).css({'background-color': '#337ab7', 'color': '#ffffff'});
+    Session.set('curFilterCityTag', id);
   },
 };
 

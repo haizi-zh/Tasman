@@ -24,9 +24,10 @@
                 <a href="# "
                   style="text-decoration: none;margin:1px 3px"
                   class="fc-filter filter-options"
-                  data-fc-filter-field="locList.zhName"
-                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-field="targets"
+                  data-fc-filter-value="{{_id._str}}"
                   data-fc-filter-alias="{{zhName}}"
+                  data-abroad = '1'
                   id="{{_id._str}}"
                 >
                   {{zhName}}
@@ -37,10 +38,12 @@
         {{else}}
           {{> spinner}}
         {{/if}}
+
       </div>
 
       <!-- 国内 -->
       <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        <label>省份:</label>
         {{#each province}}
           <a href="# "
             style="text-decoration: none;margin:1px 3px"
@@ -48,11 +51,32 @@
             data-fc-filter-field="targets"
             data-fc-filter-value="{{_id}}"
             data-fc-filter-alias="{{zhName}}"
+            data-abroad = '0'
             id="{{_id}}"
           >
             {{zhName}}
           </a>
         {{/each}}
+      </div>
+      <div style="border: 1px solid #ccc; margin:3px">
+        <label>城市:</label>
+        {{#if cities}}
+          {{#each cities}}
+            <a href="# "
+              style="text-decoration: none;margin:1px 3px"
+              class="fc-filter filter-city"
+              data-fc-filter-field="targets"
+              data-fc-filter-value="{{_id}}"
+              data-fc-filter-alias="{{zhName}}"
+              id="{{_id}}"> {{zhName}}
+            </a>
+          {{/each}}
+        {{/if}}
+      </div>
+      <div >
+        <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+        <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}" style="width:23%;margin-left:27px;">
+        <button class="go-specific-pager">跳转</button>
       </div>
 
       <!-- <div class="selected-filter-wrap">
@@ -62,9 +86,9 @@
           <label class="selected-filter fc-filter-clear">
             {{alias}}
           </label>
+          > >
         {{/each}}
         <br>
-        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div> -->
       <!-- 用于切换国内国外时，清空筛选条件 -->
       <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
@@ -92,9 +116,7 @@
           </ul>
         {{/if}}
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -124,9 +146,10 @@
                 <a href="# "
                   style="text-decoration: none;margin:1px 3px"
                   class="fc-filter filter-options"
-                  data-fc-filter-field="locList.zhName"
-                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-field="targets"
+                  data-fc-filter-value="{{_id._str}}"
                   data-fc-filter-alias="{{zhName}}"
+                  data-abroad = '1'
                   id="{{_id._str}}"
                 >
                   {{zhName}}
@@ -137,10 +160,12 @@
         {{else}}
           {{> spinner}}
         {{/if}}
+
       </div>
 
       <!-- 国内 -->
       <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        <label>省份:</label>
         {{#each province}}
           <a href="# "
             style="text-decoration: none;margin:1px 3px"
@@ -148,11 +173,32 @@
             data-fc-filter-field="targets"
             data-fc-filter-value="{{_id}}"
             data-fc-filter-alias="{{zhName}}"
+            data-abroad = '0'
             id="{{_id}}"
           >
             {{zhName}}
           </a>
         {{/each}}
+      </div>
+      <div style="border: 1px solid #ccc; margin:3px">
+        <label>城市:</label>
+        {{#if cities}}
+          {{#each cities}}
+            <a href="# "
+              style="text-decoration: none;margin:1px 3px"
+              class="fc-filter filter-city"
+              data-fc-filter-field="targets"
+              data-fc-filter-value="{{_id}}"
+              data-fc-filter-alias="{{zhName}}"
+              id="{{_id}}"> {{zhName}}
+            </a>
+          {{/each}}
+        {{/if}}
+      </div>
+      <div >
+        <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+        <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}" style="width:23%;margin-left:27px;">
+        <button class="go-specific-pager">跳转</button>
       </div>
 
       <!-- <div class="selected-filter-wrap">
@@ -162,9 +208,9 @@
           <label class="selected-filter fc-filter-clear">
             {{alias}}
           </label>
+          > >
         {{/each}}
         <br>
-        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div> -->
       <!-- 用于切换国内国外时，清空筛选条件 -->
       <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
@@ -192,9 +238,7 @@
           </ul>
         {{/if}}
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -224,9 +268,10 @@
                 <a href="# "
                   style="text-decoration: none;margin:1px 3px"
                   class="fc-filter filter-options"
-                  data-fc-filter-field="locList.zhName"
-                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-field="targets"
+                  data-fc-filter-value="{{_id._str}}"
                   data-fc-filter-alias="{{zhName}}"
+                  data-abroad = '1'
                   id="{{_id._str}}"
                 >
                   {{zhName}}
@@ -237,10 +282,12 @@
         {{else}}
           {{> spinner}}
         {{/if}}
+
       </div>
 
       <!-- 国内 -->
       <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        <label>省份:</label>
         {{#each province}}
           <a href="# "
             style="text-decoration: none;margin:1px 3px"
@@ -248,11 +295,32 @@
             data-fc-filter-field="targets"
             data-fc-filter-value="{{_id}}"
             data-fc-filter-alias="{{zhName}}"
+            data-abroad = '0'
             id="{{_id}}"
           >
             {{zhName}}
           </a>
         {{/each}}
+      </div>
+      <div style="border: 1px solid #ccc; margin:3px">
+        <label>城市:</label>
+        {{#if cities}}
+          {{#each cities}}
+            <a href="# "
+              style="text-decoration: none;margin:1px 3px"
+              class="fc-filter filter-city"
+              data-fc-filter-field="targets"
+              data-fc-filter-value="{{_id}}"
+              data-fc-filter-alias="{{zhName}}"
+              id="{{_id}}"> {{zhName}}
+            </a>
+          {{/each}}
+        {{/if}}
+      </div>
+      <div >
+        <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+        <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}" style="width:23%;margin-left:27px;">
+        <button class="go-specific-pager">跳转</button>
       </div>
 
       <!-- <div class="selected-filter-wrap">
@@ -262,9 +330,9 @@
           <label class="selected-filter fc-filter-clear">
             {{alias}}
           </label>
+          > >
         {{/each}}
         <br>
-        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div> -->
       <!-- 用于切换国内国外时，清空筛选条件 -->
       <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
@@ -292,9 +360,7 @@
           </ul>
         {{/if}}
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -324,9 +390,10 @@
                 <a href="# "
                   style="text-decoration: none;margin:1px 3px"
                   class="fc-filter filter-options"
-                  data-fc-filter-field="locList.zhName"
-                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-field="targets"
+                  data-fc-filter-value="{{_id._str}}"
                   data-fc-filter-alias="{{zhName}}"
+                  data-abroad = '1'
                   id="{{_id._str}}"
                 >
                   {{zhName}}
@@ -337,10 +404,12 @@
         {{else}}
           {{> spinner}}
         {{/if}}
+
       </div>
 
       <!-- 国内 -->
       <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        <label>省份:</label>
         {{#each province}}
           <a href="# "
             style="text-decoration: none;margin:1px 3px"
@@ -348,11 +417,32 @@
             data-fc-filter-field="targets"
             data-fc-filter-value="{{_id}}"
             data-fc-filter-alias="{{zhName}}"
+            data-abroad = '0'
             id="{{_id}}"
           >
             {{zhName}}
           </a>
         {{/each}}
+      </div>
+      <div style="border: 1px solid #ccc; margin:3px">
+        <label>城市:</label>
+        {{#if cities}}
+          {{#each cities}}
+            <a href="# "
+              style="text-decoration: none;margin:1px 3px"
+              class="fc-filter filter-city"
+              data-fc-filter-field="targets"
+              data-fc-filter-value="{{_id}}"
+              data-fc-filter-alias="{{zhName}}"
+              id="{{_id}}"> {{zhName}}
+            </a>
+          {{/each}}
+        {{/if}}
+      </div>
+      <div >
+        <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+        <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}" style="width:23%;margin-left:27px;">
+        <button class="go-specific-pager">跳转</button>
       </div>
 
       <!-- <div class="selected-filter-wrap">
@@ -362,9 +452,9 @@
           <label class="selected-filter fc-filter-clear">
             {{alias}}
           </label>
+          > >
         {{/each}}
         <br>
-        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div> -->
       <!-- 用于切换国内国外时，清空筛选条件 -->
       <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
@@ -392,9 +482,7 @@
           </ul>
         {{/if}}
       </div>
-
     </div>
-
   </div>
 </template>
 
@@ -424,9 +512,10 @@
                 <a href="# "
                   style="text-decoration: none;margin:1px 3px"
                   class="fc-filter filter-options"
-                  data-fc-filter-field="locList.zhName"
-                  data-fc-filter-value="{{zhName}}"
+                  data-fc-filter-field="targets"
+                  data-fc-filter-value="{{_id._str}}"
                   data-fc-filter-alias="{{zhName}}"
+                  data-abroad = '1'
                   id="{{_id._str}}"
                 >
                   {{zhName}}
@@ -437,10 +526,12 @@
         {{else}}
           {{> spinner}}
         {{/if}}
+
       </div>
 
       <!-- 国内 -->
       <div class="domestic" style="border: 1px solid #ccc; margin:3px">
+        <label>省份:</label>
         {{#each province}}
           <a href="# "
             style="text-decoration: none;margin:1px 3px"
@@ -448,11 +539,32 @@
             data-fc-filter-field="targets"
             data-fc-filter-value="{{_id}}"
             data-fc-filter-alias="{{zhName}}"
+            data-abroad = '0'
             id="{{_id}}"
           >
             {{zhName}}
           </a>
         {{/each}}
+      </div>
+      <div style="border: 1px solid #ccc; margin:3px">
+        <label>城市:</label>
+        {{#if cities}}
+          {{#each cities}}
+            <a href="# "
+              style="text-decoration: none;margin:1px 3px"
+              class="fc-filter filter-city"
+              data-fc-filter-field="targets"
+              data-fc-filter-value="{{_id}}"
+              data-fc-filter-alias="{{zhName}}"
+              id="{{_id}}"> {{zhName}}
+            </a>
+          {{/each}}
+        {{/if}}
+      </div>
+      <div >
+        <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+        <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}" style="width:23%;margin-left:27px;">
+        <button class="go-specific-pager">跳转</button>
       </div>
 
       <!-- <div class="selected-filter-wrap">
@@ -462,9 +574,9 @@
           <label class="selected-filter fc-filter-clear">
             {{alias}}
           </label>
+          > >
         {{/each}}
         <br>
-        <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div> -->
       <!-- 用于切换国内国外时，清空筛选条件 -->
       <button href="#" class="btn btn-default fc-filter-reset hidden">清空筛选条件</button>
@@ -492,8 +604,6 @@
           </ul>
         {{/if}}
       </div>
-
     </div>
-
   </div>
 </template>
