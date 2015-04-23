@@ -57,7 +57,5 @@ Template.recheck.events({
     }
     var ns = $(event.target).attr('data-ns');
     Session.set('recheckItem', {'pk': mid, 'ns': ns});
-    log('当前的recheckItem Session');
-    log(Session.get('recheckItem'));
   },
 });

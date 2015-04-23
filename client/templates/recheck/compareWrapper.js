@@ -171,6 +171,7 @@ Template.compareWrapper.helpers({
 
       // 调用第三方模块jsDiff
       diff = JsDiff.diffChars(tempBase, tempCompare);
+      var isModified = false;
       diff.forEach(function(part){
         var className = 
               part.added ? 'added' :
@@ -179,8 +180,13 @@ Template.compareWrapper.helpers({
           diffClass: className,
           diffValue: part.value 
         });
+        if(className !== 'common'){
+          isModified = true;
+        }
       });
+      diffData[i].isModified = isModified;
     }
+    console.log(diffData);
     return diffData;
   }
 });
@@ -225,6 +231,27 @@ Template.compareWrapper.events({
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
     // window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
-    window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
+    // window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
+    window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
+  },
+
+  'click #showModified': function(e) {
+    var diffChildDom = $('.recheck-diff-wrapper').children('div');
+    var compareChlidDom = $('.recheck-compare-wrapper').children('div');
+    var baseChildDom = $('.recheck-base-wrapper').children('div');
+    if(e.target.checked) {
+      for(var i = 0, len = diffChildDom.length; i < len; i++){
+        var tempDom = diffChildDom[i];
+        if(!$(tempDom).hasClass('modified')) {
+          $(tempDom).addClass("hidden");
+          $(compareChlidDom[i]).addClass("hidden");
+          $(baseChildDom[i]).addClass("hidden");
+        }
+      }
+    }else{
+      $(diffChildDom).removeClass("hidden");
+      $(compareChlidDom).removeClass("hidden");
+      $(baseChildDom).removeClass("hidden");
+    }
   }
 })

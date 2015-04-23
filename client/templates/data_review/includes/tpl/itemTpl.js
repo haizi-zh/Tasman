@@ -24,7 +24,7 @@ Template.stringTpl.onRendered(function() {
     var keyChain = this.data.keyChain;
     var isStrs = this.data.strArray;
     $('textarea#' + keyChain).on('blur', function(e) {
-      var curText = $(e.target).val();
+      var curText = $.trim($(e.target).val());  // 删除首位空行
       updateOplog(keyChain, curText, isStrs);
     })
   }
