@@ -7,10 +7,11 @@ var crypto = Npm.require('crypto');
 // var defaultBucket = bucket;
 // var defaultPicHost = pictures_host; //在外面有用到
 
-QiniuSDK = function (ak, sk){
+QiniuSDK = function (ak, sk, defaultBucket, defaultPicHost){
   this.accessKey = ak;
   this.secretKey = sk;
-  
+  this.defaultBucket = defaultBucket;
+  this.defaultPicHost = defaultPicHost;
   //默认定义returnBody：返回的信息
   this.returnBody = '{' +
     '"name": $(fname),' +
@@ -27,7 +28,7 @@ QiniuSDK = function (ak, sk){
    */
   this.genPutPolicy = function(op){
     this.putPolicy = {
-      scope: op && op.bucket || defaultBucket,
+      scope: op && op.bucket || this.defaultBucket,
       deadline: (op && op.expires || 3600) + Math.floor(Date.now() / 1000),
       returnBody: op && op.returnBody || this.returnBody
     };
@@ -52,7 +53,7 @@ QiniuSDK = function (ak, sk){
     return {
       upToken: upToken,
       key: id,
-      url: host || defaultPicHost + id
+      url: host || this.defaultPicHost + id
     };
   };
 
@@ -66,7 +67,7 @@ QiniuSDK = function (ak, sk){
   this.getFetchInfo = function(fetchUrl, bucket, host){
     var encodedURL = base64ToUrlSafe(new Buffer(fetchUrl).toString('base64'));//from url
     var key = crypto.createHash('md5').update(fetchUrl).digest('hex');
-    var entry = (bucket || defaultBucket) + ':' + key;
+    var entry = (bucket || this.defaultBucket) + ':' + key;
     var encodedEntryURI = base64ToUrlSafe(new Buffer(entry).toString('base64'));//to space
     var path = '/fetch/' + encodedURL + '/to/' + encodedEntryURI;
     var signingStr = path + '\n';
@@ -77,7 +78,7 @@ QiniuSDK = function (ak, sk){
     return {
     	path: path,
     	accessToken: accessToken,
-      url: host || defaultPicHost + key,
+      url: host || this.defaultPicHost + key,
       key: key
     };
   },
@@ -89,7 +90,7 @@ QiniuSDK = function (ak, sk){
    * @return {object}
    */
   this.getImageBasicInfo = function(key, host){
-    var host = host || defaultPicHost;
+    var host = host || this.defaultPicHost;
     var url = host + key + '?imageInfo';
     try{
       var result = HTTP.call('GET', url);
