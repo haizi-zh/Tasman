@@ -55,7 +55,9 @@ Template.recheck.events({
     if(Session.get('recheckItem') && Session.get('recheckItem').pk === mid) {
       return;
     }
+    $('#showModified').prop('checked', false); //将只看修改的按钮取消
     var ns = $(event.target).attr('data-ns');
     Session.set('recheckItem', {'pk': mid, 'ns': ns});
+
   },
 });

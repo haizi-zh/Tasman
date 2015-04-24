@@ -33,7 +33,7 @@ Template.compareWrapper.helpers({
     var detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
 
     var baseData = [];
-    
+
     console.log(detailInfo);
 
     // 处理原始的base数据
@@ -65,7 +65,7 @@ Template.compareWrapper.helpers({
 
     var conn = getMongoClient(db, coll);
     var detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
-    
+
     var images = detailInfo.images;
     if (images){
       for (i = 0;i < images.length;i++){
@@ -97,7 +97,7 @@ Template.compareWrapper.helpers({
 
     // 处理原始的compare数据
     review(coll, detailInfo, compareData);
-    
+
     console.log(compareData);
 
     // 存储compare数据到session中
@@ -123,7 +123,7 @@ Template.compareWrapper.helpers({
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
     var detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
-    
+
     var images = detailInfo.images;
     if (images){
       for (i = 0;i < images.length;i++){
@@ -151,8 +151,8 @@ Template.compareWrapper.helpers({
       if (compareData[i].zhLabel)
         diffData[i].zhLabel = compareData[i].zhLabel;
 
-      
-      
+
+
       tempBase = baseData[i].value;
       tempCompare = compareData[i].value;
 
@@ -173,12 +173,12 @@ Template.compareWrapper.helpers({
       diff = JsDiff.diffChars(tempBase, tempCompare);
       var isModified = false;
       diff.forEach(function(part){
-        var className = 
+        var className =
               part.added ? 'added' :
                 part.removed ? 'removed' : 'common';
         diffData[i].value.push({
           diffClass: className,
-          diffValue: part.value 
+          diffValue: part.value
         });
         if(className !== 'common'){
           isModified = true;
@@ -225,7 +225,7 @@ Template.compareWrapper.events({
     log('上传数据!');
     var item = Session.get('recheckItem');
     submitOplog(item.ns, item.pk);
-    //将线上数据进行修改！
+    //将线上数据进行修改
   },
 
   'click #edit-pic-btn': function(e) {
