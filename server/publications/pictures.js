@@ -15,13 +15,11 @@ Meteor.methods({
   'fetchPic': function(fetchUrl){
     check(fetchUrl, String);
     var fetchInfo = Qiniu.getFetchInfo(fetchUrl);
-    // var fetchInfo = Qiniu.getFetchInfo(fetchUrl, "hopeleft");
     return fetchInfo;
   },
   'getPicUpToken': function(){
     var options = {
-      // bucket: hopeleft,
-      expires: 1800//s
+      expires: 1800
     };
     return Qiniu.getUpInfo(options);
   }

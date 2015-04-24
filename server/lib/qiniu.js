@@ -31,7 +31,7 @@ QiniuSDK = function (ak, sk, bk, host){
 
   /**
    * 生成上传策略
-   * @param  {object} op 上传相关参数:bucket,deadline,returnbody等
+   * @param  {object} op 上传相关参数:bucket,expires(单位:s),returnbody等
    * @return {object}    scope:上传空间(bucket);deadline:有效截至日期;returnBody:相应报文
    */
   this.genPutPolicy = function(op){
@@ -45,7 +45,7 @@ QiniuSDK = function (ak, sk, bk, host){
 
   /**
    * 本地上传(表单上传) —— 获取token和key
-   * @param  {object} op    上传相关参数:bucket,deadline,returnbody等
+   * @param  {object} op    上传相关参数:bucket,expires,returnbody等
    * @param  {string} host  对应的七牛的host
    * @return {object}       upToken:上传令牌;key:根据uuid生成的key,作为bucket中的唯一标识
    */
