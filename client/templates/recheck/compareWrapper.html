@@ -2,7 +2,8 @@
   {{#if itemData}}
 	<div class="recheck-right-wrapper">
     <div>
-      <button id="edit-pic-btn">编辑图片</button>
+      <button id="edit-pic-btn">编辑图片</button><span style="margin-left:43px"></span>
+      只显示更改的文字内容:<input type="checkbox" id="showModified">
       <button id="submit-info">使用当前编辑</button>
     </div>
     <div class="recheck-base-wrapper">
@@ -42,7 +43,7 @@
     <div class="recheck-diff-wrapper">
       <label>对比结果</label>
       {{#each diffData}}
-        <div class="form-group">
+        <div class="form-group {{#if isModified}} modified{{/if}}">
           <label>{{zhLabel}}</label>
           <div class="diff-wrapper copy-form-control">
             {{#each value}}
