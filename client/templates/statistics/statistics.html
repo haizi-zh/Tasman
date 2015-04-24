@@ -1,0 +1,8 @@
+<template name="statistics">
+  <div class="statistics-page">
+  	<button id="last-week-btn" data-from="{{UserWorkStatistics.startTs}}">上一周</button>
+  	<button id="next-week-btn" data-to="{{UserWorkStatistics.endTs}}">下一周</button>
+  	{{UserWorkStatistics.startDate}} ~ {{UserWorkStatistics.endDate}}
+    <div id="static-graph" style="min-width:700px;height:400px"></div>
+  </div>
+</template>
