@@ -1,7 +1,5 @@
 Template.stringTpl.helpers({
   UpdateMD5: function() {
-    // $('textarea').flexText();
-
     // 记录富文本框的数据修改
     return function(e, editor) {
       var curHTML = editor.getHTML(); // 嵌入了编译器的标签
@@ -16,7 +14,7 @@ Template.stringTpl.helpers({
 
 
 Template.stringTpl.onRendered(function() {
-  // 有奇怪的问题:行数太多时会有点不够长的现象，大部分情况都还好
+  //textarea auto-size
   $('textarea').flexText();
 
   // 记录非富文本的文本框的数据修改
