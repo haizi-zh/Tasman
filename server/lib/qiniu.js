@@ -7,11 +7,19 @@ var crypto = Npm.require('crypto');
 // var defaultBucket = bucket;
 // var defaultPicHost = pictures_host; //在外面有用到
 
-QiniuSDK = function (ak, sk, defaultBucket, defaultPicHost){
+/**
+ * Qiniu对象
+ * @param {string} ak   accessKey
+ * @param {string} sk   secretKey
+ * @param {string} bk   存储图片的bucket
+ * @param {string} host bucket对应的host
+ */
+QiniuSDK = function (ak, sk, bk, host){
   this.accessKey = ak;
   this.secretKey = sk;
-  this.defaultBucket = defaultBucket;
-  this.defaultPicHost = defaultPicHost;
+  this.defaultBucket = bk;
+  this.defaultPicHost = host;
+
   //默认定义returnBody：返回的信息
   this.returnBody = '{' +
     '"name": $(fname),' +
@@ -37,8 +45,9 @@ QiniuSDK = function (ak, sk, defaultBucket, defaultPicHost){
 
   /**
    * 本地上传(表单上传) —— 获取token和key
-   * @param  {object} op 上传相关参数:bucket,deadline,returnbody等
-   * @return {object}    upToken:上传令牌;key:根据uuid生成的key,作为bucket中的唯一标识
+   * @param  {object} op    上传相关参数:bucket,deadline,returnbody等
+   * @param  {string} host  对应的七牛的host
+   * @return {object}       upToken:上传令牌;key:根据uuid生成的key,作为bucket中的唯一标识
    */
   this.getUpInfo = function(op, host){
     var flags = JSON.stringify(this.genPutPolicy(op));
@@ -53,21 +62,22 @@ QiniuSDK = function (ak, sk, defaultBucket, defaultPicHost){
     return {
       upToken: upToken,
       key: id,
-      url: host || this.defaultPicHost + id
+      url: (host || this.defaultPicHost) + id
     };
   };
 
   /**
    * 网上图片上传(fetch) —— 获取path, token, url
-   * @param  {string} fetchUrl 图片原本url
-   * @param  {string} bucket   要上传的七牛空间
-   * @param  {string} host     空间对应的host
-   * @return {objetc}          path:
+   * @param  {string} url   图片原本url
+   * @param  {string} bk    bucket-要上传的七牛空间
+   * @param  {string} host  空间对应的host
+   * @return {objetc}       path:
    */
-  this.getFetchInfo = function(fetchUrl, bucket, host){
-    var encodedURL = base64ToUrlSafe(new Buffer(fetchUrl).toString('base64'));//from url
-    var key = crypto.createHash('md5').update(fetchUrl).digest('hex');
-    var entry = (bucket || this.defaultBucket) + ':' + key;
+  this.getFetchInfo = function(url, bk, host){
+    // 获取fetch的相关参数
+    var encodedURL = base64ToUrlSafe(new Buffer(url).toString('base64'));//from url
+    var key = crypto.createHash('md5').update(url).digest('hex');
+    var entry = (bk || this.defaultBucket) + ':' + key;
     var encodedEntryURI = base64ToUrlSafe(new Buffer(entry).toString('base64'));//to space
     var path = '/fetch/' + encodedURL + '/to/' + encodedEntryURI;
     var signingStr = path + '\n';
@@ -75,12 +85,29 @@ QiniuSDK = function (ak, sk, defaultBucket, defaultPicHost){
     var encodedSign = base64ToUrlSafe(sign);
     var accessToken = this.accessKey + ":" + encodedSign;
 
-    return {
-    	path: path,
-    	accessToken: accessToken,
-      url: host || this.defaultPicHost + key,
-      key: key
+    //发送post请求，fetch图片
+    var postUrl = 'http://iovip.qbox.me' + path;
+    var options = {
+      headers: {
+        'Authorization': 'QBox ' + accessToken,
+        'Content-Type': 'application/x-www-form-urlencoded',
+      }
     };
+
+    try{
+      var result = HTTP.call('POST', postUrl, options);
+      var imageInfo = Qiniu.getImageBasicInfo(key);
+      return {
+        key: key,
+        w: imageInfo.width,
+        h: imageInfo.height,
+        url: (host || this.defaultPicHost) + key,
+      };
+    }catch(e){
+      console.log("Fail in fetching images from remote url to qiniu!");
+      console.log(e);
+      return false;
+    }
   },
 
   /**
