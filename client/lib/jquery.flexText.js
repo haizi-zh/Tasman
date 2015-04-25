@@ -35,7 +35,9 @@
             // * propertychange 适用于 IE7 / 8
             // * keyup 适用于 IE >= 9: 捕捉 keyboard-triggered undos/cuts/deletes
             // * change 适用于 IE >= 9: 捕捉 mouse-triggered undos/cuts/deletions (当textarea失去焦点时)
-            this.$textarea.on('input propertychange keyup change', function () {
+
+            // 自己添加了focus和mouse事件的监听
+            this.$textarea.on('input propertychange keyup change focus mouseover mouseout mouseleave', function () {
                 _this._mirror();
             });
 
@@ -70,6 +72,10 @@
                 // 实例化并且储存元素，以及文本
                 $.data(this, 'flexText', new FT(this));
             }
+            // 可以配合tracker.autorun
+            // else {
+            //     $.data(this, 'flexText')._mirror();
+            // }
         });
     };
 

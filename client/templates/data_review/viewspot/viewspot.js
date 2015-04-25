@@ -44,7 +44,6 @@ Template.reviewViewspot.events({
   },
 });
 
-
 createOriginTextMD5 = function(arrayData) {
   var tempObj = {};
   for (var i in arrayData) {
