@@ -50,8 +50,8 @@ Meteor.methods({
   },
 });
 
-Meteor.users.allow({
-  update: function() {
-    return true;
-  }
-})
+// Meteor.users.allow({
+//   update: function() {
+//     return false;
+//   }
+// })

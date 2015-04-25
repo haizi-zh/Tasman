@@ -102,6 +102,7 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
           'value': data[key],
           'tabName': {},
           'index': index,
+          'dataType': dataType,
           'richEditor': items[key][itemIndex.richEditor],
           'strArray': dataType === itemDataType.str_array
         }

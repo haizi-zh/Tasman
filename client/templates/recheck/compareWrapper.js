@@ -155,7 +155,7 @@ Template.compareWrapper.helpers({
 
       tempBase = baseData[i].value;
       tempCompare = compareData[i].value;
-
+      
       //如果是str_Array
       if (_.isArray(baseData[i].value)){
         //字符串数组转字符串
@@ -223,9 +223,26 @@ Template.compareWrapper.events({
   'click #submit-info': function(e) {
     e.preventDefault();
     log('上传数据!');
-    var item = Session.get('recheckItem');
-    submitOplog(item.ns, item.pk);
-    //将线上数据进行修改
+    var item = Session.get('recheckItem'),
+        pk = item.pk,
+        ns = item.ns;
+    submitOplog(ns, pk);
+  },
+
+  'click #upload-data': function(e) {
+    e.preventDefault();
+    var item = Session.get('recheckItem'),
+        pk = item.pk;
+    // 将线上数据进行修改
+    console.log(pk);
+    Meteor.call('updateOnlineData', pk, function(err, res){
+      console.log(res);
+      if(!err && 0 === res.code) {
+        alert('上传成功');
+      }else {
+        alert('上传失败');
+      }
+    });
   },
 
   'click #edit-pic-btn': function(e) {
