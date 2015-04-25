@@ -12,7 +12,7 @@ Template.recheck.helpers({
       },
       {
         'conn': 'poi.Restaurant',
-        'name': '酒店'
+        'name': '美食'
       },
       {
         'conn': 'poi.Shopping',
@@ -20,7 +20,7 @@ Template.recheck.helpers({
       },
       {
         'conn': 'poi.Hotel',
-        'name': '住宿'
+        'name': '酒店'
       },
       {
         'conn': 'geo.Locality',
@@ -55,7 +55,9 @@ Template.recheck.events({
     if(Session.get('recheckItem') && Session.get('recheckItem').pk === mid) {
       return;
     }
+    $('#showModified').prop('checked', false); //将只看修改的按钮取消
     var ns = $(event.target).attr('data-ns');
     Session.set('recheckItem', {'pk': mid, 'ns': ns});
+    Meteor.subscribe('oplog', ns, new Mongo.ObjectID(mid), 0);
   },
 });

@@ -22,6 +22,7 @@ Template.searchTpl.events({
 
     Meteor.call('search', curSearchCollection, curSearchContent, function(err, result) {
       result && result.length && result.map(function(x){x.collection = curSearchCollection});
+      console.log(result);
       Session.set('searchResults', result);
       Router.go('/searchResult');
     });

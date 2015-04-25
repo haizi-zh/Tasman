@@ -1,22 +1,29 @@
+function getMongoCol(col){
+  console.log(col);
+  check(col, String);
+  var curDB;
+  if("ViewSpot" === col) {
+    curDB = ViewSpot;
+  }else if('Locality' === col) {
+    curDB = Locality;
+  }else if('Hotel' === col) {
+    curDB = Hotel;
+  }else if('Shopping' === col) {
+    curDB = Shopping;
+  }else if('Restaurant' === col) {
+    curDB = Restaurant;
+  }
+  return curDB;
+};
+
 Meteor.methods({
   'search': function(collection, keyword){
     check(collection, String);
     check(keyword, String);
-
     var regexContent = '^' + keyword,
         re = new RegExp(regexContent),
-        curDB;
-    if(collection === "ViewSpot") {
-      curDB = ViewSpot;
-    }else if('Locality' === collection) {
-      curDB = Locality;
-    }else if('Hotel' === collection) {
-      curDB = Hotel;
-    }else if('Shopping' === collection) {
-      curDB = Shopping;
-    }else if('Restaurant' === collection) {
-      curDB = Restaurant;
-    }
+        curDB = getMongoCol(collection);
+
     return ('Hotel' === collection)
       //hotel数据没有alias字段
       ? curDB.find({'zhName': {'$regex': re}}, {fields: {zhName: 1, desc: 1}, sort: {hotness: -1}}).fetch()
@@ -32,7 +39,7 @@ Meteor.methods({
     return continents;
   },
 
-  //
+  //获取区域导航信息
   'getCitiesByLocalityId': function(mid, abroad) {
     check(mid, String);
     check(abroad, Boolean);
@@ -65,5 +72,39 @@ Meteor.methods({
       temp.push({'zhName': names[i], '_id': ids[i]});
     }
     return temp;
+  },
+  // update online data, optional: desc
+  'updateOnlineData': function(pk, desc) {
+    check(pk, String);
+    var entry = OplogPkList.findOne({'pk': pk});
+    if(!entry) return;
+    var ns = entry.ns,
+        commitInfo = desc || (moment().unix() * 1000).toString(),
+        col = ns.split('.')[1],
+        branchCount = entry.branch && entry.branch.length || 0,
+        snapshotId = branchCount + 1,
+        updateContent = Meteor.call('stagedContent', ns, new Mongo.ObjectID(pk));
+    // omit _id for secure
+    var resFromOnline = getMongoCol(col).update({'_id': new Mongo.ObjectID(pk)}, {'$set': _.omit(updateContent, '_id')});
+    // update CmsOplog
+    var resFromCmsOplog = CmsOplog.update(
+                              {'pk': new Mongo.ObjectID(pk), 'status': 'staged'},
+                              {'$set': {'status': 'commited', 'snapshotId': snapshotId}},
+                              {'multi': true});
+    // update OplogList
+    var resFromOplogPkList = OplogPkList.update(
+                                {'pk': pk},
+                                {'$addToSet': {'branch': {'snapshotId': snapshotId, 'desc': commitInfo}}});
+    if(resFromOnline === 1 && resFromCmsOplog === 1 && resFromOplogPkList === 1) {
+      return {'code': 0};
+    }else{
+      return {'code': 1};
+    }
+  },
+  // get staged content from CmsOplog collection
+  'stagedContent': function(ns, pk){
+    check(ns, String);
+    check(pk, Meteor.Collection.ObjectID);
+    return storageEngine.snapshot(ns, pk);
   },
 });

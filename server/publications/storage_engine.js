@@ -56,12 +56,12 @@ Meteor.publish('oplog-pk-list', function(){
   return OplogPkList.find({});
 });
 
-// TODO allow settings
-OplogPkList.allow({
-  insert: function(){
-    return true;
-  },
-  update: function(){
-    return true;
-  }
-});
+// // TODO allow settings
+// OplogPkList.allow({
+//   insert: function(){
+//     return true;
+//   },
+//   update: function(){
+//     return true;
+//   }
+// });

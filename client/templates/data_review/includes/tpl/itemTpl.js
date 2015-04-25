@@ -21,8 +21,10 @@ Template.stringTpl.onRendered(function() {
   if (!this.data.richEditor) {
     var keyChain = this.data.keyChain;
     var isStrs = this.data.strArray;
+    var dataType = this.data.dataType;
     $('textarea#' + keyChain).on('blur', function(e) {
       var curText = $.trim($(e.target).val());  // 删除首位空行
+      curText = (dataType === itemDataType.int) ? parseInt(curText): curText;  //整形转换
       updateOplog(keyChain, curText, isStrs);
     })
   }
@@ -37,7 +39,7 @@ Template.stringTpl.onRendered(function() {
  */
 updateOplog = function(key, value, isStrs) {
   var dotKey = formatDot(key); // 'xxx-xx-x' >>>> 'xxx.xx.x'
-  if (cmsMd5(value) !== Session.get('originMD5')[key]) {
+  if (cmsMd5(String(value)) !== Session.get('originMD5')[key]) {
     //字符串数组需要划分成数组
     var tempValue = (isStrs) ? value.split(',') : value;
     addOplog(dotKey, tempValue);

@@ -7,7 +7,8 @@ Template.reviewViewspot.helpers({
     // });
 
     var detailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(mid));
-
+    log('输出信息');
+    log(detailInfo);
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
@@ -100,6 +101,7 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
           'value': data[key],
           'tabName': {},
           'index': index,
+          'dataType': dataType,
           'richEditor': items[key][itemIndex.richEditor],
           'strArray': dataType === itemDataType.str_array
         }
