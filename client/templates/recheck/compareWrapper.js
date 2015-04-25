@@ -151,23 +151,23 @@ Template.compareWrapper.helpers({
       if (compareData[i].zhLabel)
         diffData[i].zhLabel = compareData[i].zhLabel;
 
-      
-      
+
       tempBase = baseData[i].value;
       tempCompare = compareData[i].value;
 
       //如果是str_Array
       if (_.isArray(baseData[i].value)){
         //字符串数组转字符串
-        console.log(baseData[i].value);
         tempBase = baseData[i].value.join();
-        console.log(compareData[i].value);
         tempCompare = compareData[i].value.join();
       }
 
-      //整型转字符串 may be need
-      //
-      //
+      //整型转字符串
+      if (_.isNumber(baseData[i].value)){
+        //字符串数组转字符串
+        tempBase = baseData[i].value.toString();
+        tempCompare = compareData[i].value.toString();
+      }
 
       // 调用第三方模块jsDiff
       diff = JsDiff.diffChars(tempBase, tempCompare);
