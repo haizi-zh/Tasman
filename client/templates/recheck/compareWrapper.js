@@ -234,7 +234,6 @@ Template.compareWrapper.events({
     var item = Session.get('recheckItem'),
         pk = item.pk;
     // 将线上数据进行修改
-    console.log(pk);
     Meteor.call('updateOnlineData', pk, function(err, res){
       console.log(res);
       if(!err && 0 === res.code) {

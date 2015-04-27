@@ -30,6 +30,7 @@ Template.reviewRestaurant.events({
     Session.set('currentRestaurantId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
+    Meteor.subscribe('oplog', 'poi.Restaurant', new Mongo.ObjectID(mid), 0);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

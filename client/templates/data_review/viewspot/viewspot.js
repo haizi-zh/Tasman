@@ -35,6 +35,7 @@ Template.reviewViewspot.events({
     Session.set('currentVsId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
+    Meteor.subscribe('oplog', 'poi.ViewSpot', new Mongo.ObjectID(mid), 0);
 
     // Meteor.subscribe("viewspotDetail", mid);
     initOriginMD5Session();
