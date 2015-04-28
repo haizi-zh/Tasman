@@ -482,3 +482,12 @@ function loadJcrop($image){
   keyEvent();//enter&esc
   createJcrop($image);
 }
+
+
+//////
+Template.pictures.events({
+  'click #delete-last-pic-url': function() {
+    $('#fet-pic-url').val("");
+  },
+});
+//////
