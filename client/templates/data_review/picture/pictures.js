@@ -270,7 +270,7 @@ Template.pictures.events({
         var form_data = new FormData($('#pic-up')[0]);
         $.ajax({
           type: 'post',
-          url: 'http://upload.qiniu.com/',
+          url: '//upload.qiniu.com/',
           async: false,
           cache: false,
           contentType: false,
