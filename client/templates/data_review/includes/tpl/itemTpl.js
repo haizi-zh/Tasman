@@ -52,7 +52,11 @@ updateOplog = function(key, value, isStrs) {
 
 addOplog = function(key, value) {
   var newSession = Session.get('oplog');
-  newSession[key] = value;
+  if(typeof value == "number" || typeof value == "Number") {
+    newSession[key] = value;
+  } else {
+    newSession[key] = htmlStyleRemove(String(value));
+  }
   Session.set('oplog', newSession);
 };
 
