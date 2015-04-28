@@ -28,6 +28,7 @@ Template.reviewHotel.events({
     Session.set('currentHotelId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
+    Meteor.subscribe('oplog', 'poi.Hotel', new Mongo.ObjectID(mid), 0);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);

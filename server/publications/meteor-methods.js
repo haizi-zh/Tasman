@@ -89,13 +89,13 @@ Meteor.methods({
     // update CmsOplog
     var resFromCmsOplog = CmsOplog.update(
                               {'pk': new Mongo.ObjectID(pk), 'status': 'staged'},
-                              {'$set': {'status': 'commited', 'snapshotId': snapshotId}},
+                              {'$set': {'status': 'merged', 'snapshotId': snapshotId}},
                               {'multi': true});
     // update OplogList
     var resFromOplogPkList = OplogPkList.update(
                                 {'pk': pk},
                                 {'$addToSet': {'branch': {'snapshotId': snapshotId, 'desc': commitInfo}}});
-    if(resFromOnline === 1 && resFromCmsOplog === 1 && resFromOplogPkList === 1) {
+    if(resFromOnline >= 1 && resFromCmsOplog >= 1 && resFromOplogPkList >= 1) {
       return {'code': 0};
     }else{
       return {'code': 1};
