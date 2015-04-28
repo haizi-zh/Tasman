@@ -87,7 +87,7 @@ reviewItems = {
       'style': ['风格', itemDataType.string, false],
       'openTime': ['开放时间', itemDataType.string, false],
       'tel': ['电话', itemDataType.string, false],
-      'price': ['人均消费', itemDataType.int, false],
+      'price': ['人均消费(只填写数字，不填单位。默认为人民币单位：元)', itemDataType.int, false],
       'tags': ['标签', itemDataType.str_array, false]
     },
     'traffic': {
@@ -123,7 +123,7 @@ reviewItems = {
       'address': ['地址', itemDataType.string, false],
       'tel': ['电话', itemDataType.string, false],
       'priceDesc': ['人均价格', itemDataType.string, false],
-      'rank': ['星级', itemDataType.int, false],
+      'rank': ['星级(只填写数字)', itemDataType.int, false],
       'desc': ['简介', itemDataType.string, false]
     },
     'traffic': {
