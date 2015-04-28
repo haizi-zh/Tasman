@@ -158,3 +158,26 @@
 	display: inline-block;
 	width: 400px;
 }
+
+.pic_url_input {
+	height: 34px;
+  padding: 6px 12px;
+  font-size: 14px;
+  line-height: 1.42857143;
+  width: 363px;
+  color: #555555;
+  background-color: #ffffff;
+  background-image: none;
+  border: 1px solid #cccccc;
+  float: left;
+  margin-bottom: 0;
+  transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+}
+
+.history-url {
+  position: relative;
+  left: -161px;
+  top: 10px !important;
+  z-index: 22;
+  float: right;
+}
