@@ -270,7 +270,8 @@ Template.pictures.events({
         var form_data = new FormData($('#pic-up')[0]);
         $.ajax({
           type: 'post',
-          url: '//upload.qiniu.com/',
+          // url: '//upload.qiniu.com/',
+          url: 'https://up.qbox.me/',
           async: false,
           cache: false,
           contentType: false,
@@ -299,7 +300,6 @@ Template.pictures.events({
           }
         });
       }else{
-        console.log("获取token失败！");
         alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
@@ -331,6 +331,7 @@ Template.pictures.events({
         };
         Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
       }else{
+        console.log(result);
         alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
