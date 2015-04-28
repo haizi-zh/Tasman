@@ -48,7 +48,7 @@
 }
 
 .recheck-base-wrapper, .recheck-compare-wrapper, .recheck-diff-wrapper{
-  width: 33%;
+  width: 31%;
   display: inline-block;
   vertical-align: top;
 }
