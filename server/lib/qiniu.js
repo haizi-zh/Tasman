@@ -96,7 +96,7 @@ QiniuSDK = function (ak, sk, bk, host){
 
     try{
       var result = HTTP.call('POST', postUrl, options);
-      var imageInfo = Qiniu.getImageBasicInfo(key);
+      var imageInfo = this.getImageBasicInfo(key);
       return {
         key: key,
         w: imageInfo.width,
