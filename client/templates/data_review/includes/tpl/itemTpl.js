@@ -6,7 +6,7 @@ Template.stringTpl.helpers({
       var curText = editor.getText(); // 去除了所有html标签（包括本身就带有的），只有纯文本，
       var keyChain = editor.options.keyChain;
       // var index = editor.options.index;
-      updateOplog(keyChain, curHTML);
+      updateOplog(keyChain, curHTML, true);
       return false; // Stop Froala Editor from POSTing to the Save URL
     }
   }
@@ -25,7 +25,7 @@ Template.stringTpl.onRendered(function() {
     $('textarea#' + keyChain).on('blur', function(e) {
       var curText = $.trim($(e.target).val());  // 删除首位空行
       curText = (dataType === itemDataType.int) ? parseInt(curText): curText;  //整形转换
-      updateOplog(keyChain, curText, isStrs);
+      updateOplog(keyChain, curText, false, isStrs);
     })
   }
 });
@@ -37,12 +37,12 @@ Template.stringTpl.onRendered(function() {
  * @param  {Boolean} isStrs 是否为字符串数组
  * @return {[type]}         [description]
  */
-updateOplog = function(key, value, isStrs) {
+updateOplog = function(key, value, textType, isStrs) {
   var dotKey = formatDot(key); // 'xxx-xx-x' >>>> 'xxx.xx.x'
   if (cmsMd5(String(value)) !== Session.get('originMD5')[key]) {
     //字符串数组需要划分成数组
     var tempValue = (isStrs) ? value.split(',') : value;
-    addOplog(dotKey, tempValue);
+    addOplog(dotKey, tempValue, textType);
     log(Session.get('oplog'));
   } else {
     deleteOplog(dotKey);
@@ -50,12 +50,16 @@ updateOplog = function(key, value, isStrs) {
   }
 };
 
-addOplog = function(key, value) {
+
+/**
+ * @param  {Boolean} textType true：HTML｜false：String or Number
+ */
+addOplog = function(key, value, textType) {
   var newSession = Session.get('oplog');
-  if(typeof value == "number" || typeof value == "Number") {
-    newSession[key] = value;
-  } else {
+  if(textType) {
     newSession[key] = htmlStyleRemove(String(value));
+  } else {
+    newSession[key] = value;
   }
   Session.set('oplog', newSession);
 };
