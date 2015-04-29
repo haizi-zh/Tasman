@@ -11,6 +11,24 @@ Template.rightOptions.onRendered(function() {
 
 });
 
+Template.userRightElement.events({
+  'click .delete-btn': function(e) {
+    e.preventDefault();
+    var uid = $(e.target).attr('id'),
+        username = $(e.target).attr('data-username');
+    if(confirm('是否删除用户：' + username + " ?")){
+      Meteor.call('deleteUser', uid, function(err, res) {
+        if(err) return;
+        if(res && res.code === 0) {
+          alert(username + ' 已经删除！');
+        }else{
+          alert(username + ' 删除失败！')
+        }
+      });
+    }
+  }
+});
+
 
 Template.rightOptions.events({
   'change .rightOptions': function(e, template) {

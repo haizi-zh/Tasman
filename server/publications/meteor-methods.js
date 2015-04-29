@@ -107,4 +107,14 @@ Meteor.methods({
     check(pk, Meteor.Collection.ObjectID);
     return storageEngine.snapshot(ns, pk);
   },
+  'deleteUser': function(userId){
+    check(userId, String);
+    var cnt = Meteor.users.remove({_id: userId});
+    if(cnt === 1){
+      return {'code': 0};
+    } else {
+      return {'code': 1};
+    }
+  }
+
 });

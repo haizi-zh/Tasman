@@ -1,6 +1,6 @@
 <template name="userRightElement">
   <tr>
-    <th scope="row">1</th>
+    <th scope="row">#</th>
     <td>{{username}}</td>
     <td>
     {{#each rights}}
@@ -8,6 +8,7 @@
     {{/each}}
     </td>
     <td>{{> rightOptions uid=_id._str}}</td>
+    <td><button class="delete-btn btn btn-danger" id="{{_id}}" data-username="{{username}}">删除</button></td>
   </tr>
 </template>
 
