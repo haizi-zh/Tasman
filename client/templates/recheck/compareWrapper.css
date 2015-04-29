@@ -1,0 +1,46 @@
+input#showModified {
+  margin-right: 30px;
+}
+
+button#reject-info {
+  margin-right: 40px;
+}
+
+#submit-info {
+    float: none !important;
+    margin-right: 80px;
+}
+
+.recheck-btns {
+  border-bottom: 1px solid #ccc;
+  padding: 3px;
+  box-shadow: 1px 1px 1px #aaaaaa;
+}
+
+.recheck-contents {
+  margin: 3px;
+}
+
+.recheck-base-wrapper, .recheck-compare-wrapper, .recheck-diff-wrapper{
+  width: 32%;
+  display: inline-block;
+  vertical-align: top;
+  margin: 2px;
+  border-top: 1px solid #ccc;
+  padding: 3px;
+}
+.recheck-base-wrapper {
+  box-shadow: 1px 1px 23px rgba(71, 221, 164, 0.42);
+}
+.recheck-compare-wrapper {
+  box-shadow: 1px 1px 23px rgba(7, 55, 245, 0.49);
+}
+.recheck-diff-wrapper {
+  box-shadow: 1px 1px 23px rgba(245, 7, 43, 0.49);
+}
+.label-content {
+  width: 100%;
+  text-align: center;
+  margin: 2px auto;
+  border-bottom: 1px solid #ccc;
+}

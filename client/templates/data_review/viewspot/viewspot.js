@@ -12,6 +12,7 @@ Template.reviewViewspot.helpers({
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
+    log(vsDetail);
     return vsDetail;
   },
 });
@@ -58,7 +59,7 @@ createOriginTextMD5 = function(arrayData) {
 };
 
 cmsMd5 = function(string) {
-  return CryptoJS.MD5(string).toString();
+  return CryptoJS.MD5($.trim(string)).toString();
 };
 
 initOplogSession = function() {
@@ -99,7 +100,7 @@ organizeReviewData = function(items, tabName, data, outPutData, keyChain, index)
       tplData = {
           'zhLabel': zhLabel,
           'keyChain': index ? newKey + '-' + (index -1) : newKey,
-          'value': data[key],
+          'value': data[key] || " ",// 保证所有字段存在数据，否则本次数据为空时，刷新数据时会保留上次的数据
           'tabName': {},
           'index': index,
           'dataType': dataType,
