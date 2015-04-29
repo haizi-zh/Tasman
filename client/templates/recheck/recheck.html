@@ -7,43 +7,43 @@
         <strong>用户:</strong>
         <br>
         {{#each editors}}
-          <button href="# "
-            class="btn btn-default fc-filter {{#if fcFilterObj.isActive 'editorId' '{{_id}}'}}active{{/if}}"
+          <label href="# "
+            class="editor-label fc-filter {{#if fcFilterObj.isActive 'editorId' '{{_id}}'}}active{{/if}}"
             data-fc-filter-field="editorId"
             data-fc-filter-value="{{_id}}"
             data-fc-filter-alias="{{username}}"
           >
             {{username}}
-          </button>
+          </label>
         {{/each}}
         <br>
 
         <strong>数据类型:</strong>
         <br>
         {{#each collections}}
-          <button href="# "
-            class="btn btn-default fc-filter"
+          <label href="# "
+            class="data-type-label fc-filter"
             data-fc-filter-field="ns"
             data-fc-filter-value="{{conn}}"
             data-fc-filter-alias="{{name}}"
           >
             {{name}}
-          </button>
+          </label>
         {{/each}}
 
         <br>
         <strong>编辑时间:</strong>
         <br>
         {{#each timeLimits}}
-          <button href="# "
-            class="btn btn-default fc-filter"
+          <label href="# "
+            class="time-limit-label fc-filter"
             data-fc-filter-field="ts"
             data-fc-filter-value="{{timeLimit}}"
             data-fc-filter-alias="{{name}}"
             data-fc-filter-operator="{{operator}}"
           >
             {{name}}
-          </button>
+          </label>
         {{/each}}
       </div>
 
@@ -52,19 +52,19 @@
         <strong>筛选条件:</strong>
         <br>
         {{#each fcFilterActive}}
-          <button href="#" class=" btn btn-default fc-filter-clear">
+          <label href="#" class="label-filters fc-filter-clear" style="margin:3px">
             {{alias}}
-          </button>
+          </label>
         {{/each}}
         <br>
         <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div>
 
-      <div class="recheck-itemlist-wrapper text-center">
+      <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
         <div class="recheck-itemlist">
           <ul class="recheck-itemlist-ul list-group" style="padding: 0">
             {{#each fcResults}}
-              <li class="recheck-items list-group-item" id="{{pk}}" data-ns="{{ns}}">{{zhName}}<span class="badge">{{opCount}}</span></li>
+              <li class="recheck-items list-group-item city-name" id="{{pk}}" data-ns="{{ns}}">{{zhName}}<span class="badge">{{opCount}}</span></li>
             {{/each}}
           </ul>
         </div>
