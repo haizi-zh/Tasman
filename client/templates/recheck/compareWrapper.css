@@ -44,3 +44,20 @@ button#reject-info {
   margin: 2px auto;
   border-bottom: 1px solid #ccc;
 }
+
+.preview-pic-window{
+  position: fixed;
+  display: none;
+  z-index: 10000;
+  left: 300px;
+  top: 100px;
+}
+
+.preview-pic-shadow{
+  display: none;
+  background-color: rgba(0, 0, 0, 0.6);
+  position: fixed;
+  z-index: 100;
+  top: 0;
+  left: 0;
+}

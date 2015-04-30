@@ -269,5 +269,60 @@ Template.compareWrapper.events({
       $(compareChlidDom).removeClass("hidden");
       $(baseChildDom).removeClass("hidden");
     }
-  }
+  },
+
+  'click .pic-wrap': function(e) {
+    showPreviewPic(this);
+    locatePreviewPic();
+  },
+
+  "click .preview-pic-shadow": function(e){
+    $('.preview-pic-window').hide();
+    $('.preview-pic-shadow').hide();
+  },
 })
+
+//展示预览图片
+function showPreviewPic(image){
+  $('.preview-pic-window').empty();
+  $('.preview-pic-window').show();
+  $('.preview-pic-shadow').show();
+  var cropW = image.cropHint.right - image.cropHint.left;
+  var cropH = image.cropHint.bottom - image.cropHint.top;
+
+  //缩放比例
+  if (cropW > 800 || cropH > 600) {
+    var r = max(cropW / 800, cropH / 600);
+  } else {
+    var r = 1;
+  }
+
+  //插入图片
+  $('.preview-pic-window').append('<img src="' + image.url +
+      '?imageMogr2/thumbnail/!' + parseInt(100/r) + 'p' +
+      '/crop/!' + cropW + 'x' + cropH +
+        'a' + image.cropHint.left + 'a' + image.cropHint.top + '">');
+}
+
+function max(x, y){
+  return (x > y) ? x : y;
+}
+
+//居中放置预览图片
+function locatePreviewPic(){
+  var windowW = $(window).width();
+  var windowH = $(window).height();
+
+  $('.preview-pic-shadow').css('width', windowW);
+  $('.preview-pic-shadow').css('height', windowH);
+
+  var previewW = $('.preview-pic-window img').width();
+  var previewH = $('.preview-pic-window img').height();
+
+  if (previewW && previewH){
+    $('.preview-pic-window').css('left', (windowW - previewW)/2);
+    $('.preview-pic-window').css('top', (windowH - previewH)/2);
+  }
+}
+
+
