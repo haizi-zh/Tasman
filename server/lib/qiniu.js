@@ -26,6 +26,8 @@ QiniuSDK = function (ak, sk, bk, host){
     '"size": $(fsize),' +
     '"w": $(imageInfo.width),' +
     '"h": $(imageInfo.height),' +
+    '"fmt": $(imageInfo.format),' +
+    '"cm": $(imageInfo.colorModel),' +
     '"hash": $(etag)' +
   '}';
 
@@ -75,15 +77,14 @@ QiniuSDK = function (ak, sk, bk, host){
    */
   this.getFetchInfo = function(url, bk, host){
     // 获取fetch的相关参数
-    var encodedURL = base64ToUrlSafe(new Buffer(url).toString('base64'));//from url
+    var encodedURL = getUrlsafeBase64Encode(url);//image source
     var key = crypto.createHash('md5').update(url).digest('hex');
-    var entry = (bk || this.defaultBucket) + ':' + key;
-    var encodedEntryURI = base64ToUrlSafe(new Buffer(entry).toString('base64'));//to space
+
+    var bucket = bk || this.defaultBucket;
+    var encodedEntryURI = getEncodedEntryURI(key, bucket);//image destination
+
     var path = '/fetch/' + encodedURL + '/to/' + encodedEntryURI;
-    var signingStr = path + '\n';
-    var sign = crypto.createHmac("sha1", this.secretKey).update(signingStr).digest('base64');
-    var encodedSign = base64ToUrlSafe(sign);
-    var accessToken = this.accessKey + ":" + encodedSign;
+    var accessToken = this.getAccessToken(path);
 
     //发送post请求，fetch图片
     var postUrl = 'http://iovip.qbox.me' + path;
@@ -102,16 +103,17 @@ QiniuSDK = function (ak, sk, bk, host){
         w: imageInfo.width,
         h: imageInfo.height,
         url: (host || this.defaultPicHost) + key,
+        hash: imageInfo.hash
       };
     }catch(e){
       console.log("Fail in fetching images from remote url to qiniu!");
       console.log(e);
       return false;
     }
-  },
+  };
 
   /**
-   * [getImageBasicInfo description]
+   * 获取图片的基本信息
    * @param  {string} key  图片在空间中的key
    * @param  {string} host 所在空间对应的host
    * @return {object}
@@ -123,11 +125,68 @@ QiniuSDK = function (ak, sk, bk, host){
       var result = HTTP.call('GET', url);
       return result.data;
     }catch(e){
-      console.log("Fail in getting image's basic info from qiniu!");
+      console.log("Fail in getting this image's basic info from qiniu! Key:" + key);
       console.log(e);
       return false;
     }
-  }
+  };
+
+  /**
+   * 获取文件信息
+   * @param  {[type]} key  [description]
+   * @param  {[type]} host [description]
+   * @param  {[type]} bk   [description]
+   * @return {[type]}      [description]
+   */
+  this.getFileInfo = function(key, host, bk){
+    var bucket = bk || this.defaultBucket;
+    var encodedEntryURI = getEncodedEntryURI(key, bucket);
+    var host = host || this.defaultPicHost;
+    var path = '/stat/' + encodedEntryURI;
+    var url = 'http://rs.qiniu.com' + path;
+    var accessToken = this.getAccessToken(path);
+    var options = {
+      headers: {
+        'Authorization': 'QBox ' + accessToken
+      }
+    };
+
+    try {
+      var result = HTTP.call('GET', url, options);
+      return result.data;
+    } catch(e) {
+      console.log("Fail in getting this file's info from qiniu! Key:" + key);
+      console.log(e);
+      return false;
+    }
+  };
+
+  /**
+   * 获取管理凭证
+   * @param  {string} path 发起请求的url中的<path>或<path>?<query>部分
+   * @return {string}      accessToken:管理凭证
+   */
+  this.getAccessToken = function(path){
+    var signingStr = path + '\n';
+    var sign = crypto.createHmac("sha1", this.secretKey).update(signingStr).digest('base64');
+    var encodedSign = base64ToUrlSafe(sign);
+    var accessToken = this.accessKey + ":" + encodedSign;
+    return accessToken;
+  };
+}
+
+function getEncodedEntryURI(key, bk){
+  var entry = bk + ':' + key;
+  return getUrlsafeBase64Encode(entry);
+}
+
+/**
+ * 获取url安全的base64编码
+ * @param  {[type]} str [description]
+ * @return {[type]}     [description]
+ */
+function getUrlsafeBase64Encode(str){
+  return base64ToUrlSafe(new Buffer(str).toString('base64'));
 }
 
 function base64ToUrlSafe(v){
