@@ -159,6 +159,10 @@
 	width: 400px;
 }
 
+.input_pic_url{
+	position: relative;
+}
+
 .pic_url_input {
 	height: 34px;
   padding: 6px 12px;
@@ -174,9 +178,9 @@
   transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
 }
 
-.history-url {
-  position: relative;
-  left: -161px;
+.input_pic_url .history-url {
+  position: absolute;
+  left: 340px;
   top: 10px !important;
   z-index: 22;
   float: right;
