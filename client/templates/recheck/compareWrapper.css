@@ -6,9 +6,9 @@ button#reject-info {
   margin-right: 40px;
 }
 
-#submit-info {
-    float: none !important;
-    margin-right: 80px;
+#upload-data{
+  margin-right: 80px;
+  float: right;
 }
 
 .recheck-btns {
