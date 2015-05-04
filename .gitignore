@@ -10,3 +10,5 @@ server/a_db_settings.js
 */.DS_Store
 
 .DS_Store
+.idea
+.idea/
