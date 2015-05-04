@@ -53,7 +53,7 @@ Template.pictures.helpers({
         selectedCropHint = selectedImageList[i].cropHint;
 
         if (cropHint.ow >= 800 || cropHint.oh >= 800){
-          var r = max(cropHint.ow/800, cropHint.oh/800);
+          var r = Math.max(cropHint.ow/800, cropHint.oh/800);
           //对于裁剪的图像返回偶数数据
           x1 = parseInt(selectedCropHint.left / r);
           x1 = (x1 % 2) ? (x1 + 1) : x1;
@@ -277,8 +277,7 @@ Template.pictures.events({
           processData: false,
           data: form_data,
           success: function(data) {
-            //data中有w,h,size,hash值
-            alert("上传成功！链接：" + result.url);
+            console.log(data);
 
             //初始化新增图片的crophint
             var cropHint = {
@@ -296,6 +295,19 @@ Template.pictures.events({
               url: result.url
             };
             Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
+
+            //存入数据库
+            var url = result.url;
+            var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
+                  || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+            Meteor.call('saveUpLocalImage', mid, result.key, function(error, result) {
+              if (result) {
+                alert('成功存入图片' + url);
+                console.log(result);
+              } else {
+                alert('存入数据库失败！');
+              };
+            })
           }
         });
       }else{
@@ -311,9 +323,7 @@ Template.pictures.events({
       if (error) {
         return throwError(error.reason);
       }
-      if (result){
-        alert("上传成功！链接：" + result.url);
-
+      if (result) {
         //初始化新增图片的crophint
         var cropHint = {
           ow: result.w,
@@ -330,7 +340,20 @@ Template.pictures.events({
           url: result.url
         };
         Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
-      }else{
+
+        //TODO save in imagestore
+        var url = result.url;
+        var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
+              || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+        Meteor.call('saveFetchImage', mid, result.key, fetchUrl , function(error, result) {
+          if (result) {
+            alert('上传成功！图片链接为' + url);
+            console.log(result);
+          } else {
+            alert('存入数据库失败！');
+          };
+        });
+      } else {
         alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
@@ -394,7 +417,7 @@ function cropLocation(){
 }
 
 function showSmallFrame(coords, object){
-  var r = max(coords.w, coords.h) / 200;
+  var r = Math.max(coords.w, coords.h) / 200;
   $(object).css({
     width: Math.round(coords.w / r) + 'px',
     height: Math.round(coords.h / r) + 'px'
@@ -423,10 +446,6 @@ function keyEvent(){
           break;
       }
   });
-}
-
-function max(x, y){
-  return (x > y) ? x : y;
 }
 
 function changeCoords(c){

@@ -1,13 +1,17 @@
 <template name="compareWrapper">
   {{#if itemData}}
+  <!--预览图片-->
+  <div class="preview-pic-window"></div>
+  <div class="preview-pic-shadow"></div>
+
 	<div class="recheck-right-wrapper">
     <div class="recheck-btns">
       <button id="reject-info" class="btn btn-danger">Reject</button>
       <label for="" class="label label-primary">Show Modified Only:</label>
       <input type="checkbox" id="showModified">
       <button id="edit-pic-btn" class="btn btn-warning">Edit-Pic</button><span style="margin-left:43px"></span>
-      <button id="submit-info" class="btn btn-info">Edit&Save</button>
       <button id="upload-data" class="btn btn-success">Push Online</button>
+      <button id="submit-info" class="btn btn-info">Edit&Save</button>
     </div>
     <div class="recheck-contents">
       <div class="recheck-base-wrapper">

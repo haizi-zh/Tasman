@@ -41,7 +41,7 @@ updateOplog = function(key, value, textType, isStrs) {
   var dotKey = formatDot(key); // 'xxx-xx-x' >>>> 'xxx.xx.x'
   if (cmsMd5(String(value)) !== Session.get('originMD5')[key]) {
     //字符串数组需要划分成数组
-    var tempValue = (isStrs) ? value.split(',') : value;
+    var tempValue = (isStrs) ? value.replace(/，/g, ',').split(',') : value;
     addOplog(dotKey, tempValue, textType);
     log(Session.get('oplog'));
   } else {
