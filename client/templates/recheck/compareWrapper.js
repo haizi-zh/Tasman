@@ -237,13 +237,27 @@ Template.compareWrapper.events({
         pk = item.pk;
     // 将线上数据进行修改
     Meteor.call('updateOnlineData', pk, function(err, res){
-      console.log(res);
       if(!err && 0 === res.code) {
         alert('上传成功');
       }else {
         alert('上传失败');
       }
     });
+  },
+
+  'click #reject-info': function(e) {
+    e.preventDefault();
+    var item = Session.get('recheckItem'),
+        pk = item.pk;
+    if(confirm('删除这些编辑信息？')){
+      Meteor.call('rejectEditInfo', pk, function (err, res) {
+        if(!err && 0 === res.code) {
+          alert('删除成功');
+        }else{
+          alert('删除失败');
+        }
+      });
+    }
   },
 
   'click #edit-pic-btn': function(e) {

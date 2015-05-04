@@ -34,6 +34,6 @@ HomeFilter = new Meteor.FilterCollections(OplogPkList, {
       operator: ['$regex', 'i'],
       condition: '$and',
       searchable: 'required'
-    },
-  },
+    }
+  }
 });
