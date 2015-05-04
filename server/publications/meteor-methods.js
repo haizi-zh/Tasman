@@ -94,7 +94,8 @@ Meteor.methods({
     // update OplogList
     var resFromOplogPkList = OplogPkList.update(
                                 {'pk': pk},
-                                {'$addToSet': {'branch': {'snapshotId': snapshotId, 'desc': commitInfo}}});
+                                {'$addToSet': {'branch': {'snapshotId': snapshotId, 'desc': commitInfo}},
+                                '$set': {opCount: 0}});
     if(resFromOnline >= 1 && resFromCmsOplog >= 1 && resFromOplogPkList >= 1) {
       return {'code': 0};
     }else{
@@ -113,6 +114,19 @@ Meteor.methods({
     if(cnt === 1){
       return {'code': 0};
     } else {
+      return {'code': 1};
+    }
+  },
+  'rejectEditInfo': function(pk){
+    check(pk, String);
+    var resFromCmsOplog = CmsOplog.update(
+        {'pk': new Mongo.ObjectID(pk), 'status': 'staged'},
+        {'$set': {'status': 'rejected'}},
+        {'multi': true});
+    if(resFromCmsOplog >= 1) {
+      OplogPkList.update({'pk': pk}, {'$inc': {opCount: - resFromCmsOplog}})
+      return {'code': 0};
+    }else{
       return {'code': 1};
     }
   }
