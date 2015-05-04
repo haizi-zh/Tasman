@@ -53,7 +53,7 @@ Template.pictures.helpers({
         selectedCropHint = selectedImageList[i].cropHint;
 
         if (cropHint.ow >= 800 || cropHint.oh >= 800){
-          var r = max(cropHint.ow/800, cropHint.oh/800);
+          var r = Math.max(cropHint.ow/800, cropHint.oh/800);
           //对于裁剪的图像返回偶数数据
           x1 = parseInt(selectedCropHint.left / r);
           x1 = (x1 % 2) ? (x1 + 1) : x1;
@@ -417,7 +417,7 @@ function cropLocation(){
 }
 
 function showSmallFrame(coords, object){
-  var r = max(coords.w, coords.h) / 200;
+  var r = Math.max(coords.w, coords.h) / 200;
   $(object).css({
     width: Math.round(coords.w / r) + 'px',
     height: Math.round(coords.h / r) + 'px'
@@ -446,10 +446,6 @@ function keyEvent(){
           break;
       }
   });
-}
-
-function max(x, y){
-  return (x > y) ? x : y;
 }
 
 function changeCoords(c){

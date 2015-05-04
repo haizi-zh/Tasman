@@ -292,7 +292,7 @@ function showPreviewPic(image){
 
   //缩放比例
   if (cropW > 800 || cropH > 600) {
-    var r = max(cropW / 800, cropH / 600);
+    var r = Math.max(cropW / 800, cropH / 600);
   } else {
     var r = 1;
   }
@@ -302,10 +302,6 @@ function showPreviewPic(image){
       '?imageMogr2/thumbnail/!' + parseInt(100/r) + 'p' +
       '/crop/!' + cropW + 'x' + cropH +
         'a' + image.cropHint.left + 'a' + image.cropHint.top + '">');
-}
-
-function max(x, y){
-  return (x > y) ? x : y;
 }
 
 //居中放置预览图片
