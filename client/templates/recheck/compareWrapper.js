@@ -263,8 +263,8 @@ Template.compareWrapper.events({
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
     // window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
-    // window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
-    window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
+    window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
+    // window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
   },
 
   'click #showModified': function(e) {
