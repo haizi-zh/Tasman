@@ -1,50 +1,43 @@
 Template.compareWrapper.helpers({
 
-  // 订阅recheckItem，并且推动compareData和baseData
   itemData: function(){
-    // 订阅recheckItem
     var item = Session.get('recheckItem');
-
-    // 当前状态为列表内容被修改, compareStatus为全局变量, set前应先更新状态！
-    // compareStatus = 0;
-
-    // 推动compareData和baseData
-    Session.set('recheckBaseVersion', 'master');
-    Session.set('recheckCompareVersion', 'current');
-
+    // 0 ：对应base中的线上数据，对应compare中的待review数据
+    Session.set('recheckBaseVersion', 0);
+    Session.set('recheckCompareVersion', 0);
     return 1;
   },
 
+  releaseList: function() {
+    var item = Session.get('recheckItem');
+    return OplogPkList.findOne({'pk': item.pk}).branch;
+  },
 
   //提供对照用的数据
   baseData: function(){
-    // 订阅对照版本号baseVersion
-    var baseVersion = Session.get('recheckBaseVersion');
-
-    // 线上版本时 (baseVersion == 'master')
+    var snapshotId = Session.get('recheckBaseVersion');
     var item = Session.get('recheckItem');
     var db = item.ns.split('.')[0];
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
+    var conn = getMongoClient(db, coll);
 
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var conn = getMongoClient(db, coll);
-    var detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
 
     var baseData = [];
-
-    console.log(detailInfo);
-
-    // 处理原始的base数据
     review(coll, detailInfo, baseData);
 
     // 添加readonly标志
-    for(i = 0;i < baseData.length;i++){
+    for(var i = 0;i < baseData.length;i++){
       baseData[i].notWrite = true;
     }
-
-    console.log(baseData);
 
     // 存储base数据到session中
     Session.set('recheckBaseData', baseData);
@@ -52,57 +45,54 @@ Template.compareWrapper.helpers({
   },
 
   basePic: function(){
-    // 订阅对照版本号baseVersion
-    var baseVersion = Session.get('recheckBaseVersion');
-
-    // 线上版本时 (baseVersion == 'master')
+    var snapshotId = Session.get('recheckBaseVersion');
     var item = Session.get('recheckItem');
     var db = item.ns.split('.')[0];
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
+    var conn = getMongoClient(db, coll);
 
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var conn = getMongoClient(db, coll);
-    var detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
 
     var images = detailInfo.images;
     if (images){
-      for (i = 0;i < images.length;i++){
+      for (var i = 0;i < images.length;i++){
         images[i].url = pictures_host + images[i].key;
       }
     }
     return images;
   },
 
-  //提供编辑过的数据
-	compareData: function(){
-    // 订阅编辑版本号compareVersion
-    var compareVersion = Session.get('recheckCompareVersion');
 
-    // 当前版本时 (compareVersion == 'current')
+	compareData: function(){
+    var snapshotId = Session.get('recheckCompareVersion');
     var item = Session.get('recheckItem');
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
 
-    // 订阅数据，以供snapshot使用,snapshot只会订阅cmsoplog，这部分应该放在rechek.js中，因为订阅一次即可?
 
     // 所有的数据库发布detail时，命名应为 coll.toLowerCase + "Detail" 的形式！
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
+
     var compareData = [];
-
-    console.log(detailInfo);
-
-    // 处理原始的compare数据
     review(coll, detailInfo, compareData);
-
-    console.log(compareData);
 
     // 存储compare数据到session中
     Session.set('recheckCompareData', compareData);
-
     // 存储数据的MD5值，在提交修改时判重使用
     createOriginTextMD5(compareData);
 
@@ -110,23 +100,23 @@ Template.compareWrapper.helpers({
   },
 
   comparePic: function(){
-    var compareVersion = Session.get('recheckCompareVersion');
-
-    // 当前版本时 (compareVersion == 'current')
+    var snapshotId = Session.get('recheckCompareVersion');
     var item = Session.get('recheckItem');
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
 
-    // 订阅数据，以供snapshot使用,snapshot只会订阅cmsoplog，这部分应该放在rechek.js中，因为订阅一次即可?
-
-    // 所有的数据库发布detail时，命名应为 coll.toLowerCase + "Detail" 的形式！
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
 
     var images = detailInfo.images;
     if (images){
-      for (i = 0;i < images.length;i++){
+      for (var i = 0;i < images.length;i++){
         images[i].url = pictures_host + images[i].key;
       }
     }
@@ -218,6 +208,18 @@ Template.compareWrapper.events({
         break;
       }
     }
+  },
+
+  'change #baseRelease': function(e) {
+    var snapshotId = $(e.target).val();
+    log(snapshotId);
+    Session.set('recheckBaseVersion', parseInt(snapshotId));
+  },
+
+  'change #compareRelease': function(e) {
+    var snapshotId = $(e.target).val();
+    log(snapshotId);
+    Session.set('recheckCompareVersion', parseInt(snapshotId));
   },
 
   'click #submit-info': function(e) {

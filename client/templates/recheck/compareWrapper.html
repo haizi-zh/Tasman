@@ -13,6 +13,28 @@
       <button id="upload-data" class="btn btn-success">Push Online</button>
       <button id="submit-info" class="btn btn-info">Edit&Save</button>
     </div>
+    <!--版本信息列表-->
+    <div class="release-list">
+        <label for="release" class="label label-default">
+            版本对比:
+        </label>
+        <span style="margin:0px 7px;"></span>
+        <label for="base" class="label label-default">base</label>
+        <select name="base" id="baseRelease">
+            <option value="0" selected>Online</option>
+            {{#each releaseList}}
+                <option value="{{snapshotId}}">{{snapshotId}}</option>
+            {{/each}}
+        </select>
+        <span style="margin:0px 7px;" class="glyphicon glyphicon-arrow-left"></span>
+        <label for="compare" class="label label-default">compare</label>
+        <select name="compare" id="compareRelease">
+            <option value="0" selected>Review</option>
+            {{#each releaseList}}
+                <option value="{{snapshotId}}">{{snapshotId}}</option>
+            {{/each}}
+        </select>
+    </div>
     <div class="recheck-contents">
       <div class="recheck-base-wrapper">
         <div class="label-content">
@@ -54,7 +76,7 @@
       </div>
       <div class="recheck-diff-wrapper">
         <div class="label-content">
-          <label class="color: red">对比结果</label>
+          <label style="color: red">对比结果</label>
         </div>
         {{#each diffData}}
           <div class="form-group {{#if isModified}} modified{{/if}}">
