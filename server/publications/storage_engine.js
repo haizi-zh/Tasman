@@ -49,19 +49,10 @@ Meteor.methods({
     check(zhName, String);
     var query = {'ns': ns, 'pk': pk._str};
     OplogPkList.update(query, {'$set': {'ts': ts, 'zhName': zhName}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
-  },
+  }
 });
 
-Meteor.publish('oplog-pk-list', function(){
-  return OplogPkList.find({});
+Meteor.publish('oplog-pk-list', function(pk){
+  check(pk, String);
+  return OplogPkList.find({'pk': pk});
 });
-
-// // TODO allow settings
-// OplogPkList.allow({
-//   insert: function(){
-//     return true;
-//   },
-//   update: function(){
-//     return true;
-//   }
-// });

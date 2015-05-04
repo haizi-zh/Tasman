@@ -61,3 +61,12 @@ button#reject-info {
   top: 0;
   left: 0;
 }
+
+.release-list{
+  margin: 10px 3px;
+  /*border: 1px solid #009900;*/
+}
+
+.release-radio{
+  margin: 7px !important;
+}
