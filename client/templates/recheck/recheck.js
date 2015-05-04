@@ -25,10 +25,10 @@ Template.recheck.helpers({
       {
         'conn': 'geo.Locality',
         'name': '城市'
-      },
+      }
     ]
   },
-  timeLimits: function() {
+  'timeLimits': function() {
     return [
       {
         'timeLimit': moment().subtract(3, 'd').startOf('day').unix() * 1000,
@@ -46,11 +46,11 @@ Template.recheck.helpers({
         'operator': '$gt'
       }
     ]
-  },
+  }
 });
 
 Template.recheck.events({
-  'click .recheck-items': function(event, template) {
+  'click .recheck-items': function(event) {
     var mid = $(event.target).attr('id');
     if(Session.get('recheckItem') && Session.get('recheckItem').pk === mid) {
       return;
@@ -62,5 +62,6 @@ Template.recheck.events({
     var ns = $(event.target).attr('data-ns');
     Session.set('recheckItem', {'pk': mid, 'ns': ns});
     Meteor.subscribe('oplog', ns, new Mongo.ObjectID(mid), 0);
-  },
+    Meteor.subscribe('oplog-pk-list', mid);
+  }
 });

@@ -1,50 +1,43 @@
 Template.compareWrapper.helpers({
 
-  // 订阅recheckItem，并且推动compareData和baseData
   itemData: function(){
-    // 订阅recheckItem
     var item = Session.get('recheckItem');
-
-    // 当前状态为列表内容被修改, compareStatus为全局变量, set前应先更新状态！
-    // compareStatus = 0;
-
-    // 推动compareData和baseData
-    Session.set('recheckBaseVersion', 'master');
-    Session.set('recheckCompareVersion', 'current');
-
+    // 0 ：对应base中的线上数据，对应compare中的待review数据
+    Session.set('recheckBaseVersion', 0);
+    Session.set('recheckCompareVersion', 0);
     return 1;
   },
 
+  releaseList: function() {
+    var item = Session.get('recheckItem');
+    return OplogPkList.findOne({'pk': item.pk}).branch;
+  },
 
   //提供对照用的数据
   baseData: function(){
-    // 订阅对照版本号baseVersion
-    var baseVersion = Session.get('recheckBaseVersion');
-
-    // 线上版本时 (baseVersion == 'master')
+    var snapshotId = Session.get('recheckBaseVersion');
     var item = Session.get('recheckItem');
     var db = item.ns.split('.')[0];
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
+    var conn = getMongoClient(db, coll);
 
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var conn = getMongoClient(db, coll);
-    var detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
 
     var baseData = [];
-
-    console.log(detailInfo);
-
-    // 处理原始的base数据
     review(coll, detailInfo, baseData);
 
     // 添加readonly标志
-    for(i = 0;i < baseData.length;i++){
+    for(var i = 0;i < baseData.length;i++){
       baseData[i].notWrite = true;
     }
-
-    console.log(baseData);
 
     // 存储base数据到session中
     Session.set('recheckBaseData', baseData);
@@ -52,57 +45,54 @@ Template.compareWrapper.helpers({
   },
 
   basePic: function(){
-    // 订阅对照版本号baseVersion
-    var baseVersion = Session.get('recheckBaseVersion');
-
-    // 线上版本时 (baseVersion == 'master')
+    var snapshotId = Session.get('recheckBaseVersion');
     var item = Session.get('recheckItem');
     var db = item.ns.split('.')[0];
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
+    var conn = getMongoClient(db, coll);
 
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var conn = getMongoClient(db, coll);
-    var detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = conn.findOne({_id: new Mongo.ObjectID(mid)});
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
 
     var images = detailInfo.images;
     if (images){
-      for (i = 0;i < images.length;i++){
+      for (var i = 0;i < images.length;i++){
         images[i].url = pictures_host + images[i].key;
       }
     }
     return images;
   },
 
-  //提供编辑过的数据
-	compareData: function(){
-    // 订阅编辑版本号compareVersion
-    var compareVersion = Session.get('recheckCompareVersion');
 
-    // 当前版本时 (compareVersion == 'current')
+	compareData: function(){
+    var snapshotId = Session.get('recheckCompareVersion');
     var item = Session.get('recheckItem');
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
 
-    // 订阅数据，以供snapshot使用,snapshot只会订阅cmsoplog，这部分应该放在rechek.js中，因为订阅一次即可?
 
     // 所有的数据库发布detail时，命名应为 coll.toLowerCase + "Detail" 的形式！
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
+
     var compareData = [];
-
-    console.log(detailInfo);
-
-    // 处理原始的compare数据
     review(coll, detailInfo, compareData);
-
-    console.log(compareData);
 
     // 存储compare数据到session中
     Session.set('recheckCompareData', compareData);
-
     // 存储数据的MD5值，在提交修改时判重使用
     createOriginTextMD5(compareData);
 
@@ -110,23 +100,23 @@ Template.compareWrapper.helpers({
   },
 
   comparePic: function(){
-    var compareVersion = Session.get('recheckCompareVersion');
-
-    // 当前版本时 (compareVersion == 'current')
+    var snapshotId = Session.get('recheckCompareVersion');
     var item = Session.get('recheckItem');
     var coll = item.ns.split('.')[1];
     var mid = item.pk;
 
-    // 订阅数据，以供snapshot使用,snapshot只会订阅cmsoplog，这部分应该放在rechek.js中，因为订阅一次即可?
-
-    // 所有的数据库发布detail时，命名应为 coll.toLowerCase + "Detail" 的形式！
     Meteor.subscribe(coll.toLowerCase() + "Detail", mid);
 
-    var detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    var detailInfo;
+    if(snapshotId === 0){
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk));
+    }else{
+      detailInfo = storageEngine.snapshot(item.ns, new Mongo.ObjectID(item.pk), {}, snapshotId);
+    }
 
     var images = detailInfo.images;
     if (images){
-      for (i = 0;i < images.length;i++){
+      for (var i = 0;i < images.length;i++){
         images[i].url = pictures_host + images[i].key;
       }
     }
@@ -220,6 +210,18 @@ Template.compareWrapper.events({
     }
   },
 
+  'change #baseRelease': function(e) {
+    var snapshotId = $(e.target).val();
+    log(snapshotId);
+    Session.set('recheckBaseVersion', parseInt(snapshotId));
+  },
+
+  'change #compareRelease': function(e) {
+    var snapshotId = $(e.target).val();
+    log(snapshotId);
+    Session.set('recheckCompareVersion', parseInt(snapshotId));
+  },
+
   'click #submit-info': function(e) {
     e.preventDefault();
     log('上传数据!');
@@ -235,7 +237,6 @@ Template.compareWrapper.events({
         pk = item.pk;
     // 将线上数据进行修改
     Meteor.call('updateOnlineData', pk, function(err, res){
-      console.log(res);
       if(!err && 0 === res.code) {
         alert('上传成功');
       }else {
@@ -244,11 +245,26 @@ Template.compareWrapper.events({
     });
   },
 
+  'click #reject-info': function(e) {
+    e.preventDefault();
+    var item = Session.get('recheckItem'),
+        pk = item.pk;
+    if(confirm('删除这些编辑信息？')){
+      Meteor.call('rejectEditInfo', pk, function (err, res) {
+        if(!err && 0 === res.code) {
+          alert('删除成功');
+        }else{
+          alert('删除失败');
+        }
+      });
+    }
+  },
+
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
     // window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
-    // window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
-    window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
+    window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
+    // window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
   },
 
   'click #showModified': function(e) {
@@ -269,5 +285,56 @@ Template.compareWrapper.events({
       $(compareChlidDom).removeClass("hidden");
       $(baseChildDom).removeClass("hidden");
     }
-  }
+  },
+
+  'click .pic-wrap': function(e) {
+    showPreviewPic(this);
+    locatePreviewPic();
+  },
+
+  "click .preview-pic-shadow": function(e){
+    $('.preview-pic-window').hide();
+    $('.preview-pic-shadow').hide();
+  },
 })
+
+//展示预览图片
+function showPreviewPic(image){
+  $('.preview-pic-window').empty();
+  $('.preview-pic-window').show();
+  $('.preview-pic-shadow').show();
+  var cropW = image.cropHint.right - image.cropHint.left;
+  var cropH = image.cropHint.bottom - image.cropHint.top;
+
+  //缩放比例
+  if (cropW > 800 || cropH > 600) {
+    var r = Math.max(cropW / 800, cropH / 600);
+  } else {
+    var r = 1;
+  }
+
+  //插入图片
+  $('.preview-pic-window').append('<img src="' + image.url +
+      '?imageMogr2/thumbnail/!' + parseInt(100/r) + 'p' +
+      '/crop/!' + cropW + 'x' + cropH +
+        'a' + image.cropHint.left + 'a' + image.cropHint.top + '">');
+}
+
+//居中放置预览图片
+function locatePreviewPic(){
+  var windowW = $(window).width();
+  var windowH = $(window).height();
+
+  $('.preview-pic-shadow').css('width', windowW);
+  $('.preview-pic-shadow').css('height', windowH);
+
+  var previewW = $('.preview-pic-window img').width();
+  var previewH = $('.preview-pic-window img').height();
+
+  if (previewW && previewH){
+    $('.preview-pic-window').css('left', (windowW - previewW)/2);
+    $('.preview-pic-window').css('top', (windowH - previewH)/2);
+  }
+}
+
+
