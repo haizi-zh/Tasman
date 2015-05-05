@@ -59,6 +59,11 @@
         <br>
         <button href="#" class="btn btn-default fc-filter-reset">清空筛选条件</button>
       </div>
+      <div >
+        <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+        <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}" style="width:23%;margin-left:27px;">
+        <button class="go-specific-pager">跳转</button>
+      </div>
 
       <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
         <div class="recheck-itemlist">
