@@ -63,7 +63,6 @@ reviewItems = {
       'desc': ['描述', itemDataType.string, false],
       'openTime': ['开放时间', itemDataType.string, false],
       'timeCostDesc': ['建议游玩时长', itemDataType.string, false],
-      'travelMonth': ['最佳游玩时间', itemDataType.string, false],
       'priceDesc': ['价格', itemDataType.string, false],
     },
     'traffic': {
