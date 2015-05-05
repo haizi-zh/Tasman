@@ -21,12 +21,10 @@ HomeFilter = new Meteor.FilterCollections(OplogPkList, {
       transform: function (value) {
         return parseInt(value);
       },
-      sort: 'desc'
     },
     "ns": {
       title: '数据类型',
       condition: '$and',
-      sort: 'desc',
       searchable: 'true'
     },
     "zhName": {
