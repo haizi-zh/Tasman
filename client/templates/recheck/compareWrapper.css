@@ -70,3 +70,7 @@ button#reject-info {
 .release-radio{
   margin: 7px !important;
 }
+
+.scroll-back {
+  margin: 0px 50px;
+}

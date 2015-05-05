@@ -108,6 +108,31 @@ Meteor.methods({
     check(pk, Meteor.Collection.ObjectID);
     return storageEngine.snapshot(ns, pk);
   },
+  'snapshotInfo': function(ns, pk, snapshotId){
+    check(ns, String);
+    check(pk, Meteor.Collection.ObjectID);
+    check(snapshotId, Number);
+    return storageEngine.snapshot(ns, pk, {}, snapshotId);
+  },
+  'scrollBack': function(item, snapshotId){
+    check(item, Object);
+    check(snapshotId, Number);
+    var col = item.ns.split('.')[1];
+    var updateContent = Meteor.call('snapshotInfo', item.ns, new Mongo.ObjectID(item.pk), snapshotId);
+    var resFromOnline = getMongoCol(col).update({'_id': new Mongo.ObjectID(item.pk)}, {'$set': _.omit(updateContent, '_id')});
+    var opCntAdded = CmsOplog.update(
+                    {'pk': new Mongo.ObjectID(item.pk), 'status': 'merged', 'snapshotId': {'$gt': snapshotId}},
+                    {'$set': {'status': 'staged'}, '$unset': {'snapshotId': ''}},
+                    {'multi': true});
+    OplogPkList.update(
+                    {'pk': item.pk},
+                    {'$inc': {'opCount': opCntAdded}, '$pull': {'branch': {'snapshotId': {'$gt': snapshotId}}}});
+    if(resFromOnline === 1){
+      return {'code': 0};
+    } else {
+      return {'code': 1};
+    }
+  },
   'deleteUser': function(userId){
     check(userId, String);
     var cnt = Meteor.users.remove({_id: userId});
