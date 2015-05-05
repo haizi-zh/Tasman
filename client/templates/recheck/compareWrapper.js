@@ -1,3 +1,16 @@
+Tracker.autorun(function(){
+  var baseV = Session.get('recheckBaseVersion'),
+      compV = Session.get('recheckCompareVersion');
+  if(baseV === 0 && compV !== 0) {
+    $('.scroll-back').removeClass("glyphicon-resize-horizontal").addClass("glyphicon-arrow-left");
+    $('.scroll-back').css({'cursor': "pointer"});
+    $('.scroll-back').attr("title", "回滚");
+  }else{
+    $('.scroll-back').removeClass("glyphicon-arrow-left").addClass("glyphicon-resize-horizontal");
+    $('.scroll-back').css({'cursor': ''});
+  }
+});
+
 Template.compareWrapper.helpers({
 
   itemData: function(){
@@ -176,7 +189,7 @@ Template.compareWrapper.helpers({
       });
       diffData[i].isModified = isModified;
     }
-    console.log(diffData);
+
     return diffData;
   }
 });
@@ -260,9 +273,25 @@ Template.compareWrapper.events({
     }
   },
 
+  'click .scroll-back': function(e) {
+    e.preventDefault();
+    var baseV = Session.get('recheckBaseVersion'),
+        compV = Session.get('recheckCompareVersion'),
+        item = Session.get('recheckItem');
+    if(baseV !== 0 || compV === 0) {return;}
+    if(confirm('是否要回滚到版本[ ' + compV + ' ]?')){
+      Meteor.call('scrollBack', item, compV, function(err, res){
+        if(!err && 0 === res.code) {
+          alert('回滚成功');
+        }else{
+          alert('回滚失败');
+        }
+      });
+    }
+  },
+
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
-    // window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
     window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
     // window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
   },
