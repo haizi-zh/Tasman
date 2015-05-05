@@ -316,24 +316,40 @@ Template.compareWrapper.events({
     }
   },
 
+  //点击图片，进入预览状态
   'click .pic-wrap': function(e) {
     showPreviewPic(this);
     locatePreviewPic();
   },
 
+  //图片预览状态下，点击阴影关闭操作
   "click .preview-pic-shadow": function(e){
     $('.preview-pic-window').hide();
     $('.preview-pic-shadow').hide();
   },
 })
 
-//展示预览图片
+/**
+ * [展示预览图片]
+ * @param  {object} image w,h,key,url,crophint等图片相关的信息
+ * @return {[type]}       [description]
+ */
 function showPreviewPic(image){
   $('.preview-pic-window').empty();
   $('.preview-pic-window').show();
   $('.preview-pic-shadow').show();
-  var cropW = image.cropHint.right - image.cropHint.left;
-  var cropH = image.cropHint.bottom - image.cropHint.top;
+
+  if (image.cropHint){
+    var cropW = image.cropHint.right - image.cropHint.left;
+    var cropH = image.cropHint.bottom - image.cropHint.top;
+    var cropLeft = image.cropHint.left;
+    var cropTop = image.cropHint.top;
+  } else {
+    var cropW = image.w;
+    var cropH = image.h;
+    var cropLeft = 0;
+    var cropTop = 0;
+  }
 
   //缩放比例
   if (cropW > 800 || cropH > 600) {
@@ -343,10 +359,10 @@ function showPreviewPic(image){
   }
 
   //插入图片
-  $('.preview-pic-window').append('<img src="' + image.url +
+  $('.preview-pic-window').append('<img src="' + pictures_host + image.key +
       '?imageMogr2/thumbnail/!' + parseInt(100/r) + 'p' +
       '/crop/!' + cropW + 'x' + cropH +
-        'a' + image.cropHint.left + 'a' + image.cropHint.top + '">');
+        'a' + cropLeft + 'a' + cropTop + '">');
 }
 
 //居中放置预览图片
