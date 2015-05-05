@@ -1,3 +1,16 @@
+Tracker.autorun(function(){
+  var baseV = Session.get('recheckBaseVersion'),
+      compV = Session.get('recheckCompareVersion');
+  if(baseV === 0 && compV !== 0) {
+    $('.scroll-back').removeClass("glyphicon-resize-horizontal").addClass("glyphicon-arrow-left");
+    $('.scroll-back').css({'cursor': "pointer"});
+    $('.scroll-back').attr("title", "回滚");
+  }else{
+    $('.scroll-back').removeClass("glyphicon-arrow-left").addClass("glyphicon-resize-horizontal");
+    $('.scroll-back').css({'cursor': ''});
+  }
+});
+
 Template.compareWrapper.helpers({
 
   itemData: function(){
@@ -176,7 +189,7 @@ Template.compareWrapper.helpers({
       });
       diffData[i].isModified = isModified;
     }
-    console.log(diffData);
+
     return diffData;
   }
 });
@@ -260,9 +273,25 @@ Template.compareWrapper.events({
     }
   },
 
+  'click .scroll-back': function(e) {
+    e.preventDefault();
+    var baseV = Session.get('recheckBaseVersion'),
+        compV = Session.get('recheckCompareVersion'),
+        item = Session.get('recheckItem');
+    if(baseV !== 0 || compV === 0) {return;}
+    if(confirm('是否要回滚到版本[ ' + compV + ' ]?')){
+      Meteor.call('scrollBack', item, compV, function(err, res){
+        if(!err && 0 === res.code) {
+          alert('回滚成功');
+        }else{
+          alert('回滚失败');
+        }
+      });
+    }
+  },
+
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
-    // window.location.href = "/" + item.ns.split('.')[1] + "/" + item.pk;
     window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
     // window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
   },
@@ -287,24 +316,40 @@ Template.compareWrapper.events({
     }
   },
 
+  //点击图片，进入预览状态
   'click .pic-wrap': function(e) {
     showPreviewPic(this);
     locatePreviewPic();
   },
 
+  //图片预览状态下，点击阴影关闭操作
   "click .preview-pic-shadow": function(e){
     $('.preview-pic-window').hide();
     $('.preview-pic-shadow').hide();
   },
 })
 
-//展示预览图片
+/**
+ * [展示预览图片]
+ * @param  {object} image w,h,key,url,crophint等图片相关的信息
+ * @return {[type]}       [description]
+ */
 function showPreviewPic(image){
   $('.preview-pic-window').empty();
   $('.preview-pic-window').show();
   $('.preview-pic-shadow').show();
-  var cropW = image.cropHint.right - image.cropHint.left;
-  var cropH = image.cropHint.bottom - image.cropHint.top;
+
+  if (image.cropHint){
+    var cropW = image.cropHint.right - image.cropHint.left;
+    var cropH = image.cropHint.bottom - image.cropHint.top;
+    var cropLeft = image.cropHint.left;
+    var cropTop = image.cropHint.top;
+  } else {
+    var cropW = image.w;
+    var cropH = image.h;
+    var cropLeft = 0;
+    var cropTop = 0;
+  }
 
   //缩放比例
   if (cropW > 800 || cropH > 600) {
@@ -314,10 +359,10 @@ function showPreviewPic(image){
   }
 
   //插入图片
-  $('.preview-pic-window').append('<img src="' + image.url +
+  $('.preview-pic-window').append('<img src="' + pictures_host + image.key +
       '?imageMogr2/thumbnail/!' + parseInt(100/r) + 'p' +
       '/crop/!' + cropW + 'x' + cropH +
-        'a' + image.cropHint.left + 'a' + image.cropHint.top + '">');
+        'a' + cropLeft + 'a' + cropTop + '">');
 }
 
 //居中放置预览图片

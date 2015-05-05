@@ -1,9 +1,12 @@
 var _time, cropCoords, currentIndex, currentSource, cropScale, cropScaleIndex;
 var cropHints, selectedCropHints, upCropHints;
-//w,h:裁剪的宽高（对应于cw,ch的）
-//cw,ch:现在的宽高（最大值为800）
-//ow,oh:原有的宽高
+// cropHint{
+//  w,h:裁剪的宽高（对应于cw,ch的）
+//  cw,ch:现在的宽高（最大值为800）
+//  ow,oh:原有的宽高
+// }
 
+//初始化部分数据
 function initial(){
   _time = null;
   cropCoords = {};//记录单个crop数据
@@ -18,6 +21,7 @@ function initial(){
   $('.selected-container').empty();
 };
 
+//可选图片模板
 Template.pictures.helpers({
   //原有已选择图片
   selectedImageList: function(){
@@ -126,6 +130,7 @@ Template.pictures.helpers({
 
 
 Template.pictures.events({
+  //双击图片"添加"or"删除"
   "dblclick .raw-picture-container": function(e){
   	clearTimeout(_time);
     var $picShadow = $(e.target).parent().children(".pic-shadow");
@@ -170,6 +175,7 @@ Template.pictures.events({
     }
   },
 
+  //单击图片，加载裁剪层
   "click .raw-picture-container": function(e){
   	clearTimeout(_time);
     var $image = this;
@@ -178,6 +184,7 @@ Template.pictures.events({
     }, 400);
   },
 
+  //选择裁剪框的比例
   "click .radio input": function(e){
     cropScaleIndex = $(e.target).attr("value");
     jcrop_api.setOptions({
@@ -185,16 +192,18 @@ Template.pictures.events({
     });
   },
 
+  //点击x,关闭裁剪层
   "click #crop-close": function(e){
     $('.crop-window').hide();
     $('.crop-shadow').hide();
   },
 
+  //点击阴影蒙层，关闭裁剪层
   "click .crop-shadow": function(e){
     $("#crop-close").trigger("click");
   },
 
-  //更新裁剪结果
+  //更新单个图片裁剪结果，并且关闭裁剪层
   "click #crop-submit": function(e){
     if(currentSource == "geo")
       selectedCropHints[currentIndex] = selectedCropHints[currentIndex] ? _.extend(selectedCropHints[currentIndex], cropCoords) : selectedCropHints[index] = cropCoords;
@@ -205,11 +214,13 @@ Template.pictures.events({
     $("#crop-close").trigger("click");
   },
 
+  //提交该地点的图片信息修改
   "click .btn-pic-submit": function(e){
     var selected = $(".selected-picture-container");
     var subImages = [];
     var subImage, cropHint;
     var left, right, top, bottom, r, coord;
+
     for (var i = 0;i < selected.length;i++){
       if ($(selected[i]).attr("data-from") == "geo")
         cropHint = selectedCropHints[$(selected[i]).attr("data-index")];
@@ -217,7 +228,9 @@ Template.pictures.events({
         cropHint = cropHints[$(selected[i]).attr("data-index")];
       else if ($(selected[i]).attr("data-from") == "upload")
         cropHint = upCropHints[$(selected[i]).attr("data-index")];
-      if (cropHint.x1){
+
+      //此处不可以用x1作判断，可能为0
+      if (cropHint.x2){
         r = cropHint.ow / cropHint.cw;
         //对于裁剪的图像返回偶数数据
         left = parseInt(cropHint.x1 * r);
@@ -236,6 +249,7 @@ Template.pictures.events({
           bottom: bottom
         };
       }
+
       if (coord){
         subImage = {
           h: cropHint.oh,
@@ -258,6 +272,7 @@ Template.pictures.events({
     log(tempOplog);
   },
 
+  //本地上传图片
   "click #pic-up-sub": function(e){
     //从服务器获取token和key
     Meteor.call('getPicUpToken', function(error, result) {
@@ -317,6 +332,7 @@ Template.pictures.events({
     });
   },
 
+  //上传远端图片
   "click #pic-fet-sub": function(e){
     var fetchUrl = $('#fet-pic-url').val();
     Meteor.call('fetchPic', fetchUrl, function(error, result) {
@@ -341,7 +357,6 @@ Template.pictures.events({
         };
         Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
 
-        //TODO save in imagestore
         var url = result.url;
         var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
               || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
@@ -360,6 +375,7 @@ Template.pictures.events({
   }
 })
 
+//已选图片模板
 Template.selectedPicture.events({
   //删除已选图片事件
   "click .glyphicon-minus": function(e){
@@ -383,24 +399,26 @@ Template.selectedPicture.events({
 
     $(e.target).parent().remove();
   },
-  
+
+  //点击图片，加载裁剪层
   "click img": function(e){
     var $image = this;
     loadJcrop($image);
   }
 })
 
-//show cropWindow
+//展示裁剪层
 function cropShow($image){
   $('.crop-frame').empty();
   $('.crop-shadow').show();
   $('.crop-window').show();
 
-  //insert the image Element
+  //添加图片元素
   var imageElement = '<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" id="' + $image.id + '"/>';
   $(".crop-frame").append(imageElement);
 }
 
+//裁剪层、阴影蒙层大小、位置信息的设置
 function cropLocation(){
   var wWidth = $(window).width();
   var wHeight = $(window).height();
@@ -416,6 +434,7 @@ function cropLocation(){
   $('.crop-window').css('top', (wHeight - cropWindowHei)/2);
 }
 
+//展示预览效果图
 function showSmallFrame(coords, object){
   var r = Math.max(coords.w, coords.h) / 200;
   $(object).css({
@@ -431,7 +450,7 @@ function showSmallFrame(coords, object){
   });
 }
 
-//bind the keyEvent
+//绑定键盘事件
 function keyEvent(){
   $(document).unbind('keydown'); //取消上一次的监听
   $(document).keydown(function(event) {
@@ -448,6 +467,7 @@ function keyEvent(){
   });
 }
 
+//设置裁剪框改变的触发事件
 function changeCoords(c){
   cropCoords = {
     x1: c.x,
@@ -462,6 +482,7 @@ function changeCoords(c){
   showSmallFrame(cropCoords, '#crop-small-1');
 }
 
+//创建裁剪对象
 function createJcrop($image){
   $('#' + $image.id).Jcrop({
     onChange: changeCoords,
@@ -473,6 +494,7 @@ function createJcrop($image){
   });
 }
 
+//加载裁剪层
 function loadJcrop($image){
   currentIndex = $image.index;
   currentSource = $image.source;
