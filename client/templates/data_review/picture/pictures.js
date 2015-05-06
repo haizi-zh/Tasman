@@ -19,7 +19,20 @@ function initial(){
   selectedCropHints = [];//记录原有已选图片的crophints
   upCropHints = [];//记录上传图片的crophints
   $('.selected-container').empty();
+  Session.set('selectedPicToCurSelected', []);
 };
+
+// 为搜索单个poi提供onRender监听
+Template.pictures.onRendered(function(){
+  var images = Session.get('selectedPicToCurSelected'),
+      parentDom = $('ul.selected-container')[0];
+
+  for (var i = 0, len = images.length; i < len; i++) {
+    Blaze.renderWithData(Template.selectedPicture, images[i], parentDom);
+  };
+  $('.selected-container').sortable().bind('sortupdate');
+})
+
 
 //可选图片模板
 Template.pictures.helpers({
@@ -95,6 +108,7 @@ Template.pictures.helpers({
       Blaze.renderWithData(Template.selectedPicture, image, $('ul.selected-container')[0]);
       $('.selected-container').sortable().bind('sortupdate');
     };
+    Session.set('selectedPicToCurSelected', images);
     return images;
   },
 
