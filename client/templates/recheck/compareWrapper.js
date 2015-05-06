@@ -339,10 +339,12 @@ Template.compareWrapper.events({
  * @return {[type]}       [description]
  */
 function showPreviewPic(image){
+  //initial：容器，阴影的控制
   $('.preview-pic-window').empty();
   $('.preview-pic-window').show();
   $('.preview-pic-shadow').show();
 
+  //裁剪参数的获取
   if (image.cropHint){
     var cropW = image.cropHint.right - image.cropHint.left;
     var cropH = image.cropHint.bottom - image.cropHint.top;
@@ -361,6 +363,12 @@ function showPreviewPic(image){
   } else {
     var r = 1;
   }
+
+  //等比例转换裁剪参数
+  cropW = cropW / r;
+  cropH = cropH / r;
+  cropLeft = cropLeft / r;
+  cropTop = cropTop / r;
 
   //插入图片
   $('.preview-pic-window').append('<img src="' + pictures_host + image.key +
