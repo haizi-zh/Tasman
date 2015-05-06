@@ -83,7 +83,8 @@ Meteor.methods({
         col = ns.split('.')[1],
         branchCount = entry.branch && entry.branch.length || 0,
         snapshotId = branchCount + 1,
-        updateContent = Meteor.call('stagedContent', ns, new Mongo.ObjectID(pk));
+        updateContent = Meteor.call('stagedContent', ns, new Mongo.ObjectID(pk)),
+        updateContent.taoziEnabled = true;
     // omit _id for secure
     var resFromOnline = getMongoCol(col).update({'_id': new Mongo.ObjectID(pk)}, {'$set': _.omit(updateContent, '_id')});
     // update CmsOplog
