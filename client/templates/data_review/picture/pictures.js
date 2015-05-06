@@ -335,41 +335,53 @@ Template.pictures.events({
   //上传远端图片
   "click #pic-fet-sub": function(e){
     var fetchUrl = $('#fet-pic-url').val();
+    var timeOut = 0;
+
+    //超时响应，3s内没有上传成功，视作上传失败!
+    timeFetchPic = function(){
+      timeOut = 1;
+      alert('该图无法上传！请使用本地上传。');
+    };
+    var t = setTimeout('timeFetchPic()', 3000);
+
     Meteor.call('fetchPic', fetchUrl, function(error, result) {
-      if (error) {
-        return throwError(error.reason);
-      }
-      if (result) {
-        //初始化新增图片的crophint
-        var cropHint = {
-          ow: result.w,
-          oh: result.h,
-          key: result.key
-        };
-        upCropHints.push(cropHint);
-
-        //新增已选图片
-        var imageInfo = {
-          key: result.key,
-          index: upCropHints.length - 1,
-          source: "upload",
-          url: result.url
-        };
-        Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
-
-        var url = result.url;
-        var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
-              || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
-        Meteor.call('saveFetchImage', mid, result.key, fetchUrl , function(error, result) {
-          if (result) {
-            alert('上传成功！图片链接为' + url);
-            console.log(result);
-          } else {
-            alert('存入数据库失败！');
+      if ( !timeOut ) {
+        clearTimeout(t);
+        if (error) {
+          return throwError(error.reason);
+        }
+        if (result) {
+          //初始化新增图片的crophint
+          var cropHint = {
+            ow: result.w,
+            oh: result.h,
+            key: result.key
           };
-        });
-      } else {
-        alert("上传图片失败，请再次上传或联系程序员！");
+          upCropHints.push(cropHint);
+
+          //新增已选图片
+          var imageInfo = {
+            key: result.key,
+            index: upCropHints.length - 1,
+            source: "upload",
+            url: result.url
+          };
+          Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
+
+          var url = result.url;
+          var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
+                || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+          Meteor.call('saveFetchImage', mid, result.key, fetchUrl , function(error, result) {
+            if (result) {
+              alert('上传成功: 图片链接为' + url);
+              console.log(result);
+            } else {
+              alert('存入数据库失败！');
+            };
+          });
+        } else {
+          alert("上传图片失败，请再次上传或联系程序员！");
+        }
       }
     });
   }

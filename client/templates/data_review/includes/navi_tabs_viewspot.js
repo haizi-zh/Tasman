@@ -69,7 +69,7 @@ sessionInfo = function(ns, pk) {
   // var coll = "Shopping";
   // var mid = Session.get('current' + coll + 'Id');
   var oriData = storageEngine.snapshot(ns, new Mongo.ObjectID(pk));
-  console.log(oriData);
+  // console.log(oriData);
   return {
     ns: ns,
     pk: new Mongo.ObjectID(pk),
