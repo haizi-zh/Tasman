@@ -48,7 +48,11 @@ Meteor.methods({
     check(pk, Meteor.Collection.ObjectID);
     check(zhName, String);
     var query = {'ns': ns, 'pk': pk._str};
-    OplogPkList.update(query, {'$set': {'lastModified': ts, 'zhName': zhName}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+    if(OplogPkList.findOne(query)){
+      OplogPkList.update(query, {'$set': {'lastModified': ts}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+    }else{
+      OplogPkList.update(query, {'$set': {'ts': ts, 'zhName': zhName}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+    }
   }
 });
 

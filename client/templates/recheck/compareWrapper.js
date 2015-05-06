@@ -11,6 +11,10 @@ Tracker.autorun(function(){
   }
 });
 
+Tracker.autorun(function(){
+
+});
+
 Template.compareWrapper.helpers({
 
   itemData: function(){
