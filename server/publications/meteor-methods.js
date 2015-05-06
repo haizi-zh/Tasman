@@ -120,6 +120,10 @@ Meteor.methods({
     var col = item.ns.split('.')[1];
     var updateContent = Meteor.call('snapshotInfo', item.ns, new Mongo.ObjectID(item.pk), snapshotId);
     var resFromOnline = getMongoCol(col).update({'_id': new Mongo.ObjectID(item.pk)}, {'$set': _.omit(updateContent, '_id')});
+    var list = OplogPkList.findOne({'pk': item.pk});
+    if(list.branch && list.branch.length === 1) {
+      snapshotId = 0;
+    }
     var opCntAdded = CmsOplog.update(
                     {'pk': new Mongo.ObjectID(item.pk), 'status': 'merged', 'snapshotId': {'$gt': snapshotId}},
                     {'$set': {'status': 'staged'}, '$unset': {'snapshotId': ''}},
