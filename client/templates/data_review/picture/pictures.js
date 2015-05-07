@@ -28,7 +28,12 @@ Template.pictures.onRendered(function(){
       parentDom = $('ul.selected-container')[0];
 
   for (var i = 0, len = images.length; i < len; i++) {
-    Blaze.renderWithData(Template.selectedPicture, images[i], parentDom);
+
+    //假如没有w,h数据就先不选择
+    if (images[i].w && images[i].h){
+      console.log(images[i]);
+      Blaze.renderWithData(Template.selectedPicture, images[i], parentDom);
+    }
   };
   $('.selected-container').sortable().bind('sortupdate');
 })
@@ -105,7 +110,12 @@ Template.pictures.helpers({
       }else{
         //...原数据没有crophint，则对应crophint为空！
       }
-      Blaze.renderWithData(Template.selectedPicture, image, $('ul.selected-container')[0]);
+
+      //假如没有w,h数据就先不选择
+      if (image.w && image.h){
+        console.log(image);
+        Blaze.renderWithData(Template.selectedPicture, image, $('ul.selected-container')[0]);
+      }
       $('.selected-container').sortable().bind('sortupdate');
     };
     Session.set('selectedPicToCurSelected', images);
