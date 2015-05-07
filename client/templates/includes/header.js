@@ -23,6 +23,10 @@ var naviBarConfig = [{
     url: "/data-review/hotel",
     routeName: "reviewHotel"
     // disable: true
+  }, {
+    name: "路线数据",
+    url: "/data-review/plan",
+    routeName: "reviewPlan"
   }]
 }, {
   name: "IM运营",
