@@ -46,8 +46,25 @@ Template.recheck.helpers({
         'operator': '$gt'
       }
     ]
+  },
+  'checkedItemCnt': function() {
+    Session.get('trigger-cal-checked');
+    Meteor.call('checkedItemCnt', function(err, res){
+      if(!err){
+        Session.set('checkedItemCnt', res);
+      }
+    });
+    return Session.get('checkedItemCnt');
   }
 });
+
+// Tracker.autorun(function(){
+//   Meteor.call('checkedItemCnt', function(err, res){
+//     if(!err){
+//       Session.set('checkedItemCnt', res);
+//     }
+//   })
+// })
 
 Template.recheck.events({
   'click .recheck-items': function(event) {
@@ -62,5 +79,60 @@ Template.recheck.events({
     var ns = $(event.target).attr('data-ns');
     Session.set('recheckItem', {'pk': mid, 'ns': ns});
     Meteor.subscribe('oplog', ns, new Mongo.ObjectID(mid), 0);
+  },
+  'click input[name="ready-online"]': function(event){
+    event.preventDefault();
+    event.stopPropagation();
+    var pk = $(event.target).parent().attr('id');
+    if(event.target.checked){
+      Meteor.call('ready-online', pk);
+    }else{
+      Meteor.call('unready-online', pk);
+    }
+    Session.set('trigger-cal-checked', Date.now());
+  },
+  'click .select-all': function(event){
+    event.preventDefault();
+    if($(event.target).hasClass("all-in")){
+      // 点击‘全不选’ 的逻辑
+      $(event.target).removeClass("all-in");
+      $(event.target).text('全选');
+      $('input[name="ready-online"]').each(function(index, elem){
+        if($(elem).is(':checked')){
+          $(elem).trigger('click');
+        }
+      });
+    }else{
+      // 点击‘全选’ 的逻辑
+      $(event.target).addClass("all-in");
+      $(event.target).text('全不选');
+      $('input[name="ready-online"]').each(function(index, elem){
+        if(!$(elem).is(':checked')){
+          $(elem).trigger('click');
+        }
+      });
+    }
+  },
+  'click .upload-btn': function(event){
+    Meteor.call('bulk-upload', function(err, res){
+      if(!err){
+        alert('上线' + res.count + '个数据');
+        Session.set('trigger-cal-checked', Date.now());
+      }else{
+        alert('批量上线出错');
+      }
+    });
   }
+  // 'click .fc-pager-page': function(event){
+  //   event.preventDefault();
+  //   $('input[name="ready-online"]').each(function(index, elem){
+  //     if(!$(elem).is(':checked')){
+  //       $('.select-all').removeClass("all-in");
+  //       $('.select-all').text('全选');
+  //       return;
+  //     }
+  //   });
+  //   $('.select-all').addClass("all-in");
+  //   $('.select-all').text('全不选');
+  // }
 });
