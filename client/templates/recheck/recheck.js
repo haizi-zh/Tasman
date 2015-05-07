@@ -28,8 +28,29 @@ Template.recheck.helpers({
       }
     ]
   },
+  'dataStatus': function(){
+    return [
+      {
+        'status': 'uploaded',
+        'name': '已上线'
+      },
+      {
+        'status': 'checked',
+        'name': '准备上线'
+      },
+      {
+        'status': 'review',
+        'name': '待复审'
+      },
+    ]
+  },
   'timeLimits': function() {
     return [
+      {
+        'timeLimit': moment().subtract(1, 'd').startOf('day').unix() * 1000,
+        'name': '最近一天',
+        'operator': '$gt'
+      },
       {
         'timeLimit': moment().subtract(3, 'd').startOf('day').unix() * 1000,
         'name': '最近三天',
@@ -122,6 +143,18 @@ Template.recheck.events({
         alert('批量上线出错');
       }
     });
+  },
+  'click .btn-up-down': function(){
+    if($('.recheck-filter-wrapper').hasClass("hidden")){
+      $('.recheck-filter-wrapper').removeClass("hidden")
+      $('.btn-up-down').text('隐藏');
+      $('.up-down-filters').css({'border-bottom': ""});
+    }else{
+      $('.recheck-filter-wrapper').addClass("hidden");
+      $('.btn-up-down').text('展开');
+      $('.up-down-filters').css({'border-bottom': "1px solid #ccc"});
+
+    }
   }
   // 'click .fc-pager-page': function(event){
   //   event.preventDefault();
