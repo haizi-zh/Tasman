@@ -98,7 +98,7 @@
   border-color: #d2d6de;
 }
 
-.editor-label, .data-type-label, .time-limit-label {
+.editor-label, .data-type-label, .time-limit-label, .data-status-label {
   padding: 3px;
   color: white;
   border-radius: 5px;
@@ -122,6 +122,12 @@
 }
 .time-limit-label:hover {
   background-color: #5A3F7C;
+}
+.data-status-label {
+  background-color: #E77248;
+}
+.data-status-label:hover {
+  background-color: #B03E14;
 }
 
 .label-filters {
@@ -148,4 +154,25 @@ label.select-all:hover {
 li.uploaded {
   background-color: rgb(86, 223, 124);
   color: #ffffff !important;
+}
+
+.up-down-filters{
+  padding: 3px 0; 
+  border-top: 1px solid #ccc;
+}
+
+.btn-up-down{
+  float: right;
+  font-size: 6px;
+  width: 10%;
+  margin: 1px auto;
+  padding: 1px 0px;
+  cursor: pointer;
+}
+.upload-btn{
+  float: right;
+  margin-right: 7px;
+}
+.select-all-container{
+  margin-top: 3px;
 }

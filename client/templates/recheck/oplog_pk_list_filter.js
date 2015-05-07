@@ -22,6 +22,10 @@ HomeFilter = new Meteor.FilterCollections(OplogPkList, {
         return parseInt(value);
       },
     },
+    'status': {
+      title: '数据编辑状态',
+      condition: '$and'
+    },
     "ns": {
       title: '数据类型',
       condition: '$and',

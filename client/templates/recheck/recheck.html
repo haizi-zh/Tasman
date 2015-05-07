@@ -2,6 +2,11 @@
   <div class="recheck-page">
 
     <div class="recheck-left-wrapper">
+      <div class="up-down-filters">
+        <strong>可选筛选条件:</strong>
+        <span class="btn-up-down">隐藏</span>
+      </div>
+
       <div class="recheck-filter-wrapper" style="">
 
         <strong>用户:</strong>
@@ -45,11 +50,26 @@
             {{name}}
           </label>
         {{/each}}
+
+        <br>
+        <strong>编辑数据状态:</strong>
+        <br>
+        {{#each dataStatus}}
+          <label href="# "
+            class="data-status-label fc-filter"
+            data-fc-filter-field="status"
+            data-fc-filter-value="{{status}}"
+            data-fc-filter-alias="{{name}}"
+            data-fc-filter-operator="{{operator}}"
+          >
+            {{name}}
+          </label>
+        {{/each}}
       </div>
 
       <!-- 清除筛选 -->
       <div class="selected-filter-wrap">
-        <strong>筛选条件:</strong>
+        <strong>已选筛选条件:</strong>
         <br>
         {{#each fcFilterActive}}
           <label href="#" class="label-filters fc-filter-clear" style="margin:3px">
@@ -66,8 +86,12 @@
         <button class="go-specific-pager">跳转</button>
       </div>
       <div class="bulk-upload">
-        <label for="" class="label label-success">已复审数据:</label><span class="badge"><strong>{{checkedItemCnt}}</strong></span>
-        <button class="btn btn-primary btn-xs upload-btn" style="margin-left: 37px">批量上传</button>
+        <label for="" class="label label-success">已复审数据:
+          <span class="badge">
+            <strong>{{checkedItemCnt}}</strong>
+          </span>
+        </label>
+        <button class="btn btn-primary btn-xs upload-btn">批量上传</button>
       </div>
 
       <div class='select-all-container'>
