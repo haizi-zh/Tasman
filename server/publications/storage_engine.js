@@ -40,20 +40,7 @@ Meteor.methods({
    * @param  {[type]} zhName [description]
    * @return {[type]}        [description]
    */
-  'OplogPkList.update': function(ts, ns, userId, pk, zhName){
-    check(ts, Number);
-    check(ns, String);
-    check(userId, String);
-    console.log(pk);
-    check(pk, Meteor.Collection.ObjectID);
-    check(zhName, String);
-    var query = {'ns': ns, 'pk': pk._str};
-    if(OplogPkList.findOne(query)){
-      OplogPkList.update(query, {'$set': {'lastModified': ts}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
-    }else{
-      OplogPkList.update(query, {'$set': {'ts': ts, 'zhName': zhName}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
-    }
-  }
+  
 });
 
 Meteor.publish('oplog-pk-list', function(pk){

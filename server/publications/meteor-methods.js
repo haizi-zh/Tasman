@@ -73,6 +73,20 @@ Meteor.methods({
     }
     return temp;
   },
+  'OplogPkList.update': function(ts, ns, userId, pk, zhName){
+    check(ts, Number);
+    check(ns, String);
+    check(userId, String);
+    console.log(pk);
+    check(pk, Meteor.Collection.ObjectID);
+    check(zhName, String);
+    var query = {'ns': ns, 'pk': pk._str};
+    if(OplogPkList.findOne(query)){
+      OplogPkList.update(query, {'$set': {'lastModified': ts, status: 'review'}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+    }else{
+      OplogPkList.update(query, {'$set': {'ts': ts, 'zhName': zhName, status: 'review'}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
+    }
+  },
   // update online data, optional: desc
   'updateOnlineData': function(pk, desc) {
     check(pk, String);
@@ -95,7 +109,7 @@ Meteor.methods({
     var resFromOplogPkList = OplogPkList.update(
                                 {'pk': pk},
                                 {'$addToSet': {'branch': {'snapshotId': snapshotId, 'desc': commitInfo}},
-                                '$set': {opCount: 0}});
+                                '$set': {opCount: 0, status: 'uploaded'}});
     if(resFromOnline >= 1 && resFromCmsOplog >= 1 && resFromOplogPkList >= 1) {
       return {'code': 0};
     }else{
@@ -130,7 +144,7 @@ Meteor.methods({
                     {'multi': true});
     OplogPkList.update(
                     {'pk': item.pk},
-                    {'$inc': {'opCount': opCntAdded}, '$pull': {'branch': {'snapshotId': {'$gt': snapshotId}}}});
+                    {'$set': {'status': 'review'},'$inc': {'opCount': opCntAdded}, '$pull': {'branch': {'snapshotId': {'$gt': snapshotId}}}});
     if(resFromOnline === 1){
       return {'code': 0};
     } else {
@@ -158,6 +172,27 @@ Meteor.methods({
     }else{
       return {'code': 1};
     }
+  },
+  'ready-online': function(pk){
+    check(pk, String);
+    OplogPkList.update({'pk': pk}, {'$set': {'status': 'checked'}});
+  },
+  'unready-online': function(pk){
+    check(pk, String);
+    OplogPkList.update({'pk': pk}, {'$set': {'status': 'review'}});
+  },
+  'checkedItemCnt': function(){
+    return OplogPkList.find({'status': 'checked'}).fetch().length;
+  },
+  // 批量上线
+  'bulk-upload': function(){
+    var count = 0;
+    OplogPkList.find({'status': 'checked'}, {'pk': 1}).forEach(function(entry){
+      if(Meteor.call('updateOnlineData', entry.pk)['code'] == 0){
+        count = count + 1;
+      }
+    });
+    return {count: count};
   }
 
 });

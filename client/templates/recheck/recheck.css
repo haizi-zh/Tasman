@@ -134,3 +134,18 @@
 .label-filters:hover {
   background-color: #276091;
 }
+
+label.select-all{
+  cursor: pointer;
+}
+input[name="ready-online"]{
+  cursor: pointer;
+}
+
+label.select-all:hover {
+  background-color: #3A3939;
+}
+li.uploaded {
+  background-color: rgb(86, 223, 124);
+  color: #ffffff !important;
+}
