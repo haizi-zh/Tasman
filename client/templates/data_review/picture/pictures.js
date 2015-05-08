@@ -253,6 +253,9 @@ Template.pictures.events({
       else if ($(selected[i]).attr("data-from") == "upload")
         cropHint = upCropHints[$(selected[i]).attr("data-index")];
 
+      //每次都需要重新初始化
+      coord = {};
+
       //此处不可以用x1作判断，可能为0
       if (cropHint.x2){
         r = cropHint.ow / cropHint.cw;
@@ -274,7 +277,8 @@ Template.pictures.events({
         };
       }
 
-      if (coord){
+      //是否有裁剪信息
+      if (coord.left){
         subImage = {
           h: cropHint.oh,
           w: cropHint.ow,
