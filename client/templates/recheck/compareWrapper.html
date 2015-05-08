@@ -42,15 +42,17 @@
         </div>
         {{#each baseData}}
           <div class="form-group">
-            <label>{{zhLabel}}</label>
+            <label style="width: 100%; background-color:#009900; color:#fff;" class="text-center">{{zhLabel}}</label>
               {{#if strArray}}
                 <span>(请用逗号","分隔)</span>
               {{/if}}
               <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}" disabled="{{#if notWrite}}disabled{{/if}}"></textarea>
           </div>
         {{/each}}
-        <label>图片列表</label>
         <ul class="pic-list">
+          <div>
+            <label>图片列表</label>
+          </div>
           {{#each basePic}}
             <li class="pic-wrap">
               <img src="{{url}}?imageView2/1/w/100/h/100">
@@ -65,8 +67,10 @@
         {{#each compareData}}
           {{> stringTpl this}}
         {{/each}}
-        <label>图片列表</label>
         <ul class="pic-list">
+          <div>
+            <label>图片列表</label>
+          </div>
           {{#each comparePic}}
             <li class="pic-wrap">
               <img src="{{url}}?imageView2/1/w/100/h/100">
@@ -80,7 +84,7 @@
         </div>
         {{#each diffData}}
           <div class="form-group {{#if isModified}} modified{{/if}}">
-            <label>{{zhLabel}}</label>
+            <label style="width: 100%; background-color:#009900; color:#fff;" class="text-center">{{zhLabel}}</label>
             <div class="diff-wrapper copy-form-control">
 
               {{#each value}}
