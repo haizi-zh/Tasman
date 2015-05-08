@@ -301,9 +301,9 @@ Template.compareWrapper.events({
   },
 
   'click #showModified': function(e) {
-    var diffChildDom = $('.recheck-diff-wrapper').children('div');
-    var compareChlidDom = $('.recheck-compare-wrapper').children('div');
-    var baseChildDom = $('.recheck-base-wrapper').children('div');
+    var diffChildDom = $('.recheck-diff-wrapper').children('div.form-group');
+    var compareChlidDom = $('.recheck-compare-wrapper').children('div.form-group');
+    var baseChildDom = $('.recheck-base-wrapper').children('div.form-group');
     if(e.target.checked) {
       for(var i = 0, len = diffChildDom.length; i < len; i++){
         var tempDom = diffChildDom[i];
@@ -318,6 +318,7 @@ Template.compareWrapper.events({
       $(compareChlidDom).removeClass("hidden");
       $(baseChildDom).removeClass("hidden");
     }
+    Meteor.setTimeout(arrangeDiv, 100);
   },
 
   //点击图片，进入预览状态

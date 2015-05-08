@@ -100,6 +100,7 @@ Template.recheck.events({
     var ns = $(event.target).attr('data-ns');
     Session.set('recheckItem', {'pk': mid, 'ns': ns});
     Meteor.subscribe('oplog', ns, new Mongo.ObjectID(mid), 0);
+    Meteor.setTimeout(arrangeDiv, 2000);
   },
   'click input[name="ready-online"]': function(event){
     event.preventDefault();
