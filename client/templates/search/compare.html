@@ -1,43 +1,59 @@
 <template name="compare">
-<!-- table-hover -->
-  <table class="table table-bordered table-hover table-vertical-align table-highlight-head">
-    <thead>
-      <tr>
-        <td class="cmp_zhName">名字</td>
-        {{#each cmpElements}}
-          <td>
-            <textarea class="form-control" rows="1" id="" placeholder="无内容">{{zhName}}</textarea>
-            <div class="text-center">
-              <input name="zhName" type="radio" value="{{_id._str}}" />
-            </div>
-          </td>
-        {{/each}}
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td class="cmp_desc">介绍</td>
-        {{#each cmpElements}}
-          <td class='active'>
-            <textarea class="form-control" rows="5" id="" placeholder="无内容">{{desc}}</textarea>
-            <div class="text-center">
-              <input name="desc" type="radio" value="{{_id._str}}" />
-            </div>
-          </td>
-        {{/each}}
-      </tr>
-      <tr>
-        <td>地址</td>
-        {{#each cmpElements}}
-          <td>
-            <textarea class="form-control" rows="1" id="" placeholder="无内容">{{address}}</textarea>
-            <div class="text-center">
-              <input name="address" type="radio" value="{{_id._str}}" />
-            </div>
-          </td>
-        {{/each}}
-      </tr>
+  <div class="compare-container">
 
-    </tbody>
-  </table>
+    <div class="compare-left-navi-container">
+      <div class="merge-btn-container">
+        <button class="btn-container btn btn-success">合并</button>
+      </div>
+      <ul class="compare-left-navi list-group">
+        <li class="compare-key list-group-item" id='all' data-index="all">All</li>
+        {{#each keyArray}}
+          <li class="compare-key list-group-item" id='{{value}}' data-index="{{index}}">{{zhName}}
+            <span class="badge label-danger">?</span>
+          </li>
+        {{/each}}
+      </ul>
+    </div>
+
+    <div class="compare-right-container">
+      <div class="compare-right-poi-navi">
+        <ul class="nav nav-tabs">
+          <li class="compare-poi-navi-li"><a href="#" id="all" class="compare-poi-navi">All</a></li>
+          {{#each poiIndex}}
+            <li class="compare-poi-navi-li">
+              <span class="">
+                <input type="radio" name="select-radio" value="{{index}}">
+                <a href="#" id="{{index}}" class="compare-poi-navi" data-pk="{{id}}">{{zhName}}</a>
+              </span>
+            </li>
+          {{/each}}
+        </ul>
+      </div>
+
+      <div class="compare-content-container">
+        {{#each cmpElements}}
+          <div class="compare-items hidden" data-index="{{belongIndex}}" id="{{keyChain}}">
+            {{> stringTpl this}}
+          </div>
+        {{/each}}
+      </div>
+    </div>
+
+  </div>
+
+</template>
+
+<template name="compareComfirm">
+  <ul class="list-group">
+    {{#each pois}}
+      <li class="list-group-item" id="{{id}}" data-ns="{{ns}}">
+        <input id="{{id}}" type="radio" name="saveTo">
+        <label for="" class="label label-success" style="margin-right: 7px">{{zhName}}</label>
+        <div class="ui toggle checkbox">
+          <input type="checkbox" class="poi-checked-delete" id="{{id}}">
+          <label>删除</label>
+        </div>
+      </li>
+    {{/each}}
+  </ul>
 </template>

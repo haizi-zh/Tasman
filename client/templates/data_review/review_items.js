@@ -134,6 +134,22 @@ reviewItems = {
   },
 };
 
+getReviewItems = function(type) {
+  var target = reviewItems[type],
+      keyArray = [],
+      index = 0;
+  for(var classifyKey in target) {
+    var temp = target[classifyKey],
+        keys = _.keys(temp);
+    for (var i = 0, len = keys.length; i < len; i++) {
+      var key = keys[i];
+      keyArray.push({'index': index, 'zhName': temp[key]['0'], 'value': key})
+      index = index + 1;
+    };
+  }
+  return keyArray;
+}
+
 itemIndex = {
   'zhDesc': 0,
   'dataType': 1,

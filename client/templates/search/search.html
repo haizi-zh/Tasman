@@ -21,26 +21,33 @@
 <!-- 搜索结果的模版 -->
 <template name="searchResult">
   <div class="add_to_compare">
-    <!-- insert Dom through js code -->
-    <!-- compare Items -->
-  </div>
-  <div class="">
-    {{#if hasCompareItem}}
-      <input type="submit" class="btn compare_btn" value="比较">
-    {{/if}}
+    <div class="compare_btn_container">
+      {{#if hasCompareItem}}
+        <input type="submit" class="btn compare_btn" value="比较">
+      {{/if}}
+    </div>
+    <ul class="list-group add_to_compare_ul"></ul>
   </div>
 
-  {{#each searchResults}}
+  <div class="search-result-container">
+    <div class="serach-result-desc" style="margin-bottom:13px">
+      <label for="" class="label label-info">一共查找到: {{searchResults.length}} 个相关景点</label>
+    </div>
     <ul class="list-group">
-      <li class="list-group-item">
-        <span>
-        <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
-        <a href="/{{collection}}/{{_id._str}}" class="list-group-item searchRes" data-type="{{collection}}" data-id='{{_id._str}}'>
-        {{zhName}}
-        <p>{{desc}}</p>
-        </a>
-        </span>
-      </li>
+      {{#each searchResults}}
+          <li class="list-group-item">
+            <div class="checkbox-container">
+              <input type="checkbox" data-id='{{_id._str}}' aria-label="...">
+            </div>
+            <div class="result-desc-container">
+              <a href="/{{collection}}/{{_id._str}}" class="list-group-item searchRes" data-type="{{collection}}" data-id='{{_id._str}}'>
+              <label for="" class="label label-success">{{zhName}}</label>
+              <span title="{{desc}}">{{descShort}}</span>
+            </a>
+            </div>
+          </li>
+      {{/each}}
     </ul>
-  {{/each}}
+  </div>
+
 </template>
