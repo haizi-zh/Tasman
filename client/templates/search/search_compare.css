@@ -1,0 +1,62 @@
+.checkbox-container {
+  width: 2%;
+  display: inline-block;
+}
+
+.result-desc-container {
+  width: 97%;
+  display: inline-block;
+}
+.add_to_compare {
+  position: fixed;
+  top: 73px;
+  right: 70px;
+  z-index: 1000;
+  max-width: 200px;
+  /*background-color: rgba(85, 173, 120, 0.64);*/
+}
+
+.compare_btn_container{
+  width: 100%;
+  text-align: center;
+}
+
+/*============compare css begin=============*/
+.compare-left-navi-container {
+    width: 15%;
+    display: inline-block;
+    float: left;
+    margin-top: 7px;
+}
+.compare-right-poi-navi {
+  margin-bottom: 3px;
+}
+
+.compare-right-container {
+    width: 80%;
+    display: inline-block;
+    margin-left: 3px;
+}
+
+.item-active {
+  background-color: #4455AA !important;
+  color: #ffffff;
+}
+
+.compare-poi-navi {
+  background-color: #fff !important;
+  color: #000 ;
+}
+
+.poi-active {
+  background-color: #0463B8 !important;
+  color: #fff !important;
+  font-weight: bold;
+}
+
+.merge-btn-container {
+  width: 80%;
+  margin: 3px auto;
+  text-align: center;
+}
+/*============compare css end=============*/
