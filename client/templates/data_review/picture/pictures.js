@@ -273,7 +273,7 @@ Template.pictures.events({
       coord = {};
 
       //warning: 此处不可以用x1作判断，可能为0
-      if (cropHint.x2){
+      if (cropHint.x2 && cropHint.y2){
         r = cropHint.ow / cropHint.cw;
         //对于裁剪的图像返回偶数数据
         left = parseInt(cropHint.x1 * r);
@@ -294,7 +294,8 @@ Template.pictures.events({
       }
 
       //是否有裁剪信息
-      if (coord.left){
+      //warning: 此处不可以用left作判断，可能为0
+      if (coord.right && coord.bottom){
         subImage = {
           h: cropHint.oh,
           w: cropHint.ow,
