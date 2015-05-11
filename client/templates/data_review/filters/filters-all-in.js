@@ -2,6 +2,8 @@
 //   ViewSpot = new Mongo.Collection('ViewSpot');
 // }
 
+Plan = new Mongo.Collection('Plan');
+
 ViewSpot = new Mongo.Collection('ViewSpot');
 Locality = new Mongo.Collection('Locality');
 Hotel = new Mongo.Collection('Hotel');
