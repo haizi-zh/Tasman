@@ -1,0 +1,59 @@
+<template name="reviewPlan">
+  <!-- 左侧导航栏 -->
+  {{> naviRegion}}
+
+  <!-- 城市信息审核 -->
+  <div class="right-info-container">
+	<div class="city-info-container">
+	  <!-- {{> naviTabsPlan planDetail=planDetail}} -->
+  	{{#with planDetail}}
+      <div class="form-group">
+        <label>标题</label>
+        <!-- <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}" data-type="{{dataType}}"></textarea> -->
+        <textarea class="form-control" value="{{title}}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>简介</label>
+        <textarea class="form-control" value="{{desc}}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>线路玩法</label>
+        <textarea class="form-control" value="{{plays}}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>出行人群</label>
+        <textarea class="form-control" value="{{withs}}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>线路特色</label>
+        <textarea class="form-control" value="{{tags}}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>最标签</label>
+        <textarea class="form-control" value="{{lxpTag}}"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label>线路游记</label>
+        <!-- {{> froalaReactive _onblur=UpdateMD5 keyChain=keyChain inlineMode=false _value=value _buttons=buttons}} -->
+        {{> froalaReactive inlineMode=false _value=moreDesc}}
+      </div>
+
+      <div class="form-group">
+        <label>日程</label>
+        {{#each details}}
+          {{#each actv}}
+            <textarea class="form-control" value="{{item.zhName}}"></textarea>
+          {{/each}}
+        {{/each}}
+      </div>
+  	{{/with}}
+	</div>
+  </div>
+
+</template>

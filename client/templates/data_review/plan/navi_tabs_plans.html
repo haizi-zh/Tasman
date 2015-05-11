@@ -1,0 +1,22 @@
+<template name="naviTabsPlan">
+  <form>
+    <!-- <nav class="navbar navbar-default" role="navigation">
+      <ul class="nav nav-tabs">
+        <li role="navigation" class="basic-info"><a class="navi-tabs" href="#">基本信息</a></li>
+        <li role="navigation" class="traffic-info"><a class="navi-tabs" href="#">交通</a></li>
+        <li role="navigation" class="feature-info"><a class="navi-tabs" href="#">特色</a></li>
+        <li role="navigation" class="pic-info"><a class="navi-tabs" href="#">图片筛选</a></li>
+        <botton id="submit-info" class="btn btn-default" type="button">提交信息</botton>
+      </ul>
+    </nav>
+ -->
+    <div class="infos">
+      {{#each planDetail}}
+        {{#if this.tabName.basic}}
+          {{> stringTpl this}}
+        {{/if}}
+      {{/each}}
+    </div>
+  </form>
+</template>
+
