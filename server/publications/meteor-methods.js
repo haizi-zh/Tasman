@@ -1,21 +1,3 @@
-function getMongoCol(col){
-  console.log(col);
-  check(col, String);
-  var curDB;
-  if("ViewSpot" === col) {
-    curDB = ViewSpot;
-  }else if('Locality' === col) {
-    curDB = Locality;
-  }else if('Hotel' === col) {
-    curDB = Hotel;
-  }else if('Shopping' === col) {
-    curDB = Shopping;
-  }else if('Restaurant' === col) {
-    curDB = Restaurant;
-  }
-  return curDB;
-};
-
 Meteor.methods({
   'search': function(collection, keyword){
     check(collection, String);
@@ -194,6 +176,24 @@ Meteor.methods({
       }
     });
     return {count: count};
+  },
+  // poi合并使用
+  'poi-merge-update': function(dbName, pk, updateFields, uselessPk) {
+    // body...
+    check(pk, String);
+    check(dbName, String);
+    check(updateFields, Object);
+    check(uselessPk, Array);
+    var db = getMongoCol(dbName);
+    var cnt = db.update({'_id': new Mongo.ObjectID(pk)}, {'$set': updateFields});
+    var deleteCnt = 0;
+    uselessPk.map(function(pk) {
+      db.remove({'_id': new Mongo.ObjectID(pk)});
+      deleteCnt = deleteCnt + 1;
+    });
+    if(cnt == 1 && deleteCnt == uselessPk.length){
+      return {code: 0};
+    }
   }
 
 });

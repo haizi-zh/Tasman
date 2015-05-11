@@ -1,13 +1,15 @@
 <template name="stringTpl">
   <div class="form-group">
     <label style="width: 100%; background-color:#009900; color:#fff;" class="text-center">{{zhLabel}}</label>
-    {{#if richEditor}}
-      {{> froalaReactive _onblur=UpdateMD5 keyChain=keyChain inlineMode=false _value=value _buttons=buttons}}
-    {{else}}
-      {{#if strArray}}
-        <span>(请用逗号","分隔)</span>
+    <div class="tpl-item-container" id="{{keyChain}}">
+      {{#if richEditor}}
+        {{> froalaReactive _onblur=UpdateMD5 keyChain=keyChain inlineMode=false _value=value _buttons=buttons}}
+      {{else}}
+        {{#if strArray}}
+          <span>(请用逗号","分隔)</span>
+        {{/if}}
+        <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}" data-type="{{dataType}}"></textarea>
       {{/if}}
-      <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}" data-type="{{dataType}}"></textarea>
-    {{/if}}
+    </div>
   </div>
 </template>

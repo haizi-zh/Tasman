@@ -1,4 +1,6 @@
 var _time, cropCoords, currentIndex, currentSource, cropScale, cropScaleIndex;
+
+// cropHints, selectedCropHints, upCropHints:imagestore图片, poi/geo图片, 上传图片的裁剪信息
 var cropHints, selectedCropHints, upCropHints;
 // cropHint{
 //  w,h:裁剪的宽高（对应于cw,ch的）
@@ -22,15 +24,14 @@ function initial(){
   Session.set('selectedPicToCurSelected', []);
 };
 
-// 为搜索单个poi提供onRender监听
+// 为搜索单个poi提供onRender监听 ——（当blaze时，模板尚未渲染出来，因此blaze失败！）
 Template.pictures.onRendered(function(){
   var images = Session.get('selectedPicToCurSelected'),
       parentDom = $('ul.selected-container')[0];
 
   for (var i = 0, len = images.length; i < len; i++) {
-
-    //假如没有w,h数据就先不选择
     if (images[i].w && images[i].h){
+      //假如没有w,h数据就先不选择
       console.log(images[i]);
       Blaze.renderWithData(Template.selectedPicture, images[i], parentDom);
     }
@@ -44,10 +45,13 @@ Template.pictures.helpers({
   //原有已选择图片
   selectedImageList: function(){
     initial();
+
+    //获取数据
     var nsAndPk = getNsAndPk();
     var selectedImageList = sessionInfo(nsAndPk.ns, nsAndPk.pk).oriData.images;
     if (!selectedImageList)
       return null;
+
     var image, images = [], cropHint, selectedCropHint;
     var r, x1, x2, y1, y2, cw, ch;
     for (var i = 0;i < selectedImageList.length;i++){
@@ -74,8 +78,9 @@ Template.pictures.helpers({
       if (selectedImageList[i].cropHint){
         selectedCropHint = selectedImageList[i].cropHint;
 
+        //不同尺寸图片的处理
         if (cropHint.ow >= 800 || cropHint.oh >= 800){
-          var r = Math.max(cropHint.ow/800, cropHint.oh/800);
+          var r = Math.max(cropHint.ow / 800, cropHint.oh / 800);
           //对于裁剪的图像返回偶数数据
           x1 = parseInt(selectedCropHint.left / r);
           x1 = (x1 % 2) ? (x1 + 1) : x1;
@@ -124,14 +129,14 @@ Template.pictures.helpers({
 
   //可选择图片
   imageList: function() {
+    //获取数据
     var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
         || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
     var imageList = Images.find({ 'itemIds': new Mongo.ObjectID(mid) }).fetch();
-    var image, images = [], cropHint;
 
+    var image, images = [], cropHint;
     for (var i = 0;i < imageList.length;i++){
       image = {
-        // id: imageList[i]._id._str,
         url: pictures_host + imageList[i].key,
         w: imageList[i].w,
         h: imageList[i].h,
@@ -159,8 +164,9 @@ Template.pictures.events({
   	clearTimeout(_time);
     var $picShadow = $(e.target).parent().children(".pic-shadow");
 
-    if ($picShadow.length <= 0){  //加入已选择队列
-      //判断是否存在相同的！若有，则提示已有！
+    //假如非选中态(没有阴影)：加入已选择队列
+    if ($picShadow.length <= 0){
+      //判断是否已选过相同的图片！若有，则提示已有！
       var selected = $(".selected-picture-container");
       var flag = true;
       for (var i = 0;i < selected.length;i++){
@@ -169,6 +175,7 @@ Template.pictures.events({
           break;
         }
       }
+
       if (flag){
         $(e.target).parent().prepend('<div class="pic-shadow"></div>');
 
@@ -187,7 +194,8 @@ Template.pictures.events({
       }else{
         alert("该图已选择！");
       } 
-    }else{  //从已选择队列中删除
+    }else{
+      //假如为选中态：从已选择队列中删除
       $picShadow.remove();
       var selected = $(".selected-picture-container");
       for (var i = 0;i < selected.length;i++){
@@ -246,18 +254,26 @@ Template.pictures.events({
     var left, right, top, bottom, r, coord;
 
     for (var i = 0;i < selected.length;i++){
-      if ($(selected[i]).attr("data-from") == "geo")
-        cropHint = selectedCropHints[$(selected[i]).attr("data-index")];
-      else if ($(selected[i]).attr("data-from") == "imageStore")
-        cropHint = cropHints[$(selected[i]).attr("data-index")];
-      else if ($(selected[i]).attr("data-from") == "upload")
-        cropHint = upCropHints[$(selected[i]).attr("data-index")];
+      //根据图片来源，获取裁剪信息
+      switch ( $(selected[i]).attr("data-from") ) {
+        case 'geo':
+          cropHint = selectedCropHints[$(selected[i]).attr("data-index")];
+          break;
+        case 'imageStore':
+          cropHint = cropHints[$(selected[i]).attr("data-index")];
+          break;
+        case 'upload':
+          cropHint = upCropHints[$(selected[i]).attr("data-index")];
+          break;
+        default:
+          cropHint = {};
+      }
 
-      //每次都需要重新初始化
+      //initial: 每次都需要重新初始化
       coord = {};
 
-      //此处不可以用x1作判断，可能为0
-      if (cropHint.x2){
+      //warning: 此处不可以用x1作判断，可能为0
+      if (cropHint.x2 && cropHint.y2){
         r = cropHint.ow / cropHint.cw;
         //对于裁剪的图像返回偶数数据
         left = parseInt(cropHint.x1 * r);
@@ -278,7 +294,8 @@ Template.pictures.events({
       }
 
       //是否有裁剪信息
-      if (coord.left){
+      //warning: 此处不可以用left作判断，可能为0
+      if (coord.right && coord.bottom){
         subImage = {
           h: cropHint.oh,
           w: cropHint.ow,
@@ -294,9 +311,12 @@ Template.pictures.events({
       }
       subImages.push(subImage);
     }
+
+    //提交图片修改信息到session中
     var tempOplog = Session.get('oplog');
     tempOplog.images = subImages;
     Session.set('oplog', tempOplog);
+    alert('成功上传图片信息！');
     log(tempOplog);
   },
 
@@ -311,6 +331,8 @@ Template.pictures.events({
         $("#picUpToken").val(result.upToken);
         $("#picUpKey").val(result.key);
         var form_data = new FormData($('#pic-up')[0]);
+
+        //用jquery.ajax提交表单
         $.ajax({
           type: 'post',
           // url: '//upload.qiniu.com/',
@@ -372,8 +394,11 @@ Template.pictures.events({
     };
     var t = setTimeout('timeFetchPic()', 3000);
 
+    //服务端上传图片
     Meteor.call('fetchPic', fetchUrl, function(error, result) {
+      //上传成功
       if ( !timeOut ) {
+        //并未超时
         clearTimeout(t);
         if (error) {
           return throwError(error.reason);
@@ -410,6 +435,8 @@ Template.pictures.events({
         } else {
           alert("上传图片失败，请再次上传或联系程序员！");
         }
+      } else {
+        //上传成功，但是已经超时
       }
     });
   }
@@ -463,11 +490,11 @@ function cropLocation(){
   var wWidth = $(window).width();
   var wHeight = $(window).height();
 
-  //init shadow
+  //阴影蒙层的初始化
   $('.crop-shadow').css('width', wWidth);
   $('.crop-shadow').css('height', wHeight);
 
-  //fix crop-window
+  //固定裁剪层位置
   var cropWindowWid = $('.crop-window').width();
   var cropWindowHei = $('.crop-window').height();
   $('.crop-window').css('left', (wWidth - cropWindowWid)/2);
@@ -491,7 +518,7 @@ function showSmallFrame(coords, object){
 }
 
 //绑定键盘事件
-function keyEvent(){
+function cropKeyEvent(){
   $(document).unbind('keydown'); //取消上一次的监听
   $(document).keydown(function(event) {
       var e = event || window.event;
@@ -536,11 +563,13 @@ function createJcrop($image){
 
 //加载裁剪层
 function loadJcrop($image){
+  //initial
   currentIndex = $image.index;
   currentSource = $image.source;
   cropShow($image);
   $('#crop-small-1').empty();
   $('#crop-small-2').empty();
+
   if ($image.source == "geo"){
     if (selectedCropHints[$image.index] && selectedCropHints[$image.index].h){
       $("#crop-small-2").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
@@ -557,9 +586,10 @@ function loadJcrop($image){
       showSmallFrame(upCropHints[$image.index], '#crop-small-2');
     }
   }
+
   $("#crop-small-1").append('<img src="' + $image.url + '?imageView2/2/w/800/h/600/interlace/1" class="preview"/>');
   cropLocation();
-  keyEvent();//enter&esc
+  cropKeyEvent();//enter&esc
   createJcrop($image);
 }
 
