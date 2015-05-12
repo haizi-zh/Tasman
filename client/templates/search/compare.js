@@ -1,35 +1,47 @@
-Template.compare.helpers({
-  
+Template.compareComfirm.events({
+  'change input[name="saveTo"]': function(e){
+    log('23')
+    var name = $(e.target).next().html();
+    log(name);
+  }
 });
 
 Template.compare.onRendered(function() {
   Session.set('compare-key', 'zhName');
-  Session.set('compare-poi-index', '0');
+  Session.set('compare-poi-index', 'all-poi');
+  Meteor.setTimeout(function(){
+    Session.set('trigger-autorun', Date.now());
+    $('#zhName').trigger('click');
+    $('#all-poi').trigger("click");
+  }, 1000);
 });
 
 Tracker.autorun(function(){
+  var trigger = Session.get('trigger-autorun');
   var key = Session.get('compare-key');
   var poiIndex = Session.get('compare-poi-index');
   $('.compare-items').addClass("hidden");
   $('.compare-items').each(function(index, dom){
-    if(key == 'all' && poiIndex != 'all'){
+    if(key == 'all-key' && poiIndex != 'all-poi'){
       if($(dom).attr('data-index') == poiIndex){
         $(dom).removeClass("hidden");
       }
-    }else if (key != 'all' && poiIndex == 'all'){
+    }else if (key != 'all-key' && poiIndex == 'all-poi'){
       if($(dom).attr('id').split('-')[0] == key){
         $(dom).removeClass("hidden");
       }
-    }else if(key != 'all' && poiIndex != 'all'){
+    }else if(key != 'all-key' && poiIndex != 'all-poi'){
       if($(dom).attr('data-index') == poiIndex && $(dom).attr('id').split('-')[0] == key){
         $(dom).removeClass("hidden");
       }
+    }else{
+      $('.compare-items').removeClass("hidden");
     }
   })
 });
 
 Template.compare.events({
-  "click input[type='radio']": function(e) {
+  "click input[name='select-radio']": function(e) {
     var mid = $(e.target).val(),
         name = $(e.target).attr('name');
     $('.cmp_' + name).addClass("compared");
@@ -68,9 +80,9 @@ Template.compare.events({
     $('li#' + key).find("span").text(parseInt(index) + 1).addClass("label-success");
     compare_select_keys(key, parseInt(index));
   },
-  'click .btn-container': function(e) {
+  'click .merge-btn-container': function(e) {
     bootbox.dialog({
-                title: "合并POI",
+                title: "POI 合并",
                 message: Blaze.toHTMLWithData(Blaze.Template.compareComfirm, {'pois': Session.get('compareInfos')['poiIndex']}),
                 buttons: {
                     cancel: {
@@ -84,22 +96,28 @@ Template.compare.events({
                         label: "确定",
                         className: "btn-success",
                         callback: function () {
-                            var name = $('#name').val();
+                            Session.set('compare-save-to', {});
                             var saveTo = $("input[name='saveTo']:checked").attr('id');
+                            var name = $("input[name='saveTo']:checked").next().html();
+                            var type = Session.get('compareInfos').dbName;
+                            Session.set('compare-save-to', {'id': saveTo, 'name': name, 'type': type});
                             var deleteIds = [];
                             var key_val = Session.get('compare_select_keys');
                             $('input[class="poi-checked-delete"]:checked').each(function(index, dom){
                               deleteIds.push($(dom).attr('id'));
                             })
-                            log(deleteIds);
+                            log(deleteIds)
                             poi_merge(key_val, saveTo, deleteIds);
-                            // bootbox.hideAll();
                         }
                     },
                 }
             });
     $('.ui.checkbox').checkbox();
     $('input[name="saveTo"]').checkbox();
+    $("input[name='saveTo']").on('click', function(){
+      $('.ui.checkbox').checkbox('enable');
+      $("input[name='saveTo']:checked").siblings("div").checkbox('uncheck').checkbox('disable');
+    })
   }
 });
 
@@ -126,14 +144,40 @@ merged_fields = function(key_val, items_arr) {
 
 // 更新数据库：更新，删除冗余的POI
 update_db = function(dbName, pk, updateFields, uselessPk) {
-  // body...
-  Meteor.call('poi-merge-update', dbName, pk, updateFields, uselessPk, function(err, res) {
-    if(!err && res.code == 0){
-      bootbox.alert("合并成功", function() {
+    var targetInfo = Session.get('compare-save-to'),
+      name = targetInfo.name,
+      id = targetInfo.id,
+      type = targetInfo.type,
+      directUrl = urlForDetail(type, id);
+    var redirectInfo = {
+      'desc': '即将跳转到合并后POI',
+      'content': name,
+      'directUrl': directUrl,
+      'limitTime': 5,
+    };
 
+  Meteor.call('poi-merge-update', dbName, pk, updateFields, uselessPk, function(err, res) {
+
+    if(!err && res.code == 0){
+      bootbox.dialog({
+          title: "界面跳转",
+          message: Blaze.toHTMLWithData(Blaze.Template.redirect, redirectInfo),
+          buttons: {
+              success: {
+                  label: "立即跳转",
+                  className: "btn-success",
+                  callback: function () {
+                      Router.go(type.toLowerCase() + 'Detail', {'id': id});
+                  }
+              },
+          }
+      });
+      timeCountDown(5, function(){
+        Router.go(type.toLowerCase() + 'Detail', {'id': id});
+        bootbox.hideAll();
       });
     }
-  })
+  });
 };
 
 // 整合函数
@@ -146,4 +190,8 @@ poi_merge = function(key_val, saveTo, uselessPk){
 
   var updateFields = merged_fields(key_val, itemInfo);
   update_db(dbName, saveTo, updateFields, uselessPk);
+}
+
+urlForDetail = function(type, id){
+  return '/' + type + '/' + id;
 }
