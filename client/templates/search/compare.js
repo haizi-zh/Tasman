@@ -7,6 +7,7 @@ Template.compareComfirm.events({
 });
 
 Template.compare.onRendered(function() {
+  Session.set('compare_select_keys', {});
   Session.set('compare-key', 'zhName');
   Session.set('compare-poi-index', 'all-poi');
   Meteor.setTimeout(function(){
@@ -81,6 +82,10 @@ Template.compare.events({
     compare_select_keys(key, parseInt(index));
   },
   'click .merge-btn-container': function(e) {
+    if(_.keys(Session.get('compare_select_keys')).length === 0){
+      alert('未做修改！');
+      return;
+    }
     bootbox.dialog({
                 title: "POI 合并",
                 message: Blaze.toHTMLWithData(Blaze.Template.compareComfirm, {'pois': Session.get('compareInfos')['poiIndex']}),
@@ -106,7 +111,6 @@ Template.compare.events({
                             $('input[class="poi-checked-delete"]:checked').each(function(index, dom){
                               deleteIds.push($(dom).attr('id'));
                             })
-                            log(deleteIds)
                             poi_merge(key_val, saveTo, deleteIds);
                         }
                     },
@@ -160,7 +164,7 @@ update_db = function(dbName, pk, updateFields, uselessPk) {
 
     if(!err && res.code == 0){
       bootbox.dialog({
-          title: "界面跳转",
+          title: "合并成功",
           message: Blaze.toHTMLWithData(Blaze.Template.redirect, redirectInfo),
           buttons: {
               success: {
