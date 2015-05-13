@@ -13,6 +13,7 @@ Template.reviewPlan.helpers({
     if(detailInfo.details){
       for (var i = 0;i < detailInfo.details.length;i++){
         detailInfo.details[i].index = i + 1;
+        detailInfo.details[i].items = [];
         for (var j = 0;j < detailInfo.details[i].actv.length;j++){
           var vId = detailInfo.details[i].actv[j].item.id.toString().split('"')[1];
           Meteor.subscribe('viewspotDetail', vId);
@@ -29,6 +30,7 @@ Template.reviewPlan.helpers({
           detailInfo.details[i].actv[j].item.desc = desc;
           detailInfo.details[i].actv[j].item.alias = alias;
           detailInfo.details[i].actv[j].item.distinct = distinct;
+          detailInfo.details[i].items[j] = detailInfo.details[i].actv[j].item.zhName;
         }
       }
     }

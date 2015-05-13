@@ -49,9 +49,10 @@
           <div>日程</div>
           {{#each details}}
             <label>第{{index}}天</label>
+            <textarea class="form-control" value="{{items}}"></textarea>
             {{#each actv}}
               {{#with item}}
-                <input class="form-control" value="{{zhName}}">
+                <label>{{zhName}}</label>
                 <div class="vs-info">
                   <div class="desc"><span>别名：</span>{{alias}}</div>
                   <div class="address"><span>地址：</span>{{address}}</div>
