@@ -194,6 +194,10 @@ Meteor.methods({
     if(cnt == 1 && deleteCnt == uselessPk.length){
       return {code: 0};
     }
+  },
+  'cityName-to-cityId': function(cityName){
+    check(cityName, String);
+    return Locality.findOne({'alias': cityName}, {fields: {'_id': 1}});
   }
 
 });

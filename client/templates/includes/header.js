@@ -25,10 +25,10 @@ var naviBarConfig = [{
     // disable: true
   }]
 }, {
-  name: "IM运营",
-  url: "/im",
-  routeName: "im",
-  subItem: []
+  name: "行程攻略",
+  url: "/createNewPlan",
+  routeName: "createNewPlan",
+  // subItem: []
 }];
 
 Template.header.helpers({

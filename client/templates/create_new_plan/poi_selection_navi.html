@@ -1,0 +1,7 @@
+<template name="poiNavi">
+  <ul class="list-navi">
+    {{#each naviItems}}
+      <li class="list-item" data-type="{{type}}"><a href="#" class="list-navi-a {{#if status}}poi-navi-active{{/if}}">{{name}}</a></li>
+    {{/each}}
+  </ul>
+</template>
