@@ -1,0 +1,656 @@
+<template name="citySelection">
+  <div class="city-selection-container">
+    <div class="current-city">
+      {{currentCity}}
+      <span class="change-city">[ 切换 ]</span>
+    </div>
+
+    <div class="city-selection-pannel">
+      <!-- 城市筛选面板 -->
+        <div class="">
+            <div class="city-select-pannel">城市列表(可按拼音查找)</div>
+            <div id="selCityLetterListId" class="sel-city-letterbar">
+                <a href="#">A</a>
+                <a href="#">F</a>
+                <a href="#">G</a>
+                <a href="#">H</a>
+                <a href="#">J</a>
+                <a href="#">L</a>
+                <a href="#">N</a>
+                <a href="#">Q</a>
+                <a href="#">S</a>
+                <a href="#">X</a>
+                <a href="#">Y</a>
+                <a href="#">Z</a>
+                <a href="#">其它</a>
+            </div>
+            <div class="">
+              <div id="selCityPlaceListId" style="">
+                <table style="border-collapse:collapse;border-spacing:0;" cellpadding="0" cellspacing="0">
+                  <tbody>
+                    <tr>
+                      <td class="sel-city-td-letter">
+                          <div>A</div>
+                      </td>
+                      <td class="sel-city-td-sf">
+                        <a href="#">安徽</a>
+                      </td>
+                      <td><a href="#">合肥</a>
+                          <a href="#">安庆</a>
+                          <a href="#">蚌埠</a>
+                          <a href="#">亳州</a>
+                          <a href="#">巢湖</a>
+                          <a href="#">池州</a>
+                          <a href="#">滁州</a>
+                          <a href="#">阜阳</a>
+                          <a href="#">淮北</a>
+                          <a href="#">淮南</a>
+                          <a href="#">黄山</a>
+                          <a href="#">六安</a>
+                          <a href="#">马鞍山</a>
+                          <a href="#">宿州</a>
+                          <a href="#">铜陵</a>
+                          <a href="#">芜湖</a>
+                          <a href="#">宣城</a>
+                      </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">A</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>F</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5785">福建</a></td>
+                        <td><a href="#">福州</a>
+                            <a href="#">龙岩</a>
+                            <a href="#">南平</a>
+                            <a href="#">宁德</a>
+                            <a href="#">莆田</a>
+                            <a href="#">泉州</a>
+                            <a href="#">三明</a>
+                            <a href="#">厦门</a>
+                            <a href="#">漳州</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">F</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>G</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5776">广东</a></td>
+                        <td><a href="#">广州</a>
+                            <a href="#">潮州</a>
+                            <a href="#">东莞</a>
+                            <a href="#">佛山</a>
+                            <a href="#">河源</a>
+                            <a href="#">惠州</a>
+                            <a href="#">江门</a>
+                            <a href="#">揭阳</a>
+                            <a href="#">茂名</a>
+                            <a href="#">梅州</a>
+                            <a href="#">清远</a>
+                            <a href="#">汕头</a>
+                            <a href="#">汕尾</a>
+                            <a href="#">韶关</a>
+                            <a href="#">深圳</a>
+                            <a href="#">阳江</a>
+                            <a href="#">云浮</a>
+                            <a href="#">湛江</a>
+                            <a href="#">肇庆</a>
+                            <a href="#">中山</a>
+                            <a href="#">珠海</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5786">广西</a></td>
+                        <td><a href="#">南宁</a>
+                            <a href="#">百色</a>
+                            <a href="#">北海</a>
+                            <a href="#">崇左</a>
+                            <a href="#">防城港</a>
+                            <a href="#">桂林</a>
+                            <a href="#">贵港</a>
+                            <a href="#">河池</a>
+                            <a href="#">贺州</a>
+                            <a href="#">来宾</a>
+                            <a href="#">柳州</a>
+                            <a href="#">钦州</a>
+                            <a href="#">梧州</a>
+                            <a href="#">玉林</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5793">贵州</a></td>
+                        <td><a href="#">贵阳</a>
+                            <a href="#">安顺</a>
+                            <a href="#">毕节地区</a>
+                            <a href="#">六盘水</a>
+                            <a href="#">铜仁地区</a>
+                            <a href="#">遵义</a>
+                            <a href="#" name="黔西南布依族苗族自治州">黔西南州</a>
+                            <a href="#" name="黔东南苗族侗族自治州">黔东南州</a>
+                            <a href="#" name="黔南布依族苗族自治州">黔南州</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5775">甘肃</a></td>
+                        <td><a href="#">兰州</a>
+                            <a href="#">白银</a>
+                            <a href="#">定西</a>
+                            <a href="#" name="甘南藏族自治州">甘南州</a>
+                            <a href="#">嘉峪关</a>
+                            <a href="#">金昌</a>
+                            <a href="#">酒泉</a>
+                            <a href="#" name="临夏回族自治州">临夏州</a>
+                            <a href="#">陇南</a>
+                            <a href="#">平凉</a>
+                            <a href="#">庆阳</a>
+                            <a href="#">天水</a>
+                            <a href="#">武威</a>
+                            <a href="#">张掖</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">G</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>H</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5790">海南</a></td>
+                        <td><a href="#">海口</a>
+                            <a href="#" name="白沙黎族自治县">白沙</a>
+                            <a href="#" name="保亭黎族苗族自治县">保亭</a>
+                            <a href="#" name="昌江黎族自治县">昌江</a>
+                            <a href="#">儋州</a>
+                            <a href="#">澄迈</a>
+                            <a href="#">东方</a>
+                            <a href="#">定安</a>
+                            <a href="#">琼海</a>
+                            <a href="#" name="琼中黎族苗族自治县">琼中</a>
+                            <a href="#" name="乐东黎族自治县">乐东</a>
+                            <a href="#">临高</a>
+                            <a href="#" name="陵水黎族自治县">陵水</a>
+                            <a href="#">三亚</a>
+                            <a href="#">屯昌</a>
+                            <a href="#">万宁</a>
+                            <a href="#">文昌</a>
+                            <a href="#">五指山</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5799">河南</a></td>
+                        <td><a href="#">郑州</a>
+                            <a href="#">安阳</a>
+                            <a href="#">鹤壁</a>
+                            <a href="#">焦作</a>
+                            <a href="#">开封</a>
+                            <a href="#">洛阳</a>
+                            <a href="#">漯河</a>
+                            <a href="#">南阳</a>
+                            <a href="#">平顶山</a>
+                            <a href="#">濮阳</a>
+                            <a href="#">三门峡</a>
+                            <a href="#">商丘</a>
+                            <a href="#">新乡</a>
+                            <a href="#">信阳</a>
+                            <a href="#">许昌</a>
+                            <a href="#">周口</a>
+                            <a href="#">驻马店</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5771">黑龙江</a></td>
+                        <td><a href="#">哈尔滨</a>
+                            <a href="#">大庆</a>
+                            <a href="#">大兴安岭地区</a>
+                            <a href="#">鹤岗</a>
+                            <a href="#">黑河</a>
+                            <a href="#">鸡西</a>
+                            <a href="#">佳木斯</a>
+                            <a href="#">牡丹江</a>
+                            <a href="#">七台河</a>
+                            <a href="#">齐齐哈尔</a>
+                            <a href="#">双鸭山</a>
+                            <a href="#">绥化</a>
+                            <a href="#">伊春</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5784">湖北</a></td>
+                        <td><a href="#">武汉</a>
+                            <a href="#">鄂州</a>
+                            <a href="#" name="恩施土家族苗族自治州">恩施</a>
+                            <a href="#">黄冈</a>
+                            <a href="#">黄石</a>
+                            <a href="#">荆门</a>
+                            <a href="#">荆州</a>
+                            <a href="#">潜江</a>
+                            <a href="#">神农架林区</a>
+                            <a href="#">十堰</a>
+                            <a href="#">随州</a>
+                            <a href="#">天门</a>
+                            <a href="#">仙桃</a>
+                            <a href="#">咸宁</a>
+                            <a href="#">襄阳</a>
+                            <a href="#">孝感</a>
+                            <a href="#">宜昌</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5795">湖南</a></td>
+                        <td><a href="#">长沙</a>
+                            <a href="#">常德</a>
+                            <a href="#">郴州</a>
+                            <a href="#">衡阳</a>
+                            <a href="#">怀化</a>
+                            <a href="#">娄底</a>
+                            <a href="#">邵阳</a>
+                            <a href="#">湘潭</a>
+                            <a href="#" name="湘西土家族苗族自治州">湘西州</a>
+                            <a href="#">益阳</a>
+                            <a href="#">永州</a>
+                            <a href="#">岳阳</a>
+                            <a href="#">张家界</a>
+                            <a href="#">株洲</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5794">河北</a></td>
+                        <td><a href="#">石家庄</a>
+                            <a href="#">保定</a>
+                            <a href="#">沧州</a>
+                            <a href="#">承德</a>
+                            <a href="#">邯郸</a>
+                            <a href="#">衡水</a>
+                            <a href="#">廊坊</a>
+                            <a href="#">秦皇岛</a>
+                            <a href="#">唐山</a>
+                            <a href="#">邢台</a>
+                            <a href="#">张家口</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">H</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>J</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5787">江苏</a></td>
+                        <td><a href="#">南京</a>
+                            <a href="#">常州</a>
+                            <a href="#">淮安</a>
+                            <a href="#">连云港</a>
+                            <a href="#">南通</a>
+                            <a href="#">苏州</a>
+                            <a href="#">宿迁</a>
+                            <a href="#">泰州</a>
+                            <a href="#">无锡</a>
+                            <a href="#">徐州</a>
+                            <a href="#">盐城</a>
+                            <a href="#">扬州</a>
+                            <a href="#">镇江</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5800">江西</a></td>
+                        <td><a href="#">南昌</a>
+                            <a href="#">抚州</a>
+                            <a href="#">赣州</a>
+                            <a href="#">吉安</a>
+                            <a href="#">景德镇</a>
+                            <a href="#">九江</a>
+                            <a href="#">萍乡</a>
+                            <a href="#">上饶</a>
+                            <a href="#">新余</a>
+                            <a href="#">宜春</a>
+                            <a href="#">鹰潭</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5778" name="吉林省">吉林</a></td>
+                        <td><a href="#">长春</a>
+                            <a href="#">白城</a>
+                            <a href="#">白山</a>
+                            <a href="#">吉林市</a>
+                            <a href="#">辽源</a>
+                            <a href="#">四平</a>
+                            <a href="#">松原</a>
+                            <a href="#">通化</a>
+                            <a href="#" name="延边朝鲜族自治州">延边</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">J</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>L</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5788">辽宁</a></td>
+                        <td><a href="#">沈阳</a>
+                            <a href="#">鞍山</a>
+                            <a href="#">本溪</a>
+                            <a href="#">朝阳</a>
+                            <a href="#">大连</a>
+                            <a href="#">丹东</a>
+                            <a href="#">抚顺</a>
+                            <a href="#">阜新</a>
+                            <a href="#">葫芦岛</a>
+                            <a href="#">锦州</a>
+                            <a href="#">辽阳</a>
+                            <a href="#">盘锦</a>
+                            <a href="#">铁岭</a>
+                            <a href="#">营口</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">L</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>N</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5789">宁夏</a></td>
+                        <td><a href="#">银川</a>
+                            <a href="#">固原</a>
+                            <a href="#">石嘴山</a>
+                            <a href="#">吴忠</a>
+                            <a href="#">中卫</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5791">内蒙古</a></td>
+                        <td><a href="#">呼和浩特</a>
+                            <a href="#">阿拉善盟</a>
+                            <a href="#">包头</a>
+                            <a href="#">巴彦淖尔</a>
+                            <a href="#">赤峰</a>
+                            <a href="#">鄂尔多斯</a>
+                            <a href="#">呼伦贝尔</a>
+                            <a href="#">通辽</a>
+                            <a href="#">乌海</a>
+                            <a href="#">乌兰察布</a>
+                            <a href="#">锡林郭勒盟</a>
+                            <a href="#">兴安盟</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">N</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>Q</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5780">青海</a></td>
+                        <td><a href="#">西宁</a>
+                            <a href="#" name="果洛藏族自治州">果洛州</a>
+                            <a href="#">海东地区</a>
+                            <a href="#" name="海北藏族自治州">海北州</a>
+                            <a href="#" name="海南藏族自治州">海南州</a>
+                            <a href="#" name="海西蒙古族藏族自治州">海西州</a>
+                            <a href="#" name="黄南藏族自治州">黄南州</a>
+                            <a href="#" name="玉树藏族自治州">玉树州</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">Q</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>S</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5777">山东</a></td>
+                        <td><a href="#">济南</a>
+                            <a href="#">滨州</a>
+                            <a href="#">东营</a>
+                            <a href="#">德州</a>
+                            <a href="#">菏泽</a>
+                            <a href="#">济宁</a>
+                            <a href="#">莱芜</a>
+                            <a href="#">聊城</a>
+                            <a href="#">临沂</a>
+                            <a href="#">青岛</a>
+                            <a href="#">日照</a>
+                            <a href="#">泰安</a>
+                            <a href="#">威海</a>
+                            <a href="#">潍坊</a>
+                            <a href="#">烟台</a>
+                            <a href="#">枣庄</a>
+                            <a href="#">淄博</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5779">山西</a></td>
+                        <td><a href="#">太原</a>
+                            <a href="#">长治</a>
+                            <a href="#">大同</a>
+                            <a href="#">晋城</a>
+                            <a href="#">晋中</a>
+                            <a href="#">临汾</a>
+                            <a href="#">吕梁</a>
+                            <a href="#">朔州</a>
+                            <a href="#">忻州</a>
+                            <a href="#">阳泉</a>
+                            <a href="#">运城</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5796">陕西</a></td>
+                        <td><a href="#">西安</a>
+                            <a href="#">安康</a>
+                            <a href="#">宝鸡</a>
+                            <a href="#">汉中</a>
+                            <a href="#">商洛</a>
+                            <a href="#">铜川</a>
+                            <a href="#">渭南</a>
+                            <a href="#">咸阳</a>
+                            <a href="#">延安</a>
+                            <a href="#">榆林</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5801">四川</a></td>
+                        <td><a href="#">成都</a>
+                            <a href="#" name="阿坝藏族羌族自治州">阿坝州</a>
+                            <a href="#">巴中</a>
+                            <a href="#">达州</a>
+                            <a href="#">德阳</a>
+                            <a href="#" name="甘孜藏族自治州">甘孜州</a>
+                            <a href="#">广安</a>
+                            <a href="#">广元</a>
+                            <a href="#">乐山</a>
+                            <a href="#" name="凉山彝族自治州">凉山州</a>
+                            <a href="#">泸州</a>
+                            <a href="#">南充</a>
+                            <a href="#">眉山</a>
+                            <a href="#">绵阳</a>
+                            <a href="#">内江</a>
+                            <a href="#">攀枝花</a>
+                            <a href="#">遂宁</a>
+                            <a href="#">雅安</a>
+                            <a href="#">宜宾</a>
+                            <a href="#">资阳</a>
+                            <a href="#">自贡</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">S</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>X</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5782">西藏</a></td>
+                        <td><a href="#">拉萨</a>
+                            <a href="#">阿里地区</a>
+                            <a href="#">昌都地区</a>
+                            <a href="#">林芝地区</a>
+                            <a href="#">那曲地区</a>
+                            <a href="#">日喀则地区</a>
+                            <a href="#">山南地区</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div></div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5781">新疆</a></td>
+                        <td><a href="#">乌鲁木齐</a>
+                            <a href="#">阿拉尔</a>
+                            <a href="#">阿克苏地区</a>
+                            <a href="#">阿勒泰地区</a>
+                            <a href="#" name="巴音郭楞蒙古自治州">巴音郭楞</a>
+                            <a href="#" name="博尔塔拉蒙古自治州">博尔塔拉州</a>
+                            <a href="#" name="昌吉回族自治州">昌吉州</a>
+                            <a href="#">哈密地区</a>
+                            <a href="#">和田地区</a>
+                            <a href="#">喀什地区</a>
+                            <a href="#">克拉玛依</a>
+                            <a href="#" name="克孜勒苏柯尔克孜自治州">克孜勒苏州</a>
+                            <a href="#">石河子</a>
+                            <a href="#">塔城地区</a>
+                            <a href="#">图木舒克</a>
+                            <a href="#">吐鲁番地区</a>
+                            <a href="#">五家渠</a>
+                            <a href="#" name="伊犁哈萨克自治州">伊犁州</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">X</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>Y</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5797">云南</a></td>
+                        <td><a href="#">昆明</a>
+                            <a href="#">保山</a>
+                            <a href="#" name="楚雄彝族自治州">楚雄州</a>
+                            <a href="#" name="大理白族自治州">大理州</a>
+                            <a href="#" name="德宏傣族景颇族自治州">德宏州</a>
+                            <a href="#" name="迪庆藏族自治州">迪庆州</a>
+                            <a href="#" name="红河哈尼族彝族自治州">红河州</a>
+                            <a href="#">丽江</a>
+                            <a href="#">临沧</a>
+                            <a href="#" name="怒江傈僳族自治州">怒江州</a>
+                            <a href="#">普洱</a>
+                            <a href="#">曲靖</a>
+                            <a href="#">昭通</a>
+                            <a href="#" name="文山壮族苗族自治州">文山</a>
+                            <a href="#" name="西双版纳傣族自治州">西双版纳</a>
+                            <a href="#">玉溪</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">Y</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="sel-city-td-letter">
+                            <div>Z</div>
+                        </td>
+                        <td class="sel-city-td-sf"><a href="#" code="5798">浙江</a></td>
+                        <td><a href="#">杭州</a>
+                            <a href="#">湖州</a>
+                            <a href="#">嘉兴</a>
+                            <a href="#">金华</a>
+                            <a href="#">丽水</a>
+                            <a href="#">宁波</a>
+                            <a href="#">衢州</a>
+                            <a href="#">绍兴</a>
+                            <a href="#">台州</a>
+                            <a href="#">温州</a>
+                            <a href="#">舟山</a>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="3">
+                            <div class="sel-city-tr-splitline">其它</div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <div style="visibility:hidden;">other</div>
+                        </td>
+                        <td class="sel-city-td-other"><span>其它:</span></td>
+                        <td><a href="#">香港</a><a href="#">澳门</a><a href="#">台湾</a></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <button id="popup_close" title="关闭"></button>
+        </div>
+        <div class="poput_shadow" style="height: 393px;"></div>
+    </div>
+
+  </div>
+</template>
