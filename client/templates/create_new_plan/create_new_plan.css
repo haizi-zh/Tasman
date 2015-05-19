@@ -369,11 +369,19 @@ p.poi-item-desc {
 .select-poi-name {
   padding-left: 83px;
   height: 60px;
-  line-height: 33px;
+  line-height: 60px;
   cursor: pointer;
+  text-decoration: none;
 }
 .select-poi-name:hover {
   color: #ff8300;
-
+}
+a:hover{
+  text-decoration: none;
+}
+span.delete-one-poi {
+  position: absolute;
+  top: 23px;
+  right: 13px;
 }
 /* plan 内容 END */

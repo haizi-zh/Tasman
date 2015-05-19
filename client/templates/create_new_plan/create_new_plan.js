@@ -63,8 +63,35 @@ Template.createNewPlan.events({
         curDay = Session.get('planActiveDay'),
         poiName = $(event.target).attr('poi-name'),
         poiId = $(event.target).attr('poi-id'),
-        poiType = $(event.target).attr('poi-type');
-    tempSession[curDay - 1].pois.push({'id': poiId, 'name': poiName, 'type': poiType});
+        poiType = $(event.target).attr('poi-type'),
+        length = tempSession[curDay - 1].pois.length;
+    tempSession[curDay - 1].pois.push({'id': poiId, 'name': poiName, 'type': poiType, 'dayIndex': curDay, 'index': length});
+    Session.set('planDetail', tempSession);
+  },
+  'mouseenter .select-poi-name': function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $(event.target).find('.delete-one-poi').removeClass("hidden");
+  },
+  'mouseleave .select-poi-name': function(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    $(event.target).find('.delete-one-poi').addClass("hidden");
+  },
+  'click .delete-one-poi': function() {
+    event.preventDefault();
+    event.stopPropagation();
+    log('123');
+    var poiId = $(event.target).attr('data-id'),
+        poiType = $(event.target).attr('data-id'),
+        dayIndex = $(event.target).attr('day-index'),
+        index = $(event.target).attr('data-index');
+    var tempSession = Session.get('planDetail');
+    tempSession[dayIndex - 1].pois.splice(index, 1);
+    // 更新index
+    for(var i = 0, len = tempSession[dayIndex - 1].pois.length; i < len; i++) {
+      tempSession[dayIndex - 1].pois[i].index = i;
+    }
     Session.set('planDetail', tempSession);
   }
 });
