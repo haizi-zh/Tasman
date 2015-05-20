@@ -19,7 +19,7 @@ for(var i = 0, len = reviewItems.length; i < len; i++) {
       sort: {
         order: ['desc', 'asc'],
         defaults: [
-          ['hotness', 'desc']
+          ['hotnessTag', 'asc']
         ]
       },
       pager: {
