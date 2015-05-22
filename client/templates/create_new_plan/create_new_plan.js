@@ -1,41 +1,35 @@
 Template.createNewPlan.onRendered(function() {
-  function initSession() {
-    Session.set('poi-navi-active', 'ViewSpot');
-    Session.set('poi-create-day-index', 0);
-    Session.set('planDetail', []);
-    Session.set('planActiveDay', 1);
-  }
-  initSession();
+  Meteor.cmsPlan.init();
+  $('.day-navi-element-container').trigger("click")
 });
 
 Template.registerHelper('poiType', function() {
-  return Session.get('poi-navi-active');
+  return Meteor.cmsPlan.getActivePoiType();
 });
 
 Template.createNewPlan.helpers({
+  // 需要展示的POI
   'poiItems': function() {
-    var type = Session.get('poi-navi-active'),
-        locId = Session.get('curCityId');
-    Meteor.subscribe('poi-item', type, locId);
-    return getMongoCol(type).find({'targets': new Mongo.ObjectID(locId)}, {'limit': 5, 'sort': {'hotness': -1}});
+    return Meteor.cmsPlan.getPoiItems();
   },
-  'planDetail': function(){
-    return Session.get('planDetail');
+  // 显示天数导航
+  'planDetail': function() {
+    return Meteor.cmsPlan.getPlan();
   },
-  'poiDisplay': function(){
-    var tempSession = Session.get('planDetail'),
-        curDay = Session.get('planActiveDay');
-    console.log(tempSession[curDay - 1].pois);
-    return tempSession[curDay - 1].pois;
+  // 显示某一天的POI
+  'poiDisplay': function() {
+    return Meteor.cmsPlan.getCurDayInfo();
+  },
+  'pageNavi': function() {
+    return Meteor.cmsPlan.page.getPageNavi();
   }
 });
 
 Template.createNewPlan.events({
-  'click .btn-add-one-day': function(event){
+  // 增加一天
+  'click .btn-add-one-day': function(event) {
     event.preventDefault();
-    var temp = Session.get('planDetail') || [];
-    temp.push({'dayIndex': temp.length + 1, 'pois': []});
-    Session.set('planDetail', temp);
+    Meteor.cmsPlan.addOneDay();
   },
   'mouseleave .day-navi-element-container': function(event) {
     event.preventDefault();
@@ -45,11 +39,15 @@ Template.createNewPlan.events({
     event.preventDefault();
     $(event.target).find('.delete-one-day').removeClass('hidden');
   },
+  // 点击某一天事件，修改了Session
   'click .day-navi-element-container': function(event) {
     event.stopPropagation();
     $(event.target).addClass("day-ative").siblings().removeClass("day-ative");
-    Session.set('planActiveDay', parseInt($(event.target).attr('day-index')));
+    var dayIndex = parseInt($(event.target).attr('day-index'))
+    Meteor.cmsPlan.setActiveDay(dayIndex);
+
   },
+  // 点击删除一天，会弹出确认窗口，删除逻辑在确认窗口中
   'click .delete-one-day': function(event) {
     event.stopPropagation();
     var dayIndex = $(event.target).parent().attr('day-index');
@@ -57,16 +55,20 @@ Template.createNewPlan.events({
         top = event.clientY - 83 + "px";
     Blaze.renderWithData(Template.deleteDayPopup, {'dayIndex': dayIndex, 'left': left, 'top': top}, $(document.body)[0]);
   },
+  // 添加POI带某一天的行程
   'click .add-poi-to-plan': function(event) {
     event.preventDefault();
-    var tempSession = Session.get('planDetail'),
-        curDay = Session.get('planActiveDay'),
-        poiName = $(event.target).attr('poi-name'),
-        poiId = $(event.target).attr('poi-id'),
-        poiType = $(event.target).attr('poi-type'),
-        length = tempSession[curDay - 1].pois.length;
-    tempSession[curDay - 1].pois.push({'id': poiId, 'name': poiName, 'type': poiType, 'dayIndex': curDay, 'index': length});
-    Session.set('planDetail', tempSession);
+    var poiId = $(event.target).attr('poi-id');
+    if(!Meteor.cmsPlan.hasPoi(poiId)) {
+      var poiName = $(event.target).attr('poi-name'),
+          poiType = $(event.target).attr('poi-type'),
+          poiInfo = {'id': poiId, 'name': poiName};
+      Meteor.cmsPlan.addPoi(poiInfo);
+    }else {
+      var temp = Meteor.cmsPlan.getPoiById(poiId);
+      alert('[' + Meteor.getColZhName() + "] : [" + temp.name + '] 已经加入到[第' + temp.dayIndex + ']天');
+    }
+
   },
   'mouseenter .select-poi-name': function(event) {
     event.preventDefault();
@@ -78,20 +80,23 @@ Template.createNewPlan.events({
     event.stopPropagation();
     $(event.target).find('.delete-one-poi').addClass("hidden");
   },
+  // 删除一个POI
   'click .delete-one-poi': function() {
     event.preventDefault();
     event.stopPropagation();
-    log('123');
-    var poiId = $(event.target).attr('data-id'),
-        poiType = $(event.target).attr('data-id'),
-        dayIndex = $(event.target).attr('day-index'),
+    var dayIndex = $(event.target).attr('day-index'),
         index = $(event.target).attr('data-index');
-    var tempSession = Session.get('planDetail');
-    tempSession[dayIndex - 1].pois.splice(index, 1);
-    // 更新index
-    for(var i = 0, len = tempSession[dayIndex - 1].pois.length; i < len; i++) {
-      tempSession[dayIndex - 1].pois[i].index = i;
-    }
-    Session.set('planDetail', tempSession);
+    Meteor.cmsPlan.deletePoi(dayIndex, index);
+  },
+  // 分页操作
+  'click .fc-pager-page': function(event) {
+    var pageIndex = $(event.target).attr('data-fc-pager-page');
+    Meteor.cmsPlan.page.moveTo(parseInt(pageIndex));
+  },
+  'click .fc-pager-first': function(event) {
+    Meteor.cmsPlan.page.firstPage();
+  },
+  'click .fc-pager-last': function(event) {
+    Meteor.cmsPlan.page.lastPage();
   }
 });

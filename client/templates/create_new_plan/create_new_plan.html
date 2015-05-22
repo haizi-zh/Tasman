@@ -1,78 +1,81 @@
 <template name="createNewPlan">
-  <div class="page-container">
-    <!-- POI筛选区域 -->
-    <div class="left-poi-select-zoom">
-
-      <!-- 顶部POI选择切换 地图模式 -->
-      <div class="left-top-navi-bar">
-        {{> citySelection}}
-        {{> poiNavi}}
-      </div>
-
-      <!-- 中部筛选 搜索 -->
-      <div class="left-middle-filter-tool">
-        <div class="poi-filter">
-          {{> poiFilter}}
-        </div>
-        <div class="poi-search">
-          {{> poiSearch}}
-        </div>
-      </div>
-
-      <!-- 底部poi展示 分页 -->
-      <div class="left-bottom-poi-show">
-        {{#each poiItems}}
-          <div class="poi-item-container">
-            <a href="" class="poi-item-pic">
-              <img src="http://images.taozilvxing.com/16a76878976c0cce22c7364269b370eb?imageView2/1/w/100/h/100">
-            </a>
-            <div class="poi-item-detail">
-              <header class="poi-item-header">
-                <a href="/{{poiType}}/{{_id._str}}">{{zhName}}</a>
-              </header>
-              <p class="poi-item-desc" title="{{desc}}">{{desc}}</p>
-              <a href="" class="add-poi-to-plan" poi-type="{{poiType}}" poi-id="{{_id._str}}" poi-name="{{zhName}}" title="添加到行程">+</a>
+    <div class="page-container">
+        <!-- POI筛选区域 -->
+        <div class="left-poi-select-zoom">
+            <!-- 顶部POI选择切换 地图模式 -->
+            <div class="left-top-navi-bar">
+                {{> citySelection}} {{> poiNavi}}
             </div>
-          </div>
-        {{/each}}
-      </div>
+            <!-- 中部筛选 搜索 -->
+            <div class="left-middle-filter-tool">
+                <div class="poi-filter">
+                    {{> poiFilter}}
+                </div>
+                <div class="poi-search">
+                    {{> poiSearch}}
+                </div>
+            </div>
+            <!-- 底部poi展示 分页 -->
+            <div class="left-bottom-poi-show">
+                {{#each poiItems}}
+                <div class="poi-item-container">
+                    <a href="" class="poi-item-pic">
+                        <img src="http://images.taozilvxing.com/16a76878976c0cce22c7364269b370eb?imageView2/1/w/100/h/100">
+                    </a>
+                    <div class="poi-item-detail">
+                        <header class="poi-item-header">
+                            <a href="/{{poiType}}/{{_id._str}}">{{zhName}}</a>
+                        </header>
+                        <p class="poi-item-desc" title="{{desc}}">{{desc}}</p>
+                        <a href="" class="add-poi-to-plan" poi-type="{{poiType}}" poi-id="{{_id._str}}" poi-name="{{zhName}}" title="添加到行程">+</a>
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            <div class="page-navi-container">
+                <div class="col-md-12 text-center ">
+                  <ul class="pagination pagination-sm">
+                    <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+                    {{#each pageNavi}}
+                      <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+                    {{/each}}
+                    <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+                  </ul>
+                </div>
+            </div>
+        </div>
+        <!-- 游记编辑区域 -->
+        <div class="right-plan-edit-zoom">
+            <!-- 顶部工具区域 -->
+            <div class="right-top-tool-bar">
+            </div>
+            <!-- 顶部规划区域 -->
+            <div class="right-bottom-edit-zoom">
+                <!-- 左边的天数编辑区域 -->
+                <div class="right-left-day-edit-zoom">
+                    {{#each planDetail}}
+                    <div class="day-navi-element-container" id="day-navi-{{dayIndex}}" day-index="{{dayIndex}}">
+                        第{{dayIndex}}天
+                        <span class="delete-one-day glyphicon glyphicon-trash hidden"></span>
+                    </div>
+                    {{/each}}
+                    <span class="btn-add-one-day">+</span>
+                </div>
+                <!-- 右边的POI编辑区域 -->
+                <div class="right-right-poi-edit-zoom">
+                    {{#each poiDisplay}}
+                    <div class="select-poi-info-container">
+                        <a href="" class="select-poi-pic">
+                            <img src="http://images.taozilvxing.com/16a76878976c0cce22c7364269b370eb?imageView2/1/w/60/h/60">
+                        </a>
+                        <div class="select-poi-name">
+                            <a class="" href="/{{type}}/{{id}}">{{name}}</a>
+                            <span class="delete-one-poi glyphicon glyphicon-trash hidden" day-index="{{dayIndex}}" data-id="{{id}}" data-type="{{type}}" data-index="{{index}}"></span>
+                        </div>
+                    </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
     </div>
-
-    <!-- 游记编辑区域 -->
-    <div class="right-plan-edit-zoom">
-      <!-- 顶部工具区域 -->
-      <div class="right-top-tool-bar">
-
-      </div>
-
-      <!-- 顶部规划区域 -->
-      <div class="right-bottom-edit-zoom">
-        <!-- 左边的天数编辑区域 -->
-        <div class="right-left-day-edit-zoom">
-          {{#each planDetail}}
-            <div class="day-navi-element-container" id="day-navi-{{dayIndex}}" day-index="{{dayIndex}}">
-              第{{dayIndex}}天
-              <span class="delete-one-day glyphicon glyphicon-trash hidden"></span>
-            </div>
-          {{/each}}
-          <span class="btn-add-one-day">+</span>
-        </div>
-
-        <!-- 右边的POI编辑区域 -->
-        <div class="right-right-poi-edit-zoom">
-          {{#each poiDisplay}}
-            <div class="select-poi-info-container">
-              <a href="" class="select-poi-pic">
-                <img src="http://images.taozilvxing.com/16a76878976c0cce22c7364269b370eb?imageView2/1/w/60/h/60">
-              </a>
-              <div class="select-poi-name">
-                <a class="" href="/{{type}}/{{id}}">{{name}}</a>
-                <span class="delete-one-poi glyphicon glyphicon-trash hidden" day-index="{{dayIndex}}" data-id="{{id}}" data-type="{{type}}" data-index="{{index}}"></span>
-              </div>
-            </div>
-          {{/each}}
-        </div>
-      </div>
-    </div>
-  </div>
 </template>

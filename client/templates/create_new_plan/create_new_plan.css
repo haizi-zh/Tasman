@@ -1,387 +1,402 @@
-.page-container{
-  margin: 0;
-  padding: 0;
-  width: 100%;
-  height: 587px;
+.page-container {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 587px;
 }
-.left-poi-select-zoom{
-  width: 56%;
-  height: 587px;
-  float: left;
-  border: 1px solid #ccc;
+
+.left-poi-select-zoom {
+    width: 56%;
+    height: 587px;
+    float: left;
+    border: 1px solid #ccc;
 }
+
+.left-bottom-poi-show {
+  height: 473px;
+  overflow: scroll;
+}
+
 .right-plan-edit-zoom {
-  width: 43%;
-  height: 587px;
-  float: right;
-  border: 1px solid #ccc;
+    width: 43%;
+    height: 587px;
+    float: right;
+    border: 1px solid #ccc;
 }
 
 .left-top-navi-bar {
-  line-height: 50px;
-  border-bottom: 1px solid #ccc;
+    line-height: 50px;
+    border-bottom: 1px solid #ccc;
 }
 
 .city-selection-container {
-  float: left;
+    float: left;
 }
 
 .list-navi {
-  list-style: none;
-  margin: 0px;
-  margin-left: 100px;
-  padding: 0;
-  text-align: center;
+    list-style: none;
+    margin: 0px;
+    margin-left: 100px;
+    padding: 0;
+    text-align: center;
 }
 
 .list-navi li {
-  display:inline;
+    display: inline;
 }
 
 .list-navi a {
-  display:inline-block;
-  padding: 0px 10px;
-  text-decoration: none !important;
+    display: inline-block;
+    padding: 0px 10px;
+    text-decoration: none !important;
 }
 
 .list-navi a:hover {
-  background-color: #337ab7;
-  color: #fff;
-  text-decoration: none !important;
+    background-color: #337ab7;
+    color: #fff;
+    text-decoration: none !important;
 }
 
-.poi-navi-active{
-  background-color: #337ab7;
-  color: #fff !important;
+.poi-navi-active {
+    background-color: #337ab7;
+    color: #fff !important;
 }
 
 .current-city {
-  color: #000;
-  margin-left: 7px;
+    color: #000;
+    margin-left: 7px;
 }
 
 span.change-city {
-  color: #666;
-  cursor: pointer;
-  font-size: 12px;
+    color: #666;
+    cursor: pointer;
+    font-size: 12px;
 }
-
 /*中间筛选过滤 BEGIN*/
 
 .left-middle-filter-tool {
-  margin: 7px 0px;
-  padding: 0px 7px;
-  border-bottom: 1px solid #ccc;
-  border-top: 1px solid #ccc;
-  width: 100%;
-  height: 40px;
-  line-height: 40px;
-  position: relative;
+    margin: 7px 0px;
+    padding: 0px 7px;
+    border-bottom: 1px solid #ccc;
+    border-top: 1px solid #ccc;
+    width: 100%;
+    height: 40px;
+    line-height: 40px;
+    position: relative;
 }
 
 .poi-filter {
-  float: left;
+    float: left;
 }
 
 .poi-search {
-  float: right;
+    float: right;
 }
 
 .poi-search input {
-  border: 0;
-  outline: 0;
-  width: 220px;
-  line-height: 25px;
-  height: 25px;
-  padding: 0 5px;
+    border: 0;
+    outline: 0;
+    width: 220px;
+    line-height: 25px;
+    height: 25px;
+    padding: 0 5px;
 }
 
 span.poi-search-clear {
-  position: absolute;
-  font-size: 13px;
-  top: 0px;
-  right: 10px;
+    position: absolute;
+    font-size: 13px;
+    top: 0px;
+    right: 10px;
 }
-
 /*中间筛选过滤 END*/
-
-
 /* 城市选择 BEGIN */
+
 .city-selection-pannel {
-  width: 443px;
-  height: 363px;
-  overflow: hidden;
-  background-color: #f9f9f9;
-  border: 1px solid #cdcdcd;
-  position: absolute;
-  z-index: 9999999;
-  display: none;
+    width: 443px;
+    height: 363px;
+    overflow: hidden;
+    background-color: #f9f9f9;
+    border: 1px solid #cdcdcd;
+    position: absolute;
+    z-index: 9999999;
+    display: none;
 }
+
 .sel-city-tr-splitline {
-  height: 12px;
-  visibility: hidden;
+    height: 12px;
+    visibility: hidden;
 }
+
 .city-select-pannel {
-  font-size: 13px;
+    font-size: 13px;
 }
+
 .sel-city-letterbar {
-  margin: 0px 0px 17px 0px;
-  border-bottom: 1px solid #ccc;
+    margin: 0px 0px 17px 0px;
+    border-bottom: 1px solid #ccc;
 }
-.sel-city-letterbar a{
-  margin: 0px 3px;
+
+.sel-city-letterbar a {
+    margin: 0px 3px;
 }
+
 #selCityPlaceListId {
-  width: 100%;
-  height: 233px;
-  overflow: auto;
-  position: relative;
+    width: 100%;
+    height: 233px;
+    overflow: auto;
+    position: relative;
 }
+
 .sel-city-td-letter {
-  padding: 0 14px 0 7px;
-  vertical-align: top;
+    padding: 0 14px 0 7px;
+    vertical-align: top;
 }
+
 .sel-city-td-letter div {
-  font-size: 24px;
-  line-height: 24px;
-  font-weight: 700;
-  color: #ccc;
-  padding: 0;
-  margin: 0;
+    font-size: 24px;
+    line-height: 24px;
+    font-weight: 700;
+    color: #ccc;
+    padding: 0;
+    margin: 0;
 }
+
 .sel-city-td-sf {
-  padding-right: 8px;
-  font-weight: 700;
-  width: 73px;
-  height: 22px;
-  line-height: 22px;
-  vertical-align: top;
-}
-.sel_city a {
-  white-space: nowrap;
-  margin-right: 9px;
-  line-height: 18px;
-}
-.sel_city a {
-  white-space: nowrap;
-  margin: 0px;
-  padding: 0px;
-  margin-right: 3px;
+    padding-right: 8px;
+    font-weight: 700;
+    width: 73px;
+    height: 22px;
+    line-height: 22px;
+    vertical-align: top;
 }
 
+.sel_city a {
+    white-space: nowrap;
+    margin-right: 9px;
+    line-height: 18px;
+}
 
+.sel_city a {
+    white-space: nowrap;
+    margin: 0px;
+    padding: 0px;
+    margin-right: 3px;
+}
 /* 城市选择 END */
-
-
 /* poi 列表 BEGIN */
+
 .poi-item-container {
-  position: relative;
-  border: 1px solid #dedede;
-  margin-top: -1px;
-  padding: 15px 15px 15px 150px;
-  min-height: 85px;
+    position: relative;
+    border: 1px solid #dedede;
+    margin-top: -1px;
+    padding: 15px 15px 15px 150px;
+    min-height: 85px;
 }
 
 .add-poi-to-plan {
-  font-size: 46px;
-  font-weight: lighter;
-  position: absolute;
-  top: 50%;
-  right: 5%;
-  width: 50px;
-  height: 50px;
-  margin-top: -25px;
-  border: 1px solid #989ca2;
-  border-radius: 50%;
-  outline: 0;
-  color: #989ca2;
-  line-height: 50px;
-  text-align: center;
-  cursor: pointer;
-  text-decoration: none;
+    font-size: 46px;
+    font-weight: lighter;
+    position: absolute;
+    top: 50%;
+    right: 5%;
+    width: 50px;
+    height: 50px;
+    margin-top: -25px;
+    border: 1px solid #989ca2;
+    border-radius: 50%;
+    outline: 0;
+    color: #989ca2;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    text-decoration: none;
 }
+
 .add-poi-to-plan:hover {
-  background-color: #25a1fa;
-  border: 1px solid #25a1fa;
-  color: #fff;
-  text-decoration: none;
+    background-color: #25a1fa;
+    border: 1px solid #25a1fa;
+    color: #fff;
+    text-decoration: none;
 }
 
 a.poi-item-pic {
-  position: absolute;
-  top: 2px;
-  left: 2px;
+    position: absolute;
+    top: 2px;
+    left: 2px;
 }
 
 .poi-item-detail {
-  margin-right: 15%;
+    margin-right: 15%;
 }
 
 p.poi-item-desc {
-  font-size: 12px;
-  height: 30px;
-  overflow: hidden;
+    font-size: 12px;
+    height: 30px;
+    overflow: hidden;
 }
 /* poi 列表 END */
-
-
-
 /* plan 内容 BEGIN */
+
 .right-top-tool-bar {
-  width: 100%;
-  height: 50px;
-  border-bottom: 1px solid #ccc;
-  line-height: 50px;
+    width: 100%;
+    height: 50px;
+    border-bottom: 1px solid #ccc;
+    line-height: 50px;
 }
 
 .right-bottom-edit-zoom {
-  width: 100%;
-  height: 100%;
-  position: relative;
+    width: 100%;
+    height: 100%;
+    position: relative;
 }
 
 .right-left-day-edit-zoom {
-  width: 23%;
-  border-right: 1px solid #ccc;
-  height: 92%;
-  display: inline-block;
+    width: 23%;
+    border-right: 1px solid #ccc;
+    height: 92%;
+    display: inline-block;
 }
 
 .btn-add-one-day {
-  display: block;
-  cursor: pointer;
-  height: 38px;
-  line-height: 38px;
-  text-align: center;
-  margin: 20px 15px;
-  border: 1px solid #adb6bf;
-  color: #b5b5b5;
-  font-size: 30px;
+    display: block;
+    cursor: pointer;
+    height: 38px;
+    line-height: 38px;
+    text-align: center;
+    margin: 20px 15px;
+    border: 1px solid #adb6bf;
+    color: #b5b5b5;
+    font-size: 30px;
 }
 
 .btn-add-one-day:hover {
-  background-color: #25a1fa;
-  border: 1px solid #25a1fa;
-  color: #fff;
+    background-color: #25a1fa;
+    border: 1px solid #25a1fa;
+    color: #fff;
 }
 
 .day-navi-element-container {
-  width: 100px;
-  height: 50px;
-  border: 1px solid #ccc;
-  margin: 3px auto;
-  line-height: 50px;
-  text-align: center;
-  cursor: pointer;
-  position: relative;
+    width: 100px;
+    height: 50px;
+    border: 1px solid #ccc;
+    margin: 3px auto;
+    line-height: 50px;
+    text-align: center;
+    cursor: pointer;
+    position: relative;
 }
 
 .day-navi-element-container:hover {
-  background-color: #337ab7;
-  border: 1px solid #337ab7;
-  color: #fff;
+    background-color: #337ab7;
+    border: 1px solid #337ab7;
+    color: #fff;
 }
 
 .delete-one-day {
-  position: absolute !important;
-  top: 3px !important;
-  right: 3px !important;
+    position: absolute !important;
+    top: 3px !important;
+    right: 3px !important;
 }
 
 .delete-day-popup {
-  background-color: #ddd;
-  width: 153px;
-  height: 63px;
-  box-shadow: 1px 1px #ccc;
+    background-color: #ddd;
+    width: 153px;
+    height: 63px;
+    box-shadow: 1px 1px #ccc;
 }
 
 .delete-day-confirm {
-  font-size: 12px;
-  color: #000;
-  text-align: left;
-  padding-left: 7px;
-  padding-top: 7px;
-  margin: 0;
-  line-height: 20px;
+    font-size: 12px;
+    color: #000;
+    text-align: left;
+    padding-left: 7px;
+    padding-top: 7px;
+    margin: 0;
+    line-height: 20px;
 }
 
 .delete-day-btn-group {
-  line-height: 20px;
-  padding-top: 7px;
-  width: 80%;
-  margin: 1px auto;
+    line-height: 20px;
+    padding-top: 7px;
+    width: 80%;
+    margin: 1px auto;
 }
 
 .deleteYes {
-  margin-right: 9px;
-  margin-left: 3px;
-  background-color: #008EDC;
-  color: #fff;
-  padding: 3px 7px;
-  font-weight: bold;
-  cursor: pointer;
+    margin-right: 9px;
+    margin-left: 3px;
+    background-color: #008EDC;
+    color: #fff;
+    padding: 3px 7px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .day-ative {
-  background-color: #337ab7;
-  border: 1px solid #337ab7;
-  color: #fff;
+    background-color: #337ab7;
+    border: 1px solid #337ab7;
+    color: #fff;
 }
 
 .deleteYes:hover {
-  background-color: #008EFF;
+    background-color: #008EFF;
 }
 
 .deleteNo {
-  margin-left: 13px;
-  margin-right: 3px;
-  border: solid 1px #FFFC0A;
-  color: #fff;
-  padding: 3px 7px;
-  font-weight: bold;
-  cursor: pointer;
+    margin-left: 13px;
+    margin-right: 3px;
+    border: solid 1px #FFFC0A;
+    color: #fff;
+    padding: 3px 7px;
+    font-weight: bold;
+    cursor: pointer;
 }
 
 .deleteNo:hover {
-  border-color: solid 1px #FFFCFF;
+    border-color: solid 1px #FFFCFF;
 }
 
 .right-right-poi-edit-zoom {
-  position: absolute;
-  top: 3px;
-  right: 3px;
-  width: 75%;
-  height: 100%;
-  display: inline-block;
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    width: 75%;
+    height: 100%;
+    display: inline-block;
 }
 
 .select-poi-info-container {
-  border: 1px solid #ccc;
-  margin: 7px 1px;
-  box-shadow: 1px 1px #ccc;
-  position: relative;
-  width: 100%;
-  height: 60px;
+    border: 1px solid #ccc;
+    margin: 7px 1px;
+    box-shadow: 1px 1px #ccc;
+    position: relative;
+    width: 100%;
+    height: 60px;
 }
+
 .select-poi-pic {
-  position: absolute;
+    position: absolute;
 }
+
 .select-poi-name {
-  padding-left: 83px;
-  height: 60px;
-  line-height: 60px;
-  cursor: pointer;
-  text-decoration: none;
+    padding-left: 83px;
+    height: 60px;
+    line-height: 60px;
+    cursor: pointer;
+    text-decoration: none;
 }
+
 .select-poi-name:hover {
-  color: #ff8300;
+    color: #ff8300;
 }
-a:hover{
-  text-decoration: none;
+
+a:hover {
+    text-decoration: none;
 }
+
 span.delete-one-poi {
-  position: absolute;
-  top: 23px;
-  right: 13px;
+    position: absolute;
+    top: 23px;
+    right: 13px;
 }
 /* plan 内容 END */

@@ -36,7 +36,7 @@ Template.poiNavi.events({
     poiNaviAddActiveCls(event);
     var parent = $(event.target).parent(),
         type = parent.attr('data-type');
-    updatePoiNaviActiveSession(type);
+    Meteor.cmsPlan.setActivePoiType(type);
   }
 });
 
@@ -47,8 +47,4 @@ Template.poiNavi.onRendered(function(){
 function poiNaviAddActiveCls(event) {
   $(event.target).parent().parent().find('a').removeClass("poi-navi-active")
   $(event.target).addClass("poi-navi-active");
-}
-
-function updatePoiNaviActiveSession(type) {
-  Session.set('poi-navi-active', type);
 }
