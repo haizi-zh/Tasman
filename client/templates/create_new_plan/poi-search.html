@@ -1,4 +1,5 @@
 <template name="poiSearch">
-  <input type="" placeholder="输入{{targetName}}名称">
-  <span class="poi-search-clear hidden">清除</span>
+  <input name="poi-search" placeholder="输入{{targetName}}名称">
+  <span class="poi-search-clear {{#if hasNoSearchText}}hidden{{/if}}">返回</span>
+  <span class="active-search">搜索</span>
 </template>

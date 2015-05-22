@@ -1,4 +1,3 @@
-// Meteor.createPlan = function() {
 CreatePlan = function() {
   var that = this,
       activePoiType = new ReactiveVar('ViewSpot', function(o, n){return o === n;}),
@@ -10,6 +9,7 @@ CreatePlan = function() {
       keyword = new ReactiveVar('', function(o, n){return o === n;}),
       totalPage = new ReactiveVar(0, function(o, n){return o === n;}),
       curPage = new ReactiveVar(1, function(o, n){return o === n;}),
+      curSearchPage = new ReactiveVar(1, function(o, n){return o === n;}),
       totalItems = new ReactiveVar(0, function(o, n){return o === n;}),
       pageSize = new ReactiveVar(10, function(o, n){return o === n;}),
       poiItems = new ReactiveVar([]),
@@ -42,11 +42,20 @@ CreatePlan = function() {
         locName = activeCity.get(),
         limit = pageSize.get(),
         skip = plan.page.getOffsetStart(),
-        //query = {'targets': new Mongo.ObjectID(locId)},
-        options = {'skip': skip, 'limit': limit};
+        options = {'skip': skip, 'limit': limit},
+        query = {};
 
-    sub.result = Meteor.subscribe('createPlanResult', poiType, locName, options);
-    sub.count = Meteor.subscribe('createPlanCount', poiType, locName, options);
+    // 搜索部分
+    var kw = keyword.get();
+    if($.trim(kw) !== '') {
+      var regexContent = '^' + kw,
+        re = new RegExp(regexContent);
+      query = {'alias': {'$regex': kw}};
+      options.skip = (curSearchPage.get() - 1) * pageSize.get();  // 去除上次的skip
+    }
+
+    sub.result = Meteor.subscribe('createPlanResult', poiType, locName, query, options);
+    sub.count = Meteor.subscribe('createPlanCount', poiType, locName, query, options);
 
     if(sub.result.ready()) {
       plan.setPoiItems(getMongoCol(poiType).find({}).fetch());
@@ -74,6 +83,8 @@ CreatePlan = function() {
   plan.setActivePoiType = function(type) {
     activePoiType.set(type);
     plan.page.moveTo(1);
+    plan.search.clear();
+    $('.poi-search-clear').trigger("click");
   };
   plan.setActiveDay = function(dayIndex) {
     activeDay.set(dayIndex);
@@ -175,9 +186,16 @@ CreatePlan = function() {
     },
     'clear': function() {
       keyword.set('');
+      curSearchPage.set(1);
+    },
+    'setKeyWord': function(kw) {
+      keyword.set(kw);
     },
     'active': function() {
       // 激活搜索
+    },
+    'hasSearchText': function() {
+      return keyword.get() !== '';
     }
   };
 
@@ -254,7 +272,11 @@ CreatePlan = function() {
 
     'moveTo': function(n) {
       if(this.checkValid(n)) {
-        this.setCurPage(n);
+        if(!plan.search.hasSearchText()) {
+          this.setCurPage(n);
+        }else {
+          curSearchPage.set(n);
+        }
       }
     },
 
@@ -275,9 +297,14 @@ CreatePlan = function() {
     },
     'getPageNavi': function() {
       var pages = [],
-          currentPage = this.getCurPage(),
           pageCnt = this.getPageCnt(),
-          pageSize = this.getPageSize();
+          pageSize = this.getPageSize(),
+          currentPage = this.getCurPage();
+
+      if(plan.search.hasSearchText()) {
+        currentPage = curSearchPage.get();
+      }
+
       var start, end;
       start = currentPage + 1 - Math.ceil(pageSize / 2);
       if(start < 1) {
