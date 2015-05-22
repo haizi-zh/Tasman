@@ -1,19 +1,24 @@
-Meteor.publish('createPlanResult', function(poiType, locName, options) {
+Meteor.publish('createPlanResult', function(poiType, locName, query, options) {
   check(poiType, String);
   check(locName, String);
+  check(query, Object);
   check(options, Object);
   console.log('城市' + locName);
+
   var locId = Locality.findOne({'alias': locName})._id;
-  return getMongoCol(poiType).find({'targets': locId}, options);
+  query = _.extend(query, {'targets': locId});
+  return getMongoCol(poiType).find(query, options);
 });
 
-Meteor.publish('createPlanCount', function(poiType, locName, options) {
+Meteor.publish('createPlanCount', function(poiType, locName, query, options) {
   check(poiType, String);
   check(locName, String);
+  check(query, Object);
   check(options, Object);
   var locId = Locality.findOne({'alias': locName})._id,
-      self = this,
-      count = getMongoCol(poiType).find({'targets': locId}).count() || 0;
+      self = this;
+  query = _.extend(query, {'targets': locId});
+  var count = getMongoCol(poiType).find(query).count() || 0;
   console.log('一共找到了:' + count);
 
   self.added('ItemCount', Meteor.uuid(), {
