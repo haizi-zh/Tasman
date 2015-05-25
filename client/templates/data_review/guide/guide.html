@@ -1,0 +1,31 @@
+<template name="reviewGuide">
+  <!-- 左侧导航栏 -->
+  {{> naviRegion}}
+
+  <!-- 城市信息审核 -->
+  <div class="right-info-container">
+    <div class="city-info-container">
+      {{#with guideDetail}}
+        <div class="form-group">
+          <label>标题</label>
+          <textarea class="form-control" value="{{title}}"></textarea>
+        </div>
+
+        <div>日程</div>
+        <ul class="itinerary-items">
+          {{#each itinerary}}
+            {{> dayItem index=index}}
+            {{#each items}}
+              <li class="vs-item day-{{dayIndex}}" data-id="{{id}}">
+                <div class="drag-item">{{zhName}}</div>
+                <div class="glyphicon glyphicon-minus"></div>
+              </li>
+            {{/each}}
+          {{/each}}
+        </ul>
+        <div class="add-day">添加一天</div>
+      {{/with}}
+    </div>
+  </div>
+
+</template>

@@ -1,8 +1,8 @@
 // if(!ViewSpot) {
 //   ViewSpot = new Mongo.Collection('ViewSpot');
 // }
-
 Plan = new Mongo.Collection('Plan');
+GuideTemplate = new Mongo.Collection('GuideTemplate');
 
 ViewSpot = new Mongo.Collection('ViewSpot');
 Locality = new Mongo.Collection('Locality');

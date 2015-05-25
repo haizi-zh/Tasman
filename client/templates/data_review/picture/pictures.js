@@ -30,7 +30,7 @@ Template.pictures.onRendered(function(){
   for (var i = 0, len = images.length; i < len; i++) {
     Blaze.renderWithData(Template.selectedPicture, images[i], parentDom);
   };
-  $('.selected-container').sortable().bind('sortupdate');
+  $('.selected-container').sortable();
 })
 
 
