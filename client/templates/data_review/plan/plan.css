@@ -1,0 +1,9 @@
+.edit-btn{
+	border-radius: 2px;
+	background-color: #fff;
+	cursor: pointer;
+	border: 1px solid #aaa;
+	padding: 3px;
+	margin-left: 30px;
+}
+
