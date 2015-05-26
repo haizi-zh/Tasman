@@ -14,6 +14,8 @@ var mongoGuideUrl = mongoUrlGen(dbAuth.guide.db, dbAuth.guide.username, dbAuth.g
 var guide = new MongoInternals.RemoteCollectionDriver(mongoGuideUrl);
 
 
+//省市，国家结构存储表
+LocalityRelations = new Mongo.Collection("LocalityRelations", { _driver: guide });
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
 Country = new Mongo.Collection("Country", { _driver: geo })

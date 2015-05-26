@@ -24,10 +24,10 @@ var naviBarConfig = [{
     routeName: "reviewHotel"
     // disable: true
   }, {
-    name: "攻略路线",
-    url: "/data-review/plan",
-    routeName: "reviewPlan"
-  }, {
+  //   name: "攻略路线",
+  //   url: "/data-review/plan",
+  //   routeName: "reviewPlan"
+  // }, {
     name: "路线模板",
     url: "/data-review/guide",
     routeName: "reviewGuide"

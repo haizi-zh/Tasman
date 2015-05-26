@@ -5,10 +5,23 @@ Template.foreignCountries.helpers({
     var temp = [];
     csArr.map(function(x) {
       temp.push({
-        'name': x,
-        'url': '/data-review/plan/abroad/' + x
+        'name': x
       })
     });
     return temp;
   }
+})
+
+Template.foreignCountries.events({
+  'click .list-group-item': function(e){
+    $('.list-group-item').removeClass('selected-bg');
+    $(e.target).addClass('selected-bg');
+    var parentName = this.name;
+
+    Meteor.subscribe('childLocalities', true, parentName);
+    Session.set('naviLocalityParent', {
+      isAbroad: true,
+      parentName: parentName
+    });
+  },
 })

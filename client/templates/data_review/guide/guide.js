@@ -4,7 +4,7 @@ var day;//纪录日程的总天数
 
 Template.reviewGuide.helpers({
   guideDetail: function() {
-    var mid = '54d08c1056eb6f0c680005cc';
+    var mid = Session.get('GuideTemplateId');
     var detailInfo = storageEngine.snapshot('guide.GuideTemplate', new Mongo.ObjectID(mid));
 
     //重新组装数据

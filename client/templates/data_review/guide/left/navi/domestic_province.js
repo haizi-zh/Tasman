@@ -4,10 +4,22 @@ Template.province.helpers({
     var temp = [];
     provs.map(function(x) {
       temp.push({
-        'name': x,
-        'url': '/data-review/Plan/china/' + x
+        'name': x
       })
     });
     return temp;
   },
 });
+
+Template.province.events({
+  'click .list-group-item': function(e){   
+    $('.list-group-item').removeClass('selected-bg');
+    $(e.target).addClass('selected-bg');
+    var parentName = this.name;
+    Meteor.subscribe('childLocalities', false, parentName);
+    Session.set('naviLocalityParent', {
+      isAbroad: false,
+      parentName: parentName
+    });
+  },
+})
