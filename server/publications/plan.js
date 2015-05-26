@@ -1,12 +1,11 @@
 
 
 //TODO  根据targets订阅plans
-Meteor.publish('plans', function(mid, pageLimit) {
+Meteor.publish('plans', function(mid) {
   check(mid, String);
-  check(pageLimit, Number);
 
   //TODO 作hotness的数据，按理说每个地方就几个好点的路线就好了！先精再全
-  return Plan.find({'_id': new Mongo.ObjectID(mid)}, {sort: {hotness: -1}, limit: parseInt(pageLimit), fields: {targets: 1, zhName: 1}});
+  return Plan.find({'targets.id': new Mongo.ObjectID(mid)}, {sort: {forkedCnt: -1}});
 });
 
 // Meteor.publish('plans', function(isAbroad, zoneName, pageLimit) {

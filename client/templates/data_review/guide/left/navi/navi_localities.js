@@ -32,7 +32,12 @@ Template.naviLocalities.events({
     $('.navi-localities .list-group-item').removeClass('selected-bg');
     $(e.target).addClass('selected-bg');
     var localityId = this.id;
-    Meteor.subscribe('guideTemps', localityId);
+    if (window.location.pathname.indexOf('guide')){
+      Meteor.subscribe('guideTemps', localityId);
+    }
+    if (window.location.pathname.indexOf('plan')){
+      Meteor.subscribe('plans', localityId);
+    }
     Session.set('naviLocalityId', localityId);
   },
 })

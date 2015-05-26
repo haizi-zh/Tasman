@@ -3,7 +3,13 @@ Template.naviGuides.helpers({
   guides: function() {
     var naviLocalityId = Session.get('naviLocalityId');
 
-    var guideList = GuideTemplate.find({'locId': new Mongo.ObjectID(naviLocalityId)}).fetch();
+    if (window.location.pathname.indexOf('guide')){
+      var guideList = GuideTemplate.find({'locId': new Mongo.ObjectID(naviLocalityId)}).fetch();
+    }
+    if (window.location.pathname.indexOf('plan')){
+      var guideList = Plan.find({'targets.id': new Mongo.ObjectID(naviLocalityId)}, {sort: {forkedCnt: -1}}).fetch();
+    }
+    
     var guides = [];
     guideList.map(function(x) {
       guides.push({
@@ -19,7 +25,14 @@ Template.naviGuides.events({
   'click .list-group-item': function(e){
     $('.navi-guides .list-group-item').removeClass('selected-bg');
     $(e.target).addClass('selected-bg');
-    var guideTemplateId = this.id;
-    Session.set('GuideTemplateId', guideTemplateId);
+
+    if (window.location.pathname.indexOf('guide')){
+      var guideTemplateId = this.id;
+      Session.set('GuideTemplateId', guideTemplateId);
+    }
+    if (window.location.pathname.indexOf('plan')){
+      var planId = this.id;
+      Session.set('currentPlanId', planId);
+    }
   },
 })
