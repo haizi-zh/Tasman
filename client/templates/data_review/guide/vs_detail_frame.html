@@ -1,0 +1,14 @@
+<template name="vsDetailFrame">
+	<div class="desc"><label>别名：</label>{{alias}}</div>
+  {{#if address}}
+    <div class="address"><label>地址：</label>{{address}}</div>
+  {{else}}
+    <div class="address"><label>地址：</label>无</div>
+  {{/if}}
+  {{#if district}}
+    <div class="district"><label>所在区域：</label>{{district}}</div>
+  {{else}}
+    <div class="district"><label>所在区域：</label>无</div>
+  {{/if}}
+  <div class="desc"><label>简介：</label>{{desc}}</div>
+</template>

@@ -1,0 +1,38 @@
+.day-item .drag-item{
+	text-align: center;
+	width: 200px;
+	height: 30px;
+	line-height: 30px;
+	margin: 5px 10px;
+	border: 1px solid #ddd;
+	/*过长则省略号*/
+	background: #2bf;
+	color: #fff;
+	display: inline-block;
+}
+
+.vs-item{
+	list-style: none;
+}
+
+.vs-item .drag-item{
+	text-align: center;
+	width: 200px;
+	height: 30px;
+	line-height: 30px;
+	background: #fff;
+	margin: 5px 10px;
+	border: 1px solid #ddd;
+	display: inline-block;
+	/*过长则省略号*/	
+}
+
+.add-day{
+	display: inline-block;
+	margin: 10px 20px;
+	padding: 5px 10px;
+	color: #fff;
+	background-color: #2bf;
+	cursor: pointer;
+}
+
