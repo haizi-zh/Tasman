@@ -36,7 +36,7 @@ Template.pictures.onRendered(function(){
       Blaze.renderWithData(Template.selectedPicture, images[i], parentDom);
     }
   };
-  $('.selected-container').sortable().bind('sortupdate');
+  $('.selected-container').sortable();
 })
 
 
@@ -421,9 +421,11 @@ Template.pictures.events({
           };
           Blaze.renderWithData(Template.selectedPicture, imageInfo, $('ul.selected-container')[0]);
 
+          //存入数据库
           var url = result.url;
           var mid = Session.get('currentLocalityId') || Session.get('currentVsId')
                 || Session.get('currentRestaurantId') || Session.get('currentShoppingId');
+
           Meteor.call('saveFetchImage', mid, result.key, fetchUrl , function(error, result) {
             if (result) {
               alert('上传成功: 图片链接为' + url);

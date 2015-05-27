@@ -1,0 +1,71 @@
+<template name="reviewPlan">
+  <!-- 左侧导航栏 -->
+  {{> naviRegion}}
+
+  <!-- 城市信息审核 -->
+  <div class="right-info-container">
+    <div class="city-info-container">
+      <!-- {{> naviTabsPlan planDetail=planDetail}} -->
+      {{#with planDetail}}
+        <div class="form-group">
+          <label>标题</label>
+          <a class="edit-btn" href="/editPlan/{{_id._str}}" target="_blank">编辑线路</a>
+          <!-- <textarea class="form-control" name="" id="{{keyChain}}" value="{{value}}" data-type="{{dataType}}"></textarea> -->
+          <textarea class="form-control" value="{{title}}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>简介</label>
+          <textarea class="form-control" value="{{desc}}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>线路特色</label>
+          <textarea class="form-control" value="{{tags}}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>线路玩法(摄影,骑行,自驾,购物,美食,人文,徒步)</label>
+          <textarea class="form-control" value="{{plays}}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>出行人群(独自,亲子,家庭,朋友,情侣)</label>
+          <textarea class="form-control" value="{{withs}}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>最标签</label>
+          <div>(最经典,最原生,最省钱,最小资,最人气,最浪漫,最悠闲,最刺激,最个性,最历史,最风情,最文艺,最自然,特别推荐,最艳遇,最紧凑,最疯狂,最年轻,最便捷,最民俗,最繁华,最美味,最血拼)</div>
+          <textarea class="form-control" value="{{lxpTag}}"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label>线路游记</label>
+          <!-- {{> froalaReactive _onblur=UpdateMD5 keyChain=keyChain inlineMode=false _value=value _buttons=buttons}} -->
+          {{> froalaReactive inlineMode=false _value=moreDesc}}
+        </div>
+
+        <div class="form-group">
+          <div>日程</div>
+          {{#each details}}
+            <label>第{{index}}天</label>
+            <textarea class="form-control" value="{{items}}"></textarea>
+            {{#each actv}}
+              {{#with item}}
+                <label>{{zhName}}</label>
+                <div class="vs-info">
+                  <div class="desc"><span>别名：</span>{{alias}}</div>
+                  <div class="address"><span>地址：</span>{{address}}</div>
+                  <div class="district"><label>所在区域：</label>{{district}}</div>
+                  <div class="desc"><span>简介</span>{{desc}}</div>
+                </div>
+              {{/with}}
+            {{/each}}
+          {{/each}}
+        </div>
+      {{/with}}
+    </div>
+  </div>
+
+</template>

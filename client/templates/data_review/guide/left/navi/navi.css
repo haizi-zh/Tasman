@@ -1,0 +1,15 @@
+.abroad, .domestic{
+  float: left;
+  width: 100px;
+}
+
+.navi-localities, .navi-guides{
+  float: left;
+  margin-top: 25px;
+  width: 80px;
+}
+
+.selected-bg{
+  background: #2bf !important;
+  color: #ffd !important;
+}
