@@ -18,14 +18,14 @@ Template.poiNavi.helpers({
         'name': '购物',
         'type': 'Shopping'
       },
-      {
-        'name': '交通',
-        'type': 'Traffic'
-      },
-      {
-        'name': '我的收藏',
-        'type': 'Collect'
-      }
+      // {
+      //   'name': '交通',
+      //   'type': 'Traffic'
+      // },
+      // {
+      //   'name': '我的收藏',
+      //   'type': 'Collect'
+      // }
     ];
   }
 });
