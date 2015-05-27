@@ -27,9 +27,6 @@ Restaurant = new Mongo.Collection("Restaurant", { _driver: poi });
 Shopping = new Mongo.Collection("Shopping", { _driver: poi });
 ViewSpot = new Mongo.Collection("ViewSpot", { _driver: poi });
 
-Plan = new Mongo.Collection("Plan", { _driver: plan });
-GuideTemplate = new Mongo.Collection("GuideTemplate", { _driver: guide });
-
 CmsOplog = new Mongo.Collection('CmsOplog');
 OplogPkList = new Mongo.Collection('OplogPkList');
 
