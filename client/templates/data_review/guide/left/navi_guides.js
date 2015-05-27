@@ -3,10 +3,10 @@ Template.naviGuides.helpers({
   guides: function() {
     var naviLocalityId = Session.get('naviLocalityId');
 
-    if (window.location.pathname.indexOf('guide')){
+    if (window.location.pathname.indexOf('guide') != -1){
       var guideList = GuideTemplate.find({'locId': new Mongo.ObjectID(naviLocalityId)}).fetch();
     }
-    if (window.location.pathname.indexOf('plan')){
+    if (window.location.pathname.indexOf('plan') != -1){
       var guideList = Plan.find({'targets.id': new Mongo.ObjectID(naviLocalityId)}, {sort: {forkedCnt: -1}}).fetch();
     }
     

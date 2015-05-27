@@ -3,9 +3,6 @@ Template.reviewPlan.helpers({
   planDetail: function() {
     var mid = Session.get('currentPlanId');
     var detailInfo = storageEngine.snapshot('plan.Plan', new Mongo.ObjectID(mid));
-    log('输出信息');
-    log(detailInfo);
-
     if(detailInfo.details){
       for (var i = 0;i < detailInfo.details.length;i++){
         detailInfo.details[i].index = i + 1;
