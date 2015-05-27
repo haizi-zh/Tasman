@@ -23,14 +23,6 @@ var naviBarConfig = [{
     url: "/data-review/hotel",
     routeName: "reviewHotel"
     // disable: true
-  }, {
-    name: "攻略路线",
-    url: "/data-review/plan",
-    routeName: "reviewPlan"
-  }, {
-    name: "路线模板",
-    url: "/data-review/guide",
-    routeName: "reviewGuide"
   }]
 }, {
   name: "行程攻略",
@@ -44,6 +36,14 @@ var naviBarConfig = [{
     name: "新建模板",
     url: "/createNewPlan",
     routeName: "createNewPlan"
+  }, {
+    name: "编辑攻略",
+    url: "/data-review/plan",
+    routeName: "reviewPlan"
+  // }, {
+  //   name: "路线模板",
+  //   url: "/data-review/guide",
+  //   routeName: "reviewGuide"
   }]
   // subItem: []
 }];
