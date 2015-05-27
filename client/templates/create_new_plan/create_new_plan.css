@@ -244,6 +244,8 @@ p.poi-item-desc {
     height: 50px;
     border-bottom: 1px solid #ccc;
     line-height: 50px;
+    position: relative;
+    background-color: #CFCCCC;
 }
 
 .right-bottom-edit-zoom {
@@ -415,3 +417,82 @@ span.delete-one-poi {
     background-color: #2773B5;
 }
 /* 搜索 END*/
+
+
+/*POI排序的样式*/
+.sortable-dragging {
+    border:1px solid #EEE;
+    background-color: #EEE;
+    z-index: 2000;
+    -moz-box-shadow: 10px 10px 5px #ccc;
+    box-shadow: 10px 10px 5px #ccc;
+    height: 60px;
+    width: 100%;
+}
+
+.sortable-placeholder {
+    border:1px dashed green;
+    height: 60px;
+    width: 100%;
+}
+/*POI排序的样式*/
+
+
+.save-plan {
+    background-color: rgb(51, 122, 183);
+    width: 53px;
+    height: 33px;
+    line-height: 33px;
+    text-align: center;
+    position: absolute;
+    top: 9px;
+    right: 23px;
+    color: #fff;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.save-plan:hover {
+    background-color: rgb(30, 111, 181);
+}
+
+input.plan-name {
+  height: 33px;
+  width: 234px;
+  line-height: 33px;
+  padding-left: 7px;
+  padding-right: 20px;
+  cursor: pointer;
+  border: none;
+  background-color: #CFCCCC;
+}
+
+.plan-name:focus {
+    background-color: #fff;
+}
+
+.plan-name-edit {
+  position: relative;
+}
+
+.edit-icon {
+  margin-left: 7px;
+}
+
+#one-day-tips {
+    width: 100%;
+    height: 120px;
+    padding: 1px 23px;
+    margin-top: 13px;
+    overflow-y: scroll;
+}
+
+span.tip-edit-icon {
+    position: absolute;
+    top: 17px;
+    left: 3px;
+}
+
+.tip-container {
+    position: relative;
+}

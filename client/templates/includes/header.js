@@ -34,8 +34,17 @@ var naviBarConfig = [{
   }]
 }, {
   name: "行程攻略",
-  url: "/createNewPlan",
+  url: "/editPlan",
   routeName: "createNewPlan",
+  subItem: [{
+    name: "审核模板",
+    url: "/",
+    routeName: ""
+  }, {
+    name: "新建模板",
+    url: "/createNewPlan",
+    routeName: "createNewPlan"
+  }]
   // subItem: []
 }];
 

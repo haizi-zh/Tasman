@@ -13,10 +13,13 @@ CreatePlan = function() {
       totalItems = new ReactiveVar(0, function(o, n){return o === n;}),
       pageSize = new ReactiveVar(10, function(o, n){return o === n;}),
       poiItems = new ReactiveVar([]),
+      title = new ReactiveVar('', function(o, n){return o === n;}),
 
       sub = {'result': {}, 'count': {}},
       poiIds = {},
       plan = {},
+      isNew = true,
+      planId,
       autorun,
       query;
 
@@ -29,6 +32,17 @@ CreatePlan = function() {
     plan.addOneDay();
     activeDay.set(1);
     poiIds = {};
+
+    planId = Router.current().params['planId'];
+    if(planId) {
+      plan.getExistedPlanById(planId);
+    }else{
+      Meteor.call('createNewPlan', {'editTime': Date.now()}, function(err, res){
+        if(!err && res.code === 0){
+          planId = res._id._str;
+        }
+      });
+    }
 
     if(!autorun) {
       autorun = Tracker.autorun(function(){
@@ -65,6 +79,13 @@ CreatePlan = function() {
     }
   };
 
+  plan.savePlanTitle = function(text) {
+    title.set(text);
+  };
+  plan.getPlanTitle = function(text) {
+    return title.get();
+  };
+
   plan.getPoiItems = function() {
     return poiItems.get();
   };
@@ -74,8 +95,16 @@ CreatePlan = function() {
   plan.getPlan = function() {
     return planDetail.get();
   };
+  plan.setPlan = function(arr) {
+    return planDetail.set(arr);
+  };
   plan.getCurDayInfo = function() {
-    return planDetail.get()[activeDay.get() - 1].pois;
+    return planDetail.get()[activeDay.get() - 1];
+  };
+  plan.saveTips = function(dayIndex, content) {
+    var temp = planDetail.get();
+    temp[dayIndex - 1].tips = content;
+    planDetail.set(temp);
   };
   plan.getActivePoiType = function() {
     return activePoiType.get();
@@ -145,7 +174,6 @@ CreatePlan = function() {
     return planDetail.get()[dayIndex - 1].pois.length;
   };
   plan.addPoi = function(poiInfo) {
-    console.log(activeDay.get());
     var dayIndex = activeDay.get(),
         curDayPoiCnt = plan.poiCountOneDay(activeDay.get()),
         type = activePoiType.get(),
@@ -166,6 +194,122 @@ CreatePlan = function() {
       tempIndex += 1;
     });
     planDetail.set(tempPlan);
+  };
+  plan.resort = function(dayIndex, from, to) {
+    var tempPlanDetail = plan.getPlan(),
+        tempDayObj = $.extend(true, {}, tempPlanDetail[dayIndex - 1]),
+        tempDay = tempDayObj.pois,
+        target = tempDay[from - 1];
+
+    // 删除
+    tempDay.splice(from - 1, 1);
+    // 删除后重判断插入位置
+    var insertLocationAfterDelete = to - 1;
+    // 截成两段
+    var childAfter = tempDay.slice(insertLocationAfterDelete);
+    var childBefore = tempDay.slice(0, insertLocationAfterDelete);
+    // 插入元素
+    childBefore.push(target);
+    // 重组
+    tempDay = childBefore.concat(childAfter);
+    // 更新index
+    _.map(tempDay, function(val, key){
+      val.index = key;
+    });
+    // 更新整体数据
+    tempPlanDetail[dayIndex - 1].pois = tempDay;
+    // plan.setPlan(tempPlanDetail);
+    planDetail.set(tempPlanDetail);
+  };
+
+  plan.savePlan = function(id) {
+    if(isNew) {
+      // 全新的游记
+      console.log('保存全新游记');
+      plan.saveNewPlan();
+    }else {
+      // 保存至已有游记
+      console.log('保存已有游记');
+      plan.saveEditedPlan();
+    }
+  };
+
+  /*
+  * 保存到plan.Plan.CmsGenerated
+  */
+  plan.saveNewPlan = function() {
+    var newPlan = {
+      _id: planId,
+      title: title.get(),
+      locName: activeCity.get(),
+      detail: planDetail.get(),
+      author: Meteor.user().username
+    };
+    Meteor.call('saveNewPlan', newPlan, function(err, res){
+      if(!err && res.code === 0) {
+        alert('保存成功');
+      }
+    });
+  };
+
+  plan.saveEditedPlan = function() {
+    var newPlan = {
+      _id: planId,
+      title: title.get(),
+      locName: activeCity.get(),
+      detail: planDetail.get(),
+      author: Meteor.user().username
+    };
+    Meteor.call('saveEditedPlan', newPlan, function(err, res){
+      if(!err && res.code === 0) {
+        alert('保存成功');
+      }
+    });
+  };
+
+  plan.recievePlanData = function(planInfo) {
+    // 设置计划是否为新, id, 标题继承自已有数据
+    isNew = false;
+    console.log(planInfo);
+    activeCity.set(planInfo.locName);
+    title.set(planInfo.title);
+    var rawData = planInfo.details,
+        temp = [];
+
+    rawData.map(function(ele, index) {
+      var dayIndex = index + 1,
+          poiInfo = ele.actv;
+      if(dayIndex > temp.length) {
+        temp.push({'dayIndex': dayIndex, 'pois': []});
+        index = 0;
+      }
+
+      poiInfo.map(function(val, idx) {
+        var index = temp[dayIndex - 1].pois.length;
+        var info = {
+          'id':       val.item._id._str,
+          'dayIndex': dayIndex,
+          'index':    index,
+          'name':     val.item.zhName,
+          'type':     val.type === 'vs' ? "ViewSpot" : ''
+        };
+        temp[dayIndex - 1].pois.push(info);
+        plan.addPoiId(info['id'], info);  //加入到id中
+      });
+
+    });
+    console.log(temp);
+    planDetail.set(temp);
+  };
+
+  plan.getExistedPlanById = function(id) {
+    Meteor.call('getPlanById', id, function(err, res) {
+      if(!err && res.code === 0) {
+        console.log('输出获得的原始模板数据');
+        console.log(res);
+        plan.recievePlanData(res.data);
+      }
+    });
   };
 
   // 城市
@@ -335,13 +479,14 @@ Meteor.cmsPlan = CreatePlan();
 Meteor.getColZhName = function(colName) {
   var type = colName || Meteor.cmsPlan.getActivePoiType(),
       text= '';
-  switch(type.toLowerCase()){
-    case 'viewspot': text = "景点";break;
-    case 'restaurant': text = "美食";break;
-    case 'shopping': text = "购物";break;
-    case 'hotel': text = "酒店";break;
-    case 'traffic': text = "交通";break;
-    case 'collect': text = "收藏";break;
+  switch(type.toLowerCase()) {
+  case 'viewspot': text = "景点";break;
+  case 'restaurant': text = "美食";break;
+  case 'shopping': text = "购物";break;
+  case 'hotel': text = "酒店";break;
+  case 'traffic': text = "交通";break;
+  case 'collect': text = "收藏";break;
+  default: text = "未知";break;
   }
   return text;
 };

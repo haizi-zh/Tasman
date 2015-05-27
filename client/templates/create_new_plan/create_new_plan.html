@@ -20,14 +20,14 @@
                 {{#each poiItems}}
                 <div class="poi-item-container">
                     <a href="" class="poi-item-pic">
-                        <img src="http://images.taozilvxing.com/16a76878976c0cce22c7364269b370eb?imageView2/1/w/100/h/100">
+                        <img src="http://images.taozilvxing.com/{{picKey}}?imageView2/1/w/100/h/80" width="100" height="80">
                     </a>
                     <div class="poi-item-detail">
                         <header class="poi-item-header">
                             <a href="/{{poiType}}/{{_id._str}}">{{zhName}}</a>
                         </header>
                         <p class="poi-item-desc" title="{{desc}}">{{desc}}</p>
-                        <a href="" class="add-poi-to-plan" poi-type="{{poiType}}" poi-id="{{_id._str}}" poi-name="{{zhName}}" title="添加到行程">+</a>
+                        <a href="" class="add-poi-to-plan" poi-picKey="{{picKey}}" poi-type="{{poiType}}" poi-id="{{_id._str}}" poi-name="{{zhName}}" title="添加到行程">+</a>
                     </div>
                 </div>
                 {{/each}}
@@ -48,6 +48,11 @@
         <div class="right-plan-edit-zoom">
             <!-- 顶部工具区域 -->
             <div class="right-top-tool-bar">
+                <div class="plan-name-edit">
+                    <span class="edit-icon glyphicon glyphicon-edit"></span>
+                    <input type="text" class="plan-name" placeholder="规划名字" value="{{title}}">
+                </div>
+                <div class="save-plan">保存</div>
             </div>
             <!-- 顶部规划区域 -->
             <div class="right-bottom-edit-zoom">
@@ -63,17 +68,32 @@
                 </div>
                 <!-- 右边的POI编辑区域 -->
                 <div class="right-right-poi-edit-zoom">
-                    {{#each poiDisplay}}
-                    <div class="select-poi-info-container">
-                        <a href="" class="select-poi-pic">
-                            <img src="http://images.taozilvxing.com/16a76878976c0cce22c7364269b370eb?imageView2/1/w/60/h/60">
-                        </a>
-                        <div class="select-poi-name">
-                            <a class="" href="/{{type}}/{{id}}">{{name}}</a>
-                            <span class="delete-one-poi glyphicon glyphicon-trash hidden" day-index="{{dayIndex}}" data-id="{{id}}" data-type="{{type}}" data-index="{{index}}"></span>
+                    {{#with curDayInfo}}
+                        <div class="poi-zoom">
+                            {{#each pois}}
+                                <div class="select-poi-info-container" data-index="{{index}}">
+                                    <a href="" class="select-poi-pic">
+                                        <img src="http://images.taozilvxing.com/{{picKey}}?imageView2/1/w/60/h/60"  width="60" height="60">
+                                    </a>
+                                    <div class="select-poi-name">
+                                        <a class="" href="/{{type}}/{{id}}">{{name}}</a>
+                                        <!-- <span>{{index}}</span> -->
+                                        <span class="delete-one-poi glyphicon glyphicon-trash hidden" day-index="{{dayIndex}}" data-id="{{id}}" data-type="{{type}}" data-index="{{index}}"></span>
+                                    </div>
+                                </div>
+                            {{/each}}
                         </div>
-                    </div>
-                    {{/each}}
+                        <div class="tip-container">
+                            <div class="show-when-empty {{#unless isEmpty}}hidden{{/unless}}" style="margin: 10px;">
+                                <label class="label label-success">请在左侧添加景点、美食、酒店、购物</label>
+                            </div>
+                            <div class="{{#if isEmpty}}hidden{{/if}}">
+                                <span class="tip-edit-icon glyphicon glyphicon-edit"></span>
+                                <textarea id="one-day-tips" placeholder="行程亮点或者提示" >{{tips}}
+                                </textarea>
+                            </div>
+                        </div>
+                    {{/with}}
                 </div>
             </div>
         </div>
