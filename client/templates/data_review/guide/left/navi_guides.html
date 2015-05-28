@@ -1,9 +1,13 @@
 <template name="naviGuides">
-  <ul class="list-group">
-    {{#each guides}}
-      <li class="list-group-item" data-id="{{id}}">
-        {{name}}
-      </li>
-    {{/each}}
-  </ul>
+	{{#if guides}}
+	  	<ul class="list-group">
+		    {{#each guides}}
+		      	<li class="list-group-item" data-id="{{id}}">
+		        	{{name}}
+		      	</li>
+		    {{/each}}
+	  	</ul>
+	{{else}}
+		无
+	{{/if}}
 </template>
