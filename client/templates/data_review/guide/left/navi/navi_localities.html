@@ -1,9 +1,13 @@
 <template name="naviLocalities">
-  <ul class="list-group">
-    {{#each localities}}
-      <li class="list-group-item" data-id="{{id}}">
-        {{name}}
-      </li>
-    {{/each}}
-  </ul>
+	{{#if localities}}
+  		<ul class="list-group">
+		    {{#each localities}}
+		      	<li class="list-group-item" data-id="{{id}}">
+		        	{{name}}
+		      	</li>
+		    {{/each}}
+		</ul>
+	{{else}}
+		无
+	{{/if}}
 </template>

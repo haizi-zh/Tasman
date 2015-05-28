@@ -1,15 +1,33 @@
-.navi-abroad, .navi-domestic{
-  float: left;
-  width: 100px;
+.navi-abroad, .navi-domestic, .navi-localities, .navi-guides{
+	background: #fff;
+	padding: 10px;
+	border-radius: 8px;
+	margin-top: 10px;
 }
 
-.navi-localities, .navi-guides{
-  float: left;
-  margin-top: 25px;
-  width: 80px;
+
+.navi-abroad .list-group, .navi-domestic .list-group, .navi-localities .list-group, .navi-guides .list-group{
+	overflow: auto;
+	max-height: 150px;
+	margin: 0;
+}
+
+.navi-abroad .list-group .list-group-item, .navi-domestic .list-group .list-group-item, .navi-localities .list-group .list-group-item, .navi-localities .list-group .list-group-item{
+	float: left;
+	width: 72px;
+	padding: 5px;
+	margin: 2px;
+	border-radius: 2px;
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
 }
 
 .selected-bg{
-  background: #2bf !important;
-  color: #ffd !important;
+  	background: #2bf !important;
+  	color: #ffd !important;
+}
+
+.navi-guides .list-group{
+	max-height: 300px;
 }
