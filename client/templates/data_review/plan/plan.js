@@ -1,4 +1,6 @@
 
+/*目前不能修改，不能保存，另外隐藏了景点详情部分的样式，而且js中做了相关的数据处理动作*/
+
 Template.reviewPlan.helpers({
   planDetail: function() {
     var mid = Session.get('currentPlanId');
