@@ -24,7 +24,8 @@
   padding-left: 10px;
 }
 
-.selected-picture-container {
+.selected-container li
+/*.selected-picture-container*/ {
   width: 100px;
   height: 116px;
   margin: 10px;

@@ -25,10 +25,27 @@ var naviBarConfig = [{
     // disable: true
   }]
 }, {
-  name: "IM运营",
-  url: "/im",
-  routeName: "im",
-  subItem: []
+  name: "行程攻略",
+  url: "/editPlan",
+  routeName: "createNewPlan",
+  subItem: [{
+    name: "审核模板",
+    url: "/",
+    routeName: ""
+  }, {
+    name: "新建模板",
+    url: "/createNewPlan",
+    routeName: "createNewPlan"
+  }, {
+    name: "编辑攻略",
+    url: "/data-review/plan",
+    routeName: "reviewPlan"
+  // }, {
+  //   name: "路线模板",
+  //   url: "/data-review/guide",
+  //   routeName: "reviewGuide"
+  }]
+  // subItem: []
 }];
 
 Template.header.helpers({

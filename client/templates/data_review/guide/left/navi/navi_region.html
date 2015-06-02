@@ -1,0 +1,34 @@
+
+<template name="naviRegion">
+  <div class="left-navi-container">
+    <!-- 国内省份或者国外国家名 -->
+    <div class="up-navi">
+      <div class="domestic-or-abroad" role="group" aria-label="...">
+        <button type="button" class="btn" id="tag-domestic">国内</button>
+        <button type="button" class="btn" id="tag-abroad">国外</button>
+      </div>
+    </div>
+    <div class="divider"></div>
+
+    <div class="down-navi">
+      <!-- 国外 -->
+      <div class="navi-abroad hidden">
+        {{> foreignCountries}}
+      </div>
+
+      <!-- 国内 -->
+      <div class="navi-domestic">
+        {{> province}}
+      </div>
+
+      <!-- <div class="localities hidden"> -->
+      <div class="navi-localities">
+        {{> naviLocalities}}
+      </div>
+
+      <div class="navi-guides">
+        {{> naviGuides}}
+      </div>
+    </div>
+  </div>
+</template>

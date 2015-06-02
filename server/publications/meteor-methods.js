@@ -59,7 +59,6 @@ Meteor.methods({
     check(ts, Number);
     check(ns, String);
     check(userId, String);
-    console.log(pk);
     check(pk, Meteor.Collection.ObjectID);
     check(zhName, String);
     var query = {'ns': ns, 'pk': pk._str};
@@ -194,6 +193,76 @@ Meteor.methods({
     if(cnt == 1 && deleteCnt == uselessPk.length){
       return {code: 0};
     }
+  },
+  'cityName-to-cityId': function(cityName) {
+    check(cityName, String);
+    return Locality.findOne({'alias': cityName}, {fields: {'_id': 1}});
+  },
+  'getPlanById': function(id) {
+    check(id, String);
+    var res = Plan.findOne({'_id': new Mongo.ObjectID(id)});
+    return {'code': 0, 'data': res};
+  },
+  'saveNewPlan': function(planInfo) {
+    check(planInfo, Object);
+    var cnt = CmsGenerated.update({'_id': new Mongo.ObjectID(planInfo._id)},{'$set': _.omit(planInfo, '_id')}, {upsert: true});
+    if(cnt === 1) {
+      return {code: 0};
+    }
+    return {code: -1};
+  },
+  'createNewPlan': function(timeObj) {
+    check(timeObj, Object);
+    var newId = new Mongo.ObjectID(),
+        cnt = CmsGenerated.update({'_id': newId}, {'$set': timeObj}, {upsert: true});
+    if(cnt === 1) {
+      return {code: 0, _id: newId};
+    }
+    return {code: -1, msg: '初始化失败'};
+  },
+  'saveEditedPlan': function(planInfo) {
+    check(planInfo, Object);
+    var title = planInfo.title,
+        locName = planInfo.locName,
+        detail = planInfo.detail,
+        tempDetail = [];
+
+    for(var i = 0, len = detail.length; i < len; i += 1) {
+      var tempOneDay = detail[i].pois,
+          lenOneDay = tempOneDay.length,
+          oneDayRes = [];
+      for(var j = 0; j < lenOneDay; j += 1) {
+        var tempPoi = tempOneDay[j],
+            poiDetail = getMongoCol(tempPoi.type).findOne({'_id': new Mongo.ObjectID(tempPoi.id)}),
+            poi = {
+              'lat': poiDetail.location.coordinates[0],
+              'lng': poiDetail.location.coordinates[1],
+              'type': tempPoi.type,
+              'picKey': tempPoi.picKey,
+              'item': {
+                    '_id': poiDetail._id,
+                    'id': poiDetail._id,
+                    'zhName': poiDetail.zhName
+                  },
+              'locality': poiDetail.locality,
+              'country': poiDetail.country
+            };
+        oneDayRes.push(poi);
+      }
+      tempDetail.push({'actv': oneDayRes});
+    }
+
+    var updateInfo = {
+      'title': title,
+      'details': tempDetail,
+      'days': tempDetail.length,
+      'locName': locName
+    }
+    var cnt = Plan.update({'_id': new Mongo.ObjectID(planInfo._id)}, {'$set': updateInfo});
+    if(cnt === 1){
+      return {'code': 0};
+    }
+    return {'code': -1};
   }
 
 });

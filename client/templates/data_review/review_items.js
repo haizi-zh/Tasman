@@ -132,6 +132,27 @@ reviewItems = {
 
     }
   },
+
+  // 路线
+  // 'Plan': {
+  //   'basic': {
+  //     'title': ['标题', itemDataType.string, false],
+  //     'lxpTag': ['最标签', itemDataType.str_array, false],
+  //     'plays': ['玩法', itemDataType.str_array, false],
+  //     'tags': ['线路特色', itemDataType.str_array, false],
+  //     'withs': ['适合人群', itemDataType.str_array, false],
+  //     'desc': ['简介', itemDataType.string, false],
+  //     'moreDesc': ['线路详情', itemDataType.string, true],
+  //     'details': ['线路日程：', itemDataType.obj_array, false, {
+  //       'actv': ['第n天', itemDataType.obj_array, false, {
+  //         'type': ['poi类型：', itemDataType.string, false],
+  //         'item': ['项目：', itemDataType.obj_array, false, {
+  //           'zhName': ['名称：', itemDataType.string, false]
+  //         }]
+  //       }]
+  //     }],
+  //   }
+  // },
 };
 
 getReviewItems = function(type) {

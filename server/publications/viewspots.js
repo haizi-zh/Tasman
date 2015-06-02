@@ -15,6 +15,17 @@ Meteor.publish('viewspotDetail', function(mid) {
   return ViewSpot.find({'_id': new Mongo.ObjectID(mid)});
 });
 
+
+Meteor.publish('viewspotDetails', function(vIdList) {
+  check(vIdList, Array);
+  if(vIdList.length !== 0) {
+    var ids = [];
+    vIdList.map(function(vid){ids.push(new Mongo.ObjectID(vid))});
+    return ViewSpot.find({'_id': {'$in': ids}});
+  }
+});
+
+
 Meteor.publish('ViewSpot_Cmp', function(items) {
   check(items, Array);
   if(items.length !== 0) {
