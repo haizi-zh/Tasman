@@ -1,5 +1,5 @@
 
-Template.reviewViewspot.helpers({
+Template.reviewViewSpot.helpers({
   vsDetail: function() {
     var mid = Session.get('currentVsId')
     // var detailInfo = ViewSpot.findOne({
@@ -13,9 +13,12 @@ Template.reviewViewspot.helpers({
     log(vsDetail);
     return vsDetail;
   },
+  'taskList': function() {
+    return TaskPool.find({'status': 'assigned', 'editorId': Meteor.userId()});
+  }
 });
 
-Template.reviewViewspot.events({
+Template.reviewViewSpot.events({
   "click .city-name": function(e) {
 
     var mid = $(e.target).attr('id');

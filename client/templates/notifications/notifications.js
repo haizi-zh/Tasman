@@ -1,5 +1,7 @@
+Notifications = new Mongo.Collection('Notifications');
 Template.notifications.helpers({
   notifications: function() {
+    console.log('abc');
     return Notifications.find({
       userId: Meteor.userId(),
       read: false
@@ -16,8 +18,9 @@ Template.notifications.helpers({
 
 Template.notificationItem.helpers({
   notificationPostPath: function() {
-    return Router.routes.postPage.path({
-      _id: this.postId
+    return Router.routes.taskRecieve.path({
+      'type': this.type,
+      'taskId': this.taskId
     });
   }
 });

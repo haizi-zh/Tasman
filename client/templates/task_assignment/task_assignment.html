@@ -1,0 +1,107 @@
+<template name="taskAssignment">
+        {{#if leftNaviDataType.ViewSpot.select}}
+            {{> ViewSpotleftRegionNavi}}
+        {{/if}}
+        {{#if leftNaviDataType.Locality.select}}
+            {{> LocalityleftRegionNavi}}
+        {{/if}}
+        {{#if leftNaviDataType.Hotel.select}}
+            {{> HotelleftRegionNavi}}
+        {{/if}}
+        {{#if leftNaviDataType.Shopping.select}}
+            {{> ShoppingleftRegionNavi}}
+        {{/if}}
+        {{#if leftNaviDataType.Restaurant.select}}
+            {{> RestaurantleftRegionNavi}}
+        {{/if}}
+
+        <div class="ta-right-container">
+            <div class="ta-data-type-selection-container">
+                <span class="ta-cur-data">当前数据类型:
+                    <label style="color: #0000CC;margin-left:7px">{{typeZhname}}</label>
+                </span>
+                <span class="w-change-data-type">更换数据类型:</span>
+                <div class="ta-data-type-selection">
+                    <select name="ta-data-type" id="ta-dataSelection">
+                        <option value="ViewSpot" default>景点</option>
+                        <option value="Locality">城市</option>
+                        <option value="Shopping">购物</option>
+                        <option value="Hotel">酒店</option>
+                        <option value="Restaurant">美食</option>
+                    </select>
+                </div>
+
+                <span class="ta-current-locality">当前城市或国家:
+                    <label style="color: #0000CC;margin-left:7px">{{curLocality}}</label>
+                    <label>(请在左边选择城市或者国家)</label>
+                </span>
+            </div>
+
+            <div class="ta-task-control-pannel">
+                <div class="ta-set-task-container">
+                    <span class="ta-w-task-count">提取任务个数:</span>
+                    <input type="text" id="ta-task-count">
+                    <span class="ta-confirm-task-count">确认</span>
+                    {{#if foundedTaskCount}}
+                        <span class="ta-founded-task-count">
+                            找到
+                            <label style="color: red;">{{foundedTaskCount}}个</label>
+                            {{typeZhname}}
+                        </span>
+                    {{/if}}
+                </div>
+                <div class="ta-task-assign-container">
+                    <span class="ta-w-selected-task-count">本次已选择:</span>
+                    <span class="ta-selected-task-count">{{selectedTask}}</span>
+                    <span class="ta-w-task-assign-to">分配给:</span>
+                    <div class="ta-editors-selection-container">
+                        <select id="ta-editors-selection">
+                            {{#each editor}}
+                                <option value="{{_id}}">{{username}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <span class="ta-task-assign">指派</span>
+                </div>
+                <div class="ta-task-assign-confirm">
+                    发布任务
+                </div>
+            </div>
+            <div class="ta-task-list-container">
+                <div class="ta-unassigned-task-container">
+                    <div id="ta-select-all-or-none">{{#if selectAll}}全不选{{else}}全选{{/if}}</div>
+                    <div class="ta-current-task-count">当前数据:{{taskCount}}</div>
+                    <ul class="ta-task-list">
+                        {{#each taskList}}
+                            <li class="ta-task-element" id="{{_id._str}}">
+                                {{zhName}}
+                                <input class="ta-task-checkbox" type="checkbox" {{isChecked status}}>
+                            </li>
+                        {{/each}}
+                    </ul>
+                </div>
+                <div class="ta-assigned-task-container">
+                    <div class="ta-editor-list">
+                        {{#each editor}}
+                            <div class="ta-editor-filter" id="{{_id}}">{{username}}
+                                <span class="badge" id="{{_id}}-task" style="margin-left: 7px;">0</span>
+                            </div>
+                        {{/each}}
+                    </div>
+                    <div class="ta-editor-task-list">
+                        <ul class="ta-assigned-task-list">
+                            {{#each editorTask}}
+                                <li class="ta-assigned-task-element" id="{{_id._str}}">
+                                    {{zhName}}
+                                    <input class="ta-assigned-task-checkbox" type="checkbox" {{isChecked status}}>
+                                </li>
+                            {{/each}}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+</template>

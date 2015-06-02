@@ -1,0 +1,19 @@
+<template name="taskAssignConfirmDialog">
+	<!-- tacd 缩写:  taskAssignConfirmDialog-->
+	<div class="ta-tacd-detail-container">
+		<ul class="ta-tacd-detail-list">
+			{{#each taskAssignDetail}}
+				<li class="ta-tacd-editor-task">
+					<span class="ta-tacd-editor-name">{{editor.name}}</span>
+					<span class="ta-tacd-editor-task-cnt">{{taskCount}}</span>
+					<span class="ta-tacd-editor-task-type">{{type}}</span>
+					<span class="ta-tacd-task-locality">{{localityName}}</span>
+				</li>
+			{{/each}}
+		</ul>
+	</div>
+
+	<div class="ta-tacd-text-container">
+		<textarea id="ta-tacd-assign-desc" placeholder="记录任务描述，便于今后区分" cols="30" rows="10"></textarea>
+	</div>
+</template>
