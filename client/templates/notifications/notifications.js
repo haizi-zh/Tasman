@@ -1,3 +1,4 @@
+Notifications = new Mongo.Collection('Notifications');
 Template.notifications.helpers({
   notifications: function() {
     return Notifications.find({
@@ -16,13 +17,24 @@ Template.notifications.helpers({
 
 Template.notificationItem.helpers({
   notificationPostPath: function() {
-    return Router.routes.postPage.path({
-      _id: this.postId
-    });
+    return this.url;
+  },
+  msgZhDesc: function() {
+    var zhTips = '';
+
+    switch(this.type){
+      case 'taskAssign':
+        zhTips = '任务安排';break;
+      default:
+        break;
+    }
+    console.log('---==---' + this.type + zhTips);
+    return zhTips;
   }
 });
 Template.notificationItem.events({
   'click a': function() {
+    console.log(this._id);
     Notifications.update({
       _id: this._id
     }, {

@@ -263,6 +263,123 @@ Meteor.methods({
       return {'code': 0};
     }
     return {'code': -1};
+  },
+  'commonDBQuery': function(colName, query, options) {
+    check(colName, String);
+    check(query, Object);
+    check(options, Object);
+    var count = 0,
+        dbCol = getMongoCol(colName);
+    if (dbCol) {
+      dbCol.find({'targets': new Mongo.ObjectID(query.localityId), 'cmsStatus': undefined}, options).forEach(function(doc) {
+        doc.itemId = doc._id;
+        doc.localityId = query.localityId;
+        doc.localityName = query.localityName;
+        _.omit(doc, '_id');
+        dbCol.update({'_id': doc.itemId}, {'$set': {'cmsStatus': true}});
+        count += TaskPool.update({'_id': doc.itemId}, {'$set': _.extend(doc, {'status': 'unassgined', 'type': colName})}, {'upsert': true});
+      });
+      return {'code': 0, 'taskCount': count};
+    }
+    return {'code': -1};
+  },
+  'readyToAssign': function(pk) {
+    check(pk, String);
+    TaskPool.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'status': 'ready'}});
+  },
+  'unreadyToAssign': function(pk) {
+    check(pk, String);
+    TaskPool.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'status': 'unassgined'}});
+  },
+  'taskAssign': function(editorInfo) {
+    check(editorInfo, Object);
+    TaskPool.update({'status': 'ready'}, {'$set': {'editorId': editorInfo.editorId, 'editorName': editorInfo.editorName,'status': 'assigned'}}, {'multi': true});
+    var cnt = TaskPool.find({'editorId': editorInfo.editorId, 'status': 'assigned'}).count();
+    return {'code': 0, 'count': cnt};
+  },
+  'taskCheckAll': function(checkStatus) {
+    check(checkStatus, Boolean);
+    var cnt;
+    if (checkStatus) {
+      cnt = TaskPool.update({'status': 'unassgined'}, {'$set': {'status': 'ready'}}, {'multi': true});
+    } else {
+      cnt = TaskPool.update({'status': 'ready'}, {'$set': {'status': 'unassgined'}}, {'multi': true});
+    }
+    return {'code': 0, 'count': cnt};
+  },
+  'editorTaskCount': function(eid) {
+    check(eid, String);
+    var cnt = TaskPool.find({'editorId': eid, 'status': 'assigned'}).count();
+    return {'code': 0, 'count': cnt};
+  },
+  'pullTaskBackToPool': function(pk) {
+    check(pk, String);
+    TaskPool.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'status': 'ready'},'$unset': {'editorId': '', 'editorName': ''}});
+  },
+  'taskConfirm': function() {
+    var assignDetail = [],
+        editor = {};
+    TaskPool.find({'status': 'assigned'}).forEach(function(doc) {
+      if(!editor[doc.editorId]) {
+        editor[doc.editorId] = {'type': doc.type, 'name': doc.editorName, 'localityName': doc.localityName};
+      }
+    });
+    _.keys(editor).map(function(eid) {
+      var cnt = TaskPool.find({'editorId': eid, 'status': 'assigned'}).count();
+      var temp = {
+        'editor': {'name': editor[eid].name, 'id': eid},
+        'type': editor[eid].type,
+        'typeZhname': Meteor.getColZhName(editor[eid].type),
+        'taskCount': cnt,
+        'localityName': editor[eid].localityName
+      };
+      assignDetail.push(temp);
+    });
+    return {'code': 0, 'data': assignDetail};
+  },
+  'taskPublish': function(detail, desc) {
+    check(detail, Array);
+    check(desc, String);
+
+    // create one doc in TaskHistory
+    var time = Date.now(),
+        id = new Mongo.ObjectID(),
+        editor = [];
+    TaskHistory.update({'_id': id}, {'$set': { 'desc': desc, 'detail': detail, 'createTime': time}}, {'upsert': true});
+    // set assigned task with id
+    var count = TaskPool.update({'status': 'assigned'}, {'$set': {'taskId': new Mongo.ObjectID(id._str), 'status': 'doing'}}, {'multi': true});
+    // send message
+    detail.map(function(ele) {
+      var editorId = ele.editor.id,
+          taskId = id._str;
+      Notifications.update({'_id': new Mongo.ObjectID()}, {'$set': {
+          'userId': editorId,
+          'read': false,
+          'type': 'taskAssign',
+          'detail': {
+            'taskId': taskId,
+            'dataType': ele.type,
+            'taskCount': ele.taskCount,
+            'localityName': ele.localityName
+          },
+          'desc':ele.taskCount + '个位于' + ele.localityName + '的'+ Meteor.getColZhName(ele.type),
+          'url': '/review-task/' + ele.type + "/" + taskId
+        }
+      },
+      {'upsert': true})
+    });
+    return {'code': 0}
+  },
+  'TaskPool.update.status': function(pk) {
+    check(pk, Mongo.Collection.ObjectID);
+    console.log(pk);
+    TaskPool.update({'itemId': new Mongo.ObjectID(pk._str)}, {'$set': {'editStatus': true}});
+  },
+  'removeUnpublishedTask': function() {
+    TaskPool.find({'taskId': undefined}).forEach(function(doc) {
+      getMongoCol(doc.type).update({'_id': new Mongo.ObjectID(doc.itemId._str)}, {'$unset': {'cmsStatus': ''}})
+    });
+    TaskPool.remove({'taskId': undefined});
   }
 
 });

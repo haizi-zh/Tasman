@@ -1,0 +1,29 @@
+<template name="taskAssignConfirmDialog">
+	<!-- tacd 缩写:  taskAssignConfirmDialog-->
+	<div class="ta-tacd-detail-container">
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>用户名</th>
+					<th>个数</th>
+					<th>数据类型</th>
+					<th>归属地</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each taskAssignDetail}}
+					<tr>
+						<td>{{editor.name}}</td>
+						<td>{{taskCount}}</td>
+						<td>{{typeZhname}}</td>
+						<td>{{localityName}}</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
+	</div>
+
+	<div class="ta-tacd-text-container">
+		<textarea id="ta-tacd-assign-desc" placeholder="记录任务描述，便于今后区分" cols="30" rows="10"></textarea>
+	</div>
+</template>

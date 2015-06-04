@@ -1,8 +1,37 @@
 <template name="statistics">
-  <div class="statistics-page">
+  <div class="task-complete-statistics">
+    {{#each historyTaskList}}
+      <div class="task-element" task-id="{{_id._str}}">{{desc}}</div>
+      <div class="task-element-detail hidden" id="{{_id._str}}">
+        <table class="table table-hover table-bordered">
+          <thead>
+            <tr>
+              <th>用户名</th>
+              <th>个数</th>
+              <th>完成度</th>
+              <th>数据类型</th>
+              <th>归属地</th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#each detail}}
+              <tr>
+                <td>{{editor.name}}</td>
+                <td>{{taskCount}}</td>
+                <td>{{completeTask}}({{completePercent}}%)</td>
+                <td>{{typeZhname}}</td>
+                <td>{{localityName}}</td>
+              </tr>
+            {{/each}}
+          </tbody>
+        </table>
+      </div>
+    {{/each}}
+  </div>
+  <!-- <div class="statistics-page">
   	<button id="last-week-btn" data-from="{{UserWorkStatistics.startTs}}">上一周</button>
   	<button id="next-week-btn" data-to="{{UserWorkStatistics.endTs}}">下一周</button>
   	{{UserWorkStatistics.startDate}} ~ {{UserWorkStatistics.endDate}}
     <div id="static-graph" style="min-width:700px;height:400px"></div>
-  </div>
+  </div> -->
 </template>

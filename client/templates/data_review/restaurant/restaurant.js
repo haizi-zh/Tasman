@@ -1,4 +1,4 @@
-Template.reviewRestaurant.helpers({
+var helpers = {
   restaurantDetail: function() {
     var mid = Session.get('currentRestaurantId');
     // var detailInfo = Restaurant.findOne({
@@ -10,9 +10,9 @@ Template.reviewRestaurant.helpers({
     createOriginTextMD5(vsDetail);
     return vsDetail;
   }
-});
+};
 
-Template.reviewRestaurant.events({
+var events = {
   "click .city-name": function(e) {
     var mid = $(e.target).attr('id');
     // 重复点击
@@ -31,8 +31,14 @@ Template.reviewRestaurant.events({
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
     Meteor.subscribe('oplog', 'poi.Restaurant', new Mongo.ObjectID(mid), 0);
+    Meteor.subscribe("restaurantDetail", mid);
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);
   },
-});
+};
+Template.reviewRestaurant.helpers(helpers);
+Template.reviewRestaurant.events(events);
+
+Template.receiveRestaurant.helpers(helpers);
+Template.receiveRestaurant.events(events);

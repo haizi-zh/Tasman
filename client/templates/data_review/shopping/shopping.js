@@ -1,4 +1,4 @@
-Template.reviewShopping.helpers({
+var helpers = {
   shoppingDetail: function() {
     var mid = Session.get('currentShoppingId')
     // var detailInfo = Shopping.findOne({
@@ -10,10 +10,9 @@ Template.reviewShopping.helpers({
     createOriginTextMD5(vsDetail);
     return vsDetail;
   }
-});
+};
 
-
-Template.reviewShopping.events({
+var events = {
   "click .city-name": function(e) {
     var mid = $(e.target).attr('id');
     // 重复点击
@@ -32,8 +31,15 @@ Template.reviewShopping.events({
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
     Meteor.subscribe('oplog', 'poi.Shopping', new Mongo.ObjectID(mid), 0);
+    Meteor.subscribe("shoppingDetail", mid)
     initOriginMD5Session();
     initOplogSession();
     Meteor.subscribe('Images', mid);
   },
-});
+};
+
+Template.reviewShopping.helpers(helpers);
+Template.reviewShopping.events(events);
+
+Template.receiveShopping.helpers(helpers);
+Template.receiveShopping.events(events);
