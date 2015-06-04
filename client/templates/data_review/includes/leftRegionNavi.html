@@ -97,7 +97,11 @@
         <div class="recheck-itemlist">
           <ul class="recheck-itemlist-ul list-group" style="padding: 0">
             {{#each fcResults}}
-              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+              <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}
+                {{#if cmsStatus}}
+                  <span class="label-success" style="float: right">已分配</span>
+                {{/if}}
+              </li>
             {{/each}}
           </ul>
         </div>
@@ -220,6 +224,9 @@
           <ul class="recheck-itemlist-ul list-group" style="padding: 0">
             {{#each fcResults}}
               <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+              {{#if cmsStatus}}
+                <span class="label-success" style="float: right">已分配</span>
+              {{/if}}
             {{/each}}
           </ul>
         </div>
@@ -342,6 +349,9 @@
           <ul class="recheck-itemlist-ul list-group" style="padding: 0">
             {{#each fcResults}}
               <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+              {{#if cmsStatus}}
+                <span class="label-success" style="float: right">已分配</span>
+              {{/if}}
             {{/each}}
           </ul>
         </div>
@@ -464,6 +474,9 @@
           <ul class="recheck-itemlist-ul list-group" style="padding: 0">
             {{#each fcResults}}
               <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+              {{#if cmsStatus}}
+                <span class="label-success" style="float: right">已分配</span>
+              {{/if}}
             {{/each}}
           </ul>
         </div>
@@ -586,6 +599,9 @@
           <ul class="recheck-itemlist-ul list-group" style="padding: 0">
             {{#each fcResults}}
               <li class="recheck-items list-group-item city-name" id="{{_id._str}}">{{zhName}}</li>
+              {{#if cmsStatus}}
+                <span class="label-success" style="float: right">已分配</span>
+              {{/if}}
             {{/each}}
           </ul>
         </div>

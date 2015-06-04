@@ -294,7 +294,7 @@ Meteor.methods({
   'taskAssign': function(editorInfo) {
     check(editorInfo, Object);
     TaskPool.update({'status': 'ready'}, {'$set': {'editorId': editorInfo.editorId, 'editorName': editorInfo.editorName,'status': 'assigned'}}, {'multi': true});
-    var cnt = TaskPool.find({'editorId': editorInfo.editorId}).count();
+    var cnt = TaskPool.find({'editorId': editorInfo.editorId, 'status': 'assigned'}).count();
     return {'code': 0, 'count': cnt};
   },
   'taskCheckAll': function(checkStatus) {
@@ -309,7 +309,7 @@ Meteor.methods({
   },
   'editorTaskCount': function(eid) {
     check(eid, String);
-    var cnt = TaskPool.find({'editorId': eid}).count();
+    var cnt = TaskPool.find({'editorId': eid, 'status': 'assigned'}).count();
     return {'code': 0, 'count': cnt};
   },
   'pullTaskBackToPool': function(pk) {
@@ -329,6 +329,7 @@ Meteor.methods({
       var temp = {
         'editor': {'name': editor[eid].name, 'id': eid},
         'type': editor[eid].type,
+        'typeZhname': Meteor.getColZhName(editor[eid].type),
         'taskCount': cnt,
         'localityName': editor[eid].localityName
       };
@@ -346,16 +347,39 @@ Meteor.methods({
         editor = [];
     TaskHistory.update({'_id': id}, {'$set': { 'desc': desc, 'detail': detail, 'createTime': time}}, {'upsert': true});
     // set assigned task with id
-    TaskPool.update({'status': 'assigned'}, {'$set': {'taskId': new Mongo.ObjectID(id._str)}}, {'multi': true});
+    var count = TaskPool.update({'status': 'assigned'}, {'$set': {'taskId': new Mongo.ObjectID(id._str), 'status': 'doing'}}, {'multi': true});
     // send message
     detail.map(function(ele) {
       var editorId = ele.editor.id,
           taskId = id._str;
-      Notifications.update({'_id': new Mongo.ObjectID()}, {'$set': {'userId': editorId, 'taskId': taskId, 'read': false, 'type': ele.type}}, {'upsert': true})
+      Notifications.update({'_id': new Mongo.ObjectID()}, {'$set': {
+          'userId': editorId,
+          'read': false,
+          'type': 'taskAssign',
+          'detail': {
+            'taskId': taskId,
+            'dataType': ele.type,
+            'taskCount': ele.taskCount,
+            'localityName': ele.localityName
+          },
+          'desc':ele.taskCount + '个位于' + ele.localityName + '的'+ Meteor.getColZhName(ele.type),
+          'url': '/review-task/' + ele.type + "/" + taskId
+        }
+      },
+      {'upsert': true})
     });
     return {'code': 0}
-
-
+  },
+  'TaskPool.update.status': function(pk) {
+    check(pk, Mongo.Collection.ObjectID);
+    console.log(pk);
+    TaskPool.update({'itemId': new Mongo.ObjectID(pk._str)}, {'$set': {'editStatus': true}});
+  },
+  'removeUnpublishedTask': function() {
+    TaskPool.find({'taskId': undefined}).forEach(function(doc) {
+      getMongoCol(doc.type).update({'_id': new Mongo.ObjectID(doc.itemId._str)}, {'$unset': {'cmsStatus': ''}})
+    });
+    TaskPool.remove({'taskId': undefined});
   }
 
 });

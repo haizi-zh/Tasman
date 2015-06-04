@@ -1,3 +1,12 @@
 <template name="userProfile">
-  <p>配置个人信息</p>
+  <div class="taskMessage-container">
+  	<label class="label-success">任务消息列表</label>
+	  	<ul>
+			{{#each taskMessage}}
+				<li>
+					<a href="{{url}}">{{desc}}</a>
+				</li>
+			{{/each}}
+	  	</ul>
+  </div>
 </template>

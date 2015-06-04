@@ -1,24 +1,14 @@
-<!-- <template name="reviewViewspot"> -->
 <template name="reviewViewSpot">
   <!-- 左侧导航栏 -->
-  <!-- {{> ViewSpotleftRegionNavi}} -->
-  <div class="recheck-itemlist-wrapper text-center" style="margin-top:20px">
-    <div class="recheck-itemlist">
-      <ul class="recheck-itemlist-ul list-group" style="padding: 0">
-        {{#each taskList}}
-          <li class="recheck-items list-group-item city-name" id="{{itemId._str}}">{{zhName}}</li>
-        {{/each}}
-      </ul>
-    </div>
-  </div>
+  {{> ViewSpotleftRegionNavi}}
 
 
   <!-- 城市信息审核 -->
-  <div class="right-info-container">
-    <!-- 导航Tab -->
-    <div class="city-info-container">
-      {{> naviTabsViewSpot vsDetail=vsDetail}}
-    </div>
-  </div>
+	<div class="right-info-container">
+		<!-- 导航Tab -->
+		<div class="city-info-container">
+		  {{> naviTabsViewSpot vsDetail=vsDetail}}
+		</div>
+	</div>
 
 </template>

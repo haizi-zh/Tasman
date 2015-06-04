@@ -200,3 +200,20 @@ input.ta-task-checkbox, input.ta-assigned-task-checkbox{
     border-radius: 3px;
     color: #fff;
 }
+
+#ta-tacd-assign-desc {
+  border: 1px solid #ccc;
+  width: 70%;
+  padding: 7px;
+}
+
+/* 任务接收列表的CSS */
+.review-task-container {
+  float: left;
+  width: 27%;
+}
+.review-task-tips {
+  color: #337ab7;
+  margin-bottom: 7px;
+}
+/* 任务接收列表的CSS */

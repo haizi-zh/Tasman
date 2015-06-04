@@ -1,5 +1,4 @@
-
-Template.reviewViewSpot.helpers({
+var helpers = {
   vsDetail: function() {
     var mid = Session.get('currentVsId')
     // var detailInfo = ViewSpot.findOne({
@@ -10,17 +9,12 @@ Template.reviewViewSpot.helpers({
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
-    log(vsDetail);
     return vsDetail;
   },
-  'taskList': function() {
-    return TaskPool.find({'status': 'assigned', 'editorId': Meteor.userId()});
-  }
-});
+};
 
-Template.reviewViewSpot.events({
+var events = {
   "click .city-name": function(e) {
-
     var mid = $(e.target).attr('id');
     // 重复点击
     if (mid === Session.get('currentVsId')) {
@@ -39,13 +33,19 @@ Template.reviewViewSpot.events({
     $(e.target).addClass("active");
     Meteor.subscribe('oplog', 'poi.ViewSpot', new Mongo.ObjectID(mid), 0);
 
-    // Meteor.subscribe("viewspotDetail", mid);
+    Meteor.subscribe("viewspotDetail", mid);
     initOriginMD5Session();
     initOplogSession();
 
     Meteor.subscribe("Images", mid);
   },
-});
+};
+
+Template.reviewViewSpot.helpers(helpers);
+Template.reviewViewSpot.events(events);
+
+Template.receiveViewSpot.helpers(helpers);
+Template.receiveViewSpot.events(events);
 
 createOriginTextMD5 = function(arrayData) {
   var tempObj = {};

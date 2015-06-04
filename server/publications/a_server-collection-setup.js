@@ -46,3 +46,19 @@ TaskHistory = new Mongo.Collection('TaskHistory', {_driver: cms});
 
 //消息机制
 Notifications = new Mongo.Collection('Notifications', {_driver: cms});
+
+ownsDocument = function(userId, doc) {
+  console.log(doc);
+  return doc && doc.userId === userId;
+};
+
+Notifications.allow({
+  update: function(userId, doc, fieldNames, modifier) {
+    return ownsDocument(userId, doc) && fieldNames.length === 1 && fieldNames[0] === 'read';
+  },
+  insert: function(userId, doc){
+    check(userId, String);
+    check(doc, String);
+    return true;
+  }
+});

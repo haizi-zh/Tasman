@@ -1,16 +1,26 @@
 <template name="taskAssignConfirmDialog">
 	<!-- tacd 缩写:  taskAssignConfirmDialog-->
 	<div class="ta-tacd-detail-container">
-		<ul class="ta-tacd-detail-list">
-			{{#each taskAssignDetail}}
-				<li class="ta-tacd-editor-task">
-					<span class="ta-tacd-editor-name">{{editor.name}}</span>
-					<span class="ta-tacd-editor-task-cnt">{{taskCount}}</span>
-					<span class="ta-tacd-editor-task-type">{{type}}</span>
-					<span class="ta-tacd-task-locality">{{localityName}}</span>
-				</li>
-			{{/each}}
-		</ul>
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>用户名</th>
+					<th>个数</th>
+					<th>数据类型</th>
+					<th>归属地</th>
+				</tr>
+			</thead>
+			<tbody>
+				{{#each taskAssignDetail}}
+					<tr>
+						<td>{{editor.name}}</td>
+						<td>{{taskCount}}</td>
+						<td>{{typeZhname}}</td>
+						<td>{{localityName}}</td>
+					</tr>
+				{{/each}}
+			</tbody>
+		</table>
 	</div>
 
 	<div class="ta-tacd-text-container">

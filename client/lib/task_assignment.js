@@ -2,7 +2,7 @@ TaskPool = new Mongo.Collection('TaskPool');
 
 taskAssign = (function() {
     var TA = {},
-        _dataType = new ReactiveVar({}, function(o, n) {return o === n;}),
+        _dataType = new ReactiveVar({}),
         _curDataType = new ReactiveVar({}, function(o, n) {return o === n;}),
         _taskCount = new ReactiveVar(0, function(o, n) {return o === n;}),
         _foundedTaskCount = new ReactiveVar(0, function(o, n) {return o === n;}),
@@ -34,6 +34,7 @@ taskAssign = (function() {
     };
 
     TA.getDataType = function() {
+        console.log(_dataType.get());
         return _dataType.get();
     };
 
@@ -175,7 +176,7 @@ taskAssign = (function() {
 
     TA.getEditorTask = function() {
         var eid = _filtrEditorId.get();
-        return TaskPool.find({'editorId': eid});
+        return TaskPool.find({'editorId': eid, 'status': 'assigned'});
     };
 
     TA.pullTaskBackToPool = function(pk) {
@@ -200,12 +201,20 @@ taskAssign = (function() {
 
     TA.taskPublish = function() {
         var desc = $('#ta-tacd-assign-desc').val();
+        if(! $.trim(desc)) {
+            alert('请对这次任务进行描述，便于管理员今后查看!');
+            return;
+        }
         Meteor.call('taskPublish', _publishData, desc, function(err, res) {
             if (!err && res.code === 0) {
                 alert('发布成功');
             }
         });
     };
+
+    TA.removeUnpublishedTask = function() {
+        Meteor.call('removeUnpublishedTask');
+    }
 
 
     return TA;

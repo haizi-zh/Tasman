@@ -1,5 +1,6 @@
 Template.taskAssignment.onRendered(function() {
-    $('.ta-editor-filter').trigger('click');
+    taskAssign.removeUnpublishedTask();
+    // $('.ta-editor-filter').trigger('click');
 });
 
 
@@ -120,8 +121,13 @@ function taskAssignDialog(data) {
                 label: "确定",
                 className: "btn-success",
                 callback: function () {
+                    var desc = $('#ta-tacd-assign-desc').val();
+                    if(! $.trim(desc)) {
+                        alert('请对这次任务进行描述，便于管理员今后查看!');
+                    }else{
+                        taskAssign.taskPublish();
+                    }
                     // alert('提交');
-                    taskAssign.taskPublish();
                 }
             },
         }
