@@ -19,7 +19,7 @@ var mongoCmsUrl = mongoUrlGen(dbAuth.cms.db, dbAuth.cms.username, dbAuth.cms.pas
 var cms = new MongoInternals.RemoteCollectionDriver(mongoCmsUrl);
 
 //省市，国家结构存储表
-LocalityRelations = new Mongo.Collection("LocalityRelations", { _driver: guide });
+LocalityRelations = new Mongo.Collection("LocalityRelations", { _driver: geo });
 
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
