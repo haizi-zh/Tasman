@@ -25,8 +25,7 @@ var imagestore = new MongoInternals.RemoteCollectionDriver(mongoImagestoreUrl);
 Images = new Mongo.Collection("Images", { _driver: imagestore});
 
 //省市，国家结构存储表
-LocalityRelations = new Mongo.Collection("LocalityRelations", { _driver: guide });
-
+LocalityRelations = new Mongo.Collection("LocalityRelations", { _driver: geo });
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
 Country = new Mongo.Collection("Country", { _driver: geo });
