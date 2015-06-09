@@ -331,7 +331,7 @@ Template.pictures.events({
         $("#picUpToken").val(result.upToken);
         $("#picUpKey").val(result.key);
         var form_data = new FormData($('#pic-up')[0]);
-
+        console.log(form_data);
         //用jquery.ajax提交表单
         $.ajax({
           type: 'post',

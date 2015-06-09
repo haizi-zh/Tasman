@@ -1,3 +1,13 @@
+var fs = Npm.require('fs');
+var os = Npm.require('os');
+var path = Npm.require('path');
+
+var qiniu = Meteor.npmRequire('qiniu');
+qiniu.conf.ACCESS_KEY = accessKey;
+qiniu.conf.SECRET_KEY = secretKey;
+
+
+
 Meteor.methods({
   'search': function(collection, keyword){
     check(collection, String);
@@ -380,6 +390,70 @@ Meteor.methods({
       getMongoCol(doc.type).update({'_id': new Mongo.ObjectID(doc.itemId._str)}, {'$unset': {'cmsStatus': ''}})
     });
     TaskPool.remove({'taskId': undefined});
+  },
+  // 运营位
+  'wxUrlContent': function(wxUrl) {
+    check(wxUrl, String);
+    var result = HTTP.get(wxUrl);
+    if(result.statusCode !== 200) {
+      return {
+        code: -1,
+        data: '请求失败,微信返回代码' + result.statusCode
+      }
+    }
+    if(result.statusCode === 200) {
+      return {
+        code: 0,
+        data: result.content
+      }
+    }
+  },
+  'wxUrlParse': function(wxUrls) {
+    check(wxUrls, Object);
+    var newPicUrl = {};
+    for(var key in wxUrls) {
+      if(wxUrls.hasOwnProperty(key)){
+        var fetchInfo = Qiniu.getFetchInfo(wxUrls[key]);
+        // key, w, h, url
+        newPicUrl[key] = fetchInfo.url;
+      }
+    }
+    return {
+      data: newPicUrl
+    }
+  },
+  'saveHTMLFile': function(htmlString) {
+    check(htmlString, String);
+    var fileName = Meteor.uuid() + '.html',
+        token = uptoken();
+    var wrappedUploadBuf = Async.wrap(uploadBuf);
+    var res;
+    try {
+      res = wrappedUploadBuf(htmlString, fileName, token);
+    } catch(ex) {
+      console.error(ex);
+    }
+    if(res && res.hasOwnProperty('key')) {
+      return {
+        code: 0,
+        data: pictures_host + res.key
+      };
+    }else {
+      return {
+        code: -1,
+        data: '微信文章转换失败'
+      };
+    }
   }
 
 });
+
+function uploadBuf(body, key, uptoken, callback) {
+  var extra = new qiniu.io.PutExtra();
+  qiniu.io.put(uptoken, key, body, extra, callback);
+}
+
+function uptoken(bucketname) {
+  var putPolicy = new qiniu.rs.PutPolicy(bucket);
+  return putPolicy.token();
+}

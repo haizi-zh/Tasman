@@ -40,12 +40,20 @@ var naviBarConfig = [{
     name: "编辑攻略",
     url: "/data-review/plan",
     routeName: "reviewPlan"
-  // }, {
-  //   name: "路线模板",
-  //   url: "/data-review/guide",
-  //   routeName: "reviewGuide"
   }]
-  // subItem: []
+}, {
+  name: "运营设置",
+  url: "",
+  routeName: "",
+  subItem: [{
+    name: "首页运营位",
+    url: "/yunying/mp-slide",
+    routeName: ""
+  },{
+    name: "首页推荐位",
+    url: "/yunying/mp-recommendation",
+    routeName: ""
+  }]
 }];
 
 Template.header.helpers({

@@ -4,7 +4,7 @@ Meteor.publish('Images', function(geoId) {
   return Images.find({'itemIds': new Mongo.ObjectID(geoId)});
 });
 
-var Qiniu = new QiniuSDK(accessKey, secretKey, bucket, pictures_host);
+Qiniu = new QiniuSDK(accessKey, secretKey, bucket, pictures_host);
 Meteor.methods({
   /**
    * 根据网址用qiniu抓取图片

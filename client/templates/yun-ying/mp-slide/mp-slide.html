@@ -1,0 +1,36 @@
+<template name="mpSlide">
+	<div class="mp-slide-container">
+		<div class="left-display-container">
+			<label class="label label-success">当前运营位</label>
+			<div class="cur-yunying-slide-container">
+				{{#each curSlideData}}
+					<div class="cur-yunying-slide">
+						<img src="{{cover}}" alt="" width="130" height="130">
+					</div>
+				{{/each}}
+			</div>
+			<div class="mp-add-one-element">
+				添加一个运营位
+			</div>
+		</div>
+		<div class="right-edit-container">
+			<div class="wx-url-input-container">
+				<label for="" class="label label-success">微信链接</label>
+				<input type="text" class="wx-url">
+				<div class="btn btn-default btn-sm wx-url-confirm">转换</div>
+				<div class="wx-parse-preview hidden">
+					<label for="" class="label label-success">预览内容</label>
+					<a id="wx-parsed-url" href="" target="_blank">点我看转换的结果</a>
+				</div>
+			</div>
+			<div class="3th-h5-container">
+				<label for="" class="label label-success">第三方h5</label>
+				<input type="text" class="wx-url">
+				<div class="btn btn-default btn-sm 3th-h5-confirm">确认</div>
+			</div>
+		</div>
+	</div>
+	<div class="wx-content-container" style="display:none">
+		<!-- empty for special usage -->
+	</div>
+</template>

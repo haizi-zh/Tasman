@@ -1,4 +1,3 @@
-// address, replicaSet, readPreference
 var mongoGeoUrl = mongoUrlGen(dbAuth.geo.db, dbAuth.geo.username, dbAuth.geo.password, dbAuth.geo.address, dbAuth.geo.replicaSet, dbAuth.geo.readPreference);
 var geo = new MongoInternals.RemoteCollectionDriver(mongoGeoUrl);
 
@@ -21,6 +20,10 @@ var cms = new MongoInternals.RemoteCollectionDriver(mongoCmsUrl);
 // 图片
 var mongoImagestoreUrl = mongoUrlGen(dbAuth.imagestore.db, dbAuth.imagestore.username, dbAuth.imagestore.password, dbAuth.imagestore.address, dbAuth.imagestore.replicaSet, dbAuth.imagestore.readPreference);
 var imagestore = new MongoInternals.RemoteCollectionDriver(mongoImagestoreUrl);
+
+// 首页运营位 -- 滑动运营位
+var mongoMiscUrl = mongoUrlGen(dbAuth.misc.db, dbAuth.misc.username, dbAuth.misc.password, dbAuth.misc.address, dbAuth.misc.replicaSet, dbAuth.misc.readPreference);
+var misc = new MongoInternals.RemoteCollectionDriver(mongoMiscUrl);
 
 Images = new Mongo.Collection("Images", { _driver: imagestore});
 
@@ -52,6 +55,11 @@ TaskHistory = new Mongo.Collection('TaskHistory', {_driver: cms});
 
 //消息机制
 Notifications = new Mongo.Collection('Notifications', {_driver: cms});
+
+
+// 首页运营位
+// TODO 改为 Column
+Column = new Mongo.Collection('Column_CMS_Test', {_driver: misc});
 
 ownsDocument = function(userId, doc) {
   console.log(doc);
