@@ -1,26 +1,31 @@
-
-var mongoGeoUrl = mongoUrlGen(dbAuth.geo.db, dbAuth.geo.username, dbAuth.geo.password, dbAuth.geo.host, dbAuth.geo.port);
+// address, replicaSet, readPreference
+var mongoGeoUrl = mongoUrlGen(dbAuth.geo.db, dbAuth.geo.username, dbAuth.geo.password, dbAuth.geo.address, dbAuth.geo.replicaSet, dbAuth.geo.readPreference);
 var geo = new MongoInternals.RemoteCollectionDriver(mongoGeoUrl);
 
-var mongoPoiUrl = mongoUrlGen(dbAuth.poi.db, dbAuth.poi.username, dbAuth.poi.password, dbAuth.poi.host, dbAuth.poi.port);
+var mongoPoiUrl = mongoUrlGen(dbAuth.poi.db, dbAuth.poi.username, dbAuth.poi.password, dbAuth.poi.address, dbAuth.poi.replicaSet, dbAuth.poi.readPreference);
 var poi = new MongoInternals.RemoteCollectionDriver(mongoPoiUrl);
 
 
 //攻略路线
-var mongoPlanUrl = mongoUrlGen(dbAuth.plan.db, dbAuth.plan.username, dbAuth.plan.password, dbAuth.plan.host, dbAuth.plan.port);
+var mongoPlanUrl = mongoUrlGen(dbAuth.plan.db, dbAuth.plan.username, dbAuth.plan.password, dbAuth.plan.address, dbAuth.plan.replicaSet, dbAuth.plan.readPreference);
 var plan = new MongoInternals.RemoteCollectionDriver(mongoPlanUrl);
 
 //模板路线
-var mongoGuideUrl = mongoUrlGen(dbAuth.guide.db, dbAuth.guide.username, dbAuth.guide.password, dbAuth.guide.host, dbAuth.guide.port);
+var mongoGuideUrl = mongoUrlGen(dbAuth.guide.db, dbAuth.guide.username, dbAuth.guide.password, dbAuth.guide.address, dbAuth.guide.replicaSet, dbAuth.guide.readPreference);
 var guide = new MongoInternals.RemoteCollectionDriver(mongoGuideUrl);
 
 // CMS 用户及其它数据所在
-var mongoCmsUrl = mongoUrlGen(dbAuth.cms.db, dbAuth.cms.username, dbAuth.cms.password, dbAuth.cms.host, dbAuth.cms.port);
+var mongoCmsUrl = mongoUrlGen(dbAuth.cms.db, dbAuth.cms.username, dbAuth.cms.password, dbAuth.cms.address, dbAuth.cms.replicaSet, dbAuth.cms.readPreference);
 var cms = new MongoInternals.RemoteCollectionDriver(mongoCmsUrl);
+
+// 图片
+var mongoImagestoreUrl = mongoUrlGen(dbAuth.imagestore.db, dbAuth.imagestore.username, dbAuth.imagestore.password, dbAuth.imagestore.address, dbAuth.imagestore.replicaSet, dbAuth.imagestore.readPreference);
+var imagestore = new MongoInternals.RemoteCollectionDriver(mongoImagestoreUrl);
+
+Images = new Mongo.Collection("Images", { _driver: imagestore});
 
 //省市，国家结构存储表
 LocalityRelations = new Mongo.Collection("LocalityRelations", { _driver: geo });
-
 
 Locality = new Mongo.Collection("Locality", { _driver: geo });
 Country = new Mongo.Collection("Country", { _driver: geo });
