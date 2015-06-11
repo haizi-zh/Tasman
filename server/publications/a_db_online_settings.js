@@ -34,7 +34,7 @@ dbAuth = {
 
 
 //etcd配置
-var host = 'http://192.168.100.2:2379';
+var host = process.env.ETCD_HOST;
 var backendsUrl = host + '/v2/keys/backends';
 var configUrl = host + '/v2/keys/project-conf';
 
