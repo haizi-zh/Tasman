@@ -63,6 +63,7 @@ try{
   var result = HTTP.call('GET', callUrl).data.node;
   var dir = result.key;//如'/project-conf/tasman'
 }catch(e){
+  console.log(callUrl);
   console.log("Fail in getting the project Tasman's settings!");
   console.log(e);
 }
