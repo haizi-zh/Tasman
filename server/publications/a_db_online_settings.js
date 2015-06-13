@@ -64,8 +64,8 @@ try{
   var dir = result.key;//如'/project-conf/tasman'
 }catch(e){
   console.log(callUrl);
-  console.log("Fail in getting the project Tasman's settings!");
-  console.log(e);
+  // console.log("Fail in getting the project Tasman's settings!");
+  // console.log(e);
 }
 
 // 获取qiniu的相关参数
