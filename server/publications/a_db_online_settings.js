@@ -32,18 +32,17 @@ dbAuth = {
   }
 };
 
-
+// console.log(process.env);
 //etcd配置
 var host = process.env.ETCD_URL;
-console.log(host);
 var backendsUrl = host + '/v2/keys/backends';
 var configUrl = host + '/v2/keys/project-conf';
-
+// console.log(host);
 
 // 需要通过请求获取的配置信息
 var settings = {
   backends: {
-    callUrl: backendsUrl + '/mongo-prod' + '?recursive=true'
+    callUrl: backendsUrl + '/mongo' + '?recursive=true'
   },
   config: {
     callUrl: configUrl + '/tasman' + '?recursive=true',
@@ -119,6 +118,7 @@ try{
 
 // 获取mongo的所有host
 var mongoUrl = getMongoUrl(result);
+console.log(mongoUrl);
 for (var db in dbAuth){
   dbAuth[db].address = mongoUrl;
 }
