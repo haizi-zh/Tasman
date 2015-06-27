@@ -89,6 +89,7 @@ Template.searchResult.events({
     Session.set('compareItems', temp);
     // console.log(Session.get('compareItems'));
     // 需要比较的数据存放在session里，进入路由后提取并清空
-    Router.go('compare');
+    // Router.go('compare');
+    window.open(Router.url('compare'), '_blank');
   }
 });

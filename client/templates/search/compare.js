@@ -1,6 +1,5 @@
 Template.compareComfirm.events({
   'change input[name="saveTo"]': function(e){
-    log('23')
     var name = $(e.target).next().html();
     log(name);
   }
@@ -105,13 +104,15 @@ Template.compare.events({
                             var saveTo = $("input[name='saveTo']:checked").attr('id');
                             var name = $("input[name='saveTo']:checked").next().html();
                             var type = Session.get('compareInfos').dbName;
+                            var uselessPk = [];
+                            Session.get('compareInfos')['poiIndex'].map(function(poi) {
+                              if(poi.id !== saveTo) {
+                                uselessPk.push(poi.id);
+                              }
+                            });
                             Session.set('compare-save-to', {'id': saveTo, 'name': name, 'type': type});
-                            var deleteIds = [];
                             var key_val = Session.get('compare_select_keys');
-                            $('input[class="poi-checked-delete"]:checked').each(function(index, dom){
-                              deleteIds.push($(dom).attr('id'));
-                            })
-                            poi_merge(key_val, saveTo, deleteIds);
+                            poi_merge(key_val, saveTo, uselessPk);
                         }
                     },
                 }
@@ -191,7 +192,6 @@ poi_merge = function(key_val, saveTo, uselessPk){
       itemInfo = compareInfos['itemInfo'],
       keys = compareInfos['keys'],
       poiIndex = compareInfos['poiIndex'];
-
   var updateFields = merged_fields(key_val, itemInfo);
   update_db(dbName, saveTo, updateFields, uselessPk);
 }
