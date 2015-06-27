@@ -1,0 +1,99 @@
+<template name="dedupViewspot">
+    <div class="dedup-container">
+        <div class="dedup-city-select-container">
+            <div class="dedup-city-select">
+                <label class="label label-primary">区域选择</label>
+                <select name="domesticORabroad" id="J_domesticORbroad">
+                    <option value="domestic" selected>国内</option>
+                    <option value="abroad">国外</option>
+                </select>
+
+                <!-- zoneType：国家或者省份 -->
+                <label class="label label-primary">{{#if isAbroad}}国家{{else}}省份{{/if}}选择</label>
+                <select name="zoneSelect" id="J_zoneSelect">
+                    <option value="default" selected>-空-</option>
+                    {{#each zones}}
+                        <option value="{{this}}">{{this}}</option>
+                    {{/each}}
+                </select>
+
+                <label class="label label-primary">城市选择</label>
+                <select name="citySelect" id="J_citySelect">
+                    <option value="default" selected>-空-</option>
+                    {{#each cities}}
+                        <option value="{{id}}-{{zhName}}">{{zhName}}</option>
+                    {{/each}}
+                </select>
+
+                <button class="btn btn-info btn-sm" id="J_dedup_look_up">查找</button>
+            </div>
+        </div>
+
+        <div class="dedup-viewspot-result-desc">
+            {{#if count}}
+                <label class="label label-success">在 {{cityName}} 共找到 {{count}} 景点</label>
+                <div class="dedup-filter-container">
+                    <label class="label label-info">只显示已自动合并景点</label>
+                    <input type="checkbox" class="dedup-auto-merge-by-machine">
+                </div>
+                <div class="dedup-sort-container">
+                    <label class="label label-info">排序</label>
+                    <div class="dedup-fileter-name">
+                        名字
+                        {{#if sortByName}}
+                            {{#if sortSetting.zhNameSort}}
+                                升序
+                            {{else}}
+                                降序
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                    <div class="dedup-fileter-hotness">
+                        热门
+                        {{#if sortByHotness}}
+                            {{#if sortSetting.hotnessSort}}
+                                升序
+                            {{else}}
+                                降序
+                            {{/if}}
+                        {{/if}}
+                    </div>
+                </div>
+            {{else}}
+                <label class="label label-warning">没有相关的景点</label>
+            {{/if}}
+        </div>
+
+        <div class="add_to_compare">
+            <div class="compare_btn_container">
+                {{#if hasCompareItem}}
+                    <button class="btn btn-sm btn-success compare_btn">比较</button>
+                {{/if}}
+            </div>
+            <ul class="add_to_compare_ul"></ul>
+        </div>
+
+        <div class="dedup-viewspot-container">
+            {{#each vs}}
+                <div class="dedup-viewspot-info" id="{{_id._str}}">
+                    <input type="checkbox" class="dedup-checkbox" data-id='{{_id._str}}' data-zhName="{{zhName}}">
+                    <div class="dedup-viewspot-name">{{zhName}}</div>
+                    {{#if isKey}}
+                        <div class="dedup-viewspot-isKey">
+                            <label class="label label-success">主</label>
+                        </div>
+                    {{/if}}
+                    <div class="dedup-viewspot-address">{{address}}</div>
+                </div>
+                <div class="dedup-viewspot-desc hidden" id="desc-{{_id._str}}">
+                    {{#if desc}}
+                        <label class="label label-info">简介</label>
+                        {{desc}}
+                    {{else}}
+                        <label class="label label-danger">无介绍</label>
+                    {{/if}}
+                </div>
+            {{/each}}
+        </div>
+    </div>
+</template>

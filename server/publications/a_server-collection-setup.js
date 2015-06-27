@@ -34,6 +34,7 @@ Hotel = new Mongo.Collection("Hotel", { _driver: poi });
 Restaurant = new Mongo.Collection("Restaurant", { _driver: poi });
 Shopping = new Mongo.Collection("Shopping", { _driver: poi });
 ViewSpot = new Mongo.Collection("ViewSpot", { _driver: poi });
+// ViewSpot = new Mongo.Collection("ViewSpot1", { _driver: poi });
 
 CmsOplog = new Mongo.Collection('CmsOplog');
 OplogPkList = new Mongo.Collection('OplogPkList');

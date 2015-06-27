@@ -184,11 +184,12 @@ Meteor.methods({
     check(updateFields, Object);
     check(uselessPk, Array);
     var db = getMongoCol(dbName);
+    updateFields = _.extend(updateFields, {'isKey': true, 'exIds': uselessPk, 'update': true});
     var cnt = db.update({'_id': new Mongo.ObjectID(pk)}, {'$set': updateFields});
-    var deleteCnt = 0;
+    var uselessCnt = 0;
     uselessPk.map(function(pk) {
-      db.remove({'_id': new Mongo.ObjectID(pk)});
-      deleteCnt = deleteCnt + 1;
+      db.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'iskey': false}});
+      uselessCnt = uselessCnt + 1;
     });
     if(cnt == 1 && deleteCnt == uselessPk.length){
       return {code: 0};
@@ -380,6 +381,25 @@ Meteor.methods({
       getMongoCol(doc.type).update({'_id': new Mongo.ObjectID(doc.itemId._str)}, {'$unset': {'cmsStatus': ''}})
     });
     TaskPool.remove({'taskId': undefined});
+  },
+
+  // 景点去重，获取区域列表
+  'dedupOnlineInfo': function () {
+    var host = process.env.TAOZI_API_HOST,
+        domesticOnlineCityUrl = host + '/taozi/geo/localities/domestic',
+        abroadOnlineCityUrl = host + '/taozi/geo/localities/abroad',
+        domesticOnlineCity = HTTP.get(domesticOnlineCityUrl).data,
+        abroadOnlineCity = HTTP.get(abroadOnlineCityUrl).data;
+    if (domesticOnlineCity.code === 0 && abroadOnlineCity.code === 0) {
+      return {
+        'code': 0,
+        'data': {
+          'domestic': domesticOnlineCity.result,
+          'abroad': abroadOnlineCity.result
+        }
+      };
+    }
+    return {'code': -1, 'data': '去重页面的城市级联数据请求失败'}
   }
 
 });

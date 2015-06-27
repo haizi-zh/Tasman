@@ -46,6 +46,16 @@ var naviBarConfig = [{
   //   routeName: "reviewGuide"
   }]
   // subItem: []
+}, {
+  name: "POI去重",
+  url: "#",
+  routeName: "",
+  subItem: [{
+    name: "景点去重",
+    url: "/deduplication/viewspot",
+    routeName: "dedupViewspot"
+  }]
+  // subItem: []
 }];
 
 Template.header.helpers({

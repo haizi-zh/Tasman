@@ -20,6 +20,9 @@
   width: 100%;
   text-align: center;
 }
+button.compare_btn {
+  width: 100%;
+}
 
 /*============compare css begin=============*/
 .compare-left-navi-container {
