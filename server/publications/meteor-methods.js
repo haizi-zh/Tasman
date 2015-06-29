@@ -386,8 +386,8 @@ Meteor.methods({
   // 景点去重，获取区域列表
   'dedupOnlineInfo': function () {
     var host = process.env.LXP_API_HOST,
-        domesticOnlineCityUrl = host + '/taozi/geo/localities/domestic',
-        abroadOnlineCityUrl = host + '/taozi/geo/localities/abroad',
+        domesticOnlineCityUrl = host + '/app/geo/localities/domestic',
+        abroadOnlineCityUrl = host + '/app/geo/localities/abroad',
         domesticOnlineCity = HTTP.get(domesticOnlineCityUrl).data,
         abroadOnlineCity = HTTP.get(abroadOnlineCityUrl).data;
     if (domesticOnlineCity.code === 0 && abroadOnlineCity.code === 0) {
