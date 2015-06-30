@@ -53,6 +53,9 @@ TaskHistory = new Mongo.Collection('TaskHistory', {_driver: cms});
 //消息机制
 Notifications = new Mongo.Collection('Notifications', {_driver: cms});
 
+// POI 合并存放的合并数据
+PoiMergeInfo = new Mongo.Collection('PoiMergeInfo');
+
 ownsDocument = function(userId, doc) {
   console.log(doc);
   return doc && doc.userId === userId;

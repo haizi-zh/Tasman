@@ -399,7 +399,54 @@ Meteor.methods({
         }
       };
     }
-    return {'code': -1, 'data': '去重页面的城市级联数据请求失败'}
-  }
+    return {'code': -1, 'data': '去重页面的城市级联数据请求失败'};
+  },
+
+  /**
+   * poi合并的前端信息提交及后端入库操作
+   */
+  'submitPoiMergeInfo': function (infos) {
+    check(infos, {
+      _id: Match.Optional(String),
+      desc: String,
+      poiType: String,
+      mergedPois: [{
+        id: Meteor.Collection.ObjectID,
+        zhName: String
+      }],
+      mainPoi: {
+        id: Meteor.Collection.ObjectID,
+        zhName: String
+      },
+      mergedFields: Object
+    });
+    var editor = Meteor.userId();
+    var ts = Date.now();
+    var mainPoiInfo = getMongoCol(infos.poiType).findOne({'_id': infos.mainPoi.id});
+    var keys = Object.keys(infos.mergedFields);
+    var originData = {};
+    keys.forEach(function(key) {
+      originData[key] = mainPoiInfo[key];
+    });
+    infos = _.extend(infos, {
+      'editor': editor,
+      'ts': ts,
+      'onlineStatus': false,
+      'originData': originData
+    });
+    var mid = '';
+    if (infos._id) {
+      var cnt = PoiMergeInfo.update(infos._id, {'$set': infos});
+      if (cnt === 1) {
+        return {'code': 0};
+      }
+    } else {
+      mid = PoiMergeInfo.insert(_.omit(infos, '_id'));
+      if (mid) {
+        return {'code': 0, 'mid': mid};
+      }
+    }
+    return {'code': -1};
+  },
 
 });
