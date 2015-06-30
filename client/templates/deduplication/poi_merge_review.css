@@ -1,0 +1,73 @@
+.pmr-container {
+    margin: 0;
+    padding: 0;
+}
+
+.pmr-filter-container {
+    padding: 3px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.pmr-filter-editor-container, .pmr-filter-time-container, .pmr-filter-online-container {
+    margin: 7px;
+    height: 27px;
+    line-height: 27px;
+}
+
+.pmr-filter-editor:hover, .pmr-filter-time:hover, .pmr-filter-online:hover {
+    background-color: #5252CD;
+}
+
+.pmr-filter-editor, .pmr-filter-time, .pmr-filter-online {
+    background-color: #6666CC;
+    color: #fff;
+    margin: 0 5px;
+    padding: 3px 7px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.pmr-merged-poi-container {
+    margin-top: 23px;
+    padding: 0;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+}
+
+.pmr-merged-poi-item {
+    height: 37px;   line-height: 37px;
+    padding-left: 13px;
+    margin: 7px 3px;
+    background-color: #FFF;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.pmr-merged-poi-item:hover {
+    background-color: #F4F4F4;
+}
+
+.pmr-item-name, .pmr-item-online-status {
+    display: inline-block;
+}
+
+.pmr-item-online-status {
+    float: right;
+    padding: 0px 7px;
+}
+
+.pmr-item-offline, .pmr-item-online {
+    height: 80%;
+    color: #fff;
+    margin: 3px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+.pmr-item-offline {
+    background-color: #990033;
+}
+.pmr-item-online {
+    background-color: #006600;
+}
