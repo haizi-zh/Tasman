@@ -53,6 +53,7 @@ Template.dedupViewspot.onRendered(function () {
     if (onlyAutoViewSpot) {
       query.isKey = true;
     }
+    // query.
     Session.set('dedup-query', query);
     switch (status) {
       case 1: options.sort.zhName = zhNameSort ? 1 : -1; break;
@@ -78,13 +79,16 @@ Template.dedupViewspot.helpers({
   'vs': function() {
     var query = Session.get('dedup-query'),
         options = Session.get('dedup-options');
-    return ViewSpot.find(query, options);
+    query = _.extend(query, {'targets': new Mongo.ObjectID(Session.get('curLevelTwo').id)});
+    var cousor = ViewSpot.find(query, options);
+    Session.set('poiSearchCount', cousor.fetch().length);
+    return cousor;
   },
   'cityName': function () {
-    return Session.get('cityName');
+    return Session.get('curLevelTwo').zhName;
   },
   'count': function() {
-    return ViewSpot.find({}).fetch().length;
+    return Session.get('poiSearchCount');
   },
   'hasCompareItem': function() {
     return Session.get('compareItems').length > 1;
@@ -124,11 +128,13 @@ Template.dedupViewspot.events({
     e.stopPropagation();
     var id = Session.get('curLevelTwo').id;
     if (id) {
+      $('#J_dedup-loading').removeClass("hidden");
       Meteor.subscribe('dedupViewspot', {'id': id}, function(err, res) {
         if (err) return;
         Session.set('cityName', Session.get('curLevelTwo').zhName);
+        $('#J_dedup-loading').addClass("hidden");
       });
-    }else {
+    } else {
       alert('请选择城市！');
     }
   },
@@ -184,6 +190,16 @@ Template.dedupViewspot.events({
   'click .dedup-auto-merge-by-machine': function (e) {
     var status = e.target.checked;
     Session.set('onlyAutoViewSpot', status);
+  },
+  'click .dedup-jump-to-auto-saved': function (e) {
+    var id = $(e.target).attr('data-id');
+    var exIds = ViewSpot.findOne({'_id': new Mongo.ObjectID(id)}).exIds;
+    var info = ['ViewSpot', id];
+    exIds.map(function(tid) {
+      info.push(tid._str);
+    });
+    Session.set('compareItems', info);
+    Router.go('compare');
   }
 });
 
