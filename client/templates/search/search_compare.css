@@ -96,7 +96,18 @@ button.compare_btn {
   cursor: pointer;
 }
 
-.merge-btn-container:hover {
+.push-online-btn-container {
+  width: 20%;
+  margin: 3px auto;
+  text-align: center;
+  padding: 5px;
+  border-radius: 3px;
+  color: #FFF;
+  background-color: #009900;
+  cursor: pointer;
+}
+
+.merge-btn-container:hover, .push-online-btn-container:hover {
   background-color: #008000;
 }
 

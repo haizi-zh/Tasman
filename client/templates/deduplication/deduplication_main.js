@@ -23,7 +23,7 @@ Template.dedupViewspot.onRendered(function () {
     }
   });
   // poi比较 Session
-  Session.set('compareItems', ['location for items type']);
+  Session.setPersistent('compareItems', ['location for items type']);
   Session.set('curSearchCollection', 'ViewSpot');
   // 帅选 和 排序用的Session
   Session.set('onlyAutoViewSpot', false);
@@ -145,7 +145,7 @@ Template.dedupViewspot.events({
 
     if (Session.get('compareItems').indexOf(id) !== -1) {
       $('#' + id).parent().remove();
-      Session.set('compareItems', _.without(Session.get('compareItems'), id));
+      Session.setPersistent('compareItems', _.without(Session.get('compareItems'), id));
     } else {
       Blaze.renderWithData(
         Template.compareItem, {
@@ -156,14 +156,14 @@ Template.dedupViewspot.events({
       );
       var temp = Session.get('compareItems');
       temp.push(id);
-      Session.set('compareItems', temp);
+      Session.setPersistent('compareItems', temp);
     }
   },
   'click .compare_btn': function(e) {
     e.preventDefault();
     var temp = Session.get('compareItems');
     temp[0] = Session.get('curSearchCollection');
-    Session.set('compareItems', temp);
+    Session.setPersistent('compareItems', temp);
     // console.log(Session.get('compareItems'));
     // 需要比较的数据存放在session里，进入路由后提取并清空
     // window.open(Router.url('compare'));

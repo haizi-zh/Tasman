@@ -9,3 +9,10 @@ Template.poiMergeReview.helpers({
     return PoiMergeInfo.find({});
   }
 });
+
+Template.poiMergeReview.events({
+  'click .pmr-merged-poi-item': function (e) {
+    // Session.setPersistent('compareItems', this.compareItems);
+    Router.go('compare', {'id': this._id});
+  }
+});
