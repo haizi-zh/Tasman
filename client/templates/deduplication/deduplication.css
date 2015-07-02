@@ -105,7 +105,7 @@
     left: 10px
 }
 
-.dedup-viewspot-isKey {
+.dedup-isKey, .dedup-jump-to-auto-saved, .dedup-jump-to-auto-saved{
   display: inline-block;
 }
 /* 景点结果 END */

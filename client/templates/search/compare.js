@@ -223,6 +223,13 @@ function update_db (dbName, saveTo, updateFields, uselessPk) {
   });
   desc_merged_poi_name = desc_merged_poi_name.substr(0, desc_merged_poi_name.length - 1) + ']';
   desc = desc_main_poi_name + ' <<< ' + desc_merged_poi_name;
+  alias = [];
+  // _.union
+  Session.get('compareInfos').itemInfo.map(function (item) {
+    alias.push(item.alias);
+  });
+  mergedFields.alias = _.uniq(_.flatten(alias));
+  console.log(mergedFields);
   var infos = {
     '_id': Session.get('poiMergedInfoID'),
     'desc': desc,
@@ -234,11 +241,11 @@ function update_db (dbName, saveTo, updateFields, uselessPk) {
     'fieldrefer': Session.get('compare_select_keys')
   };
 
-  Meteor.call('submitPoiMergeInfo', infos, function(err, res) {
-    if (!err && res.code === 0) {
-      Session.set('poiMergedInfoID', res.mid);
-    }
-  });
+  // Meteor.call('submitPoiMergeInfo', infos, function(err, res) {
+  //   if (!err && res.code === 0) {
+  //     Session.set('poiMergedInfoID', res.mid);
+  //   }
+  // });
 }
 
 // 更新数据库：更新，删除冗余的POI

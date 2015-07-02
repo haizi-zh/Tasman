@@ -26,42 +26,45 @@
                 </select>
 
                 <button class="btn btn-info btn-sm" id="J_dedup_look_up">查找</button>
+                <div id="J_dedup-loading" class="hidden" style="display:inline-block">
+                    <label class="label label-danger">数据加载中......</label>
+                </div>
             </div>
         </div>
 
         <div class="dedup-viewspot-result-desc">
             {{#if count}}
                 <label class="label label-success">在 {{cityName}} 共找到 {{count}} 景点</label>
-                <div class="dedup-filter-container">
-                    <label class="label label-info">只显示已自动合并景点</label>
-                    <input type="checkbox" class="dedup-auto-merge-by-machine">
-                </div>
-                <div class="dedup-sort-container">
-                    <label class="label label-info">排序</label>
-                    <div class="dedup-fileter-name">
-                        名字
-                        {{#if sortByName}}
-                            {{#if sortSetting.zhNameSort}}
-                                升序
-                            {{else}}
-                                降序
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                    <div class="dedup-fileter-hotness">
-                        热门
-                        {{#if sortByHotness}}
-                            {{#if sortSetting.hotnessSort}}
-                                升序
-                            {{else}}
-                                降序
-                            {{/if}}
-                        {{/if}}
-                    </div>
-                </div>
             {{else}}
-                <label class="label label-warning">没有相关的景点</label>
+                <label class="label label-warning">请点击查找</label>
             {{/if}}
+            <div class="dedup-filter-container">
+                <label class="label label-info">只显示已自动合并景点</label>
+                <input type="checkbox" class="dedup-auto-merge-by-machine">
+            </div>
+            <div class="dedup-sort-container">
+                <label class="label label-info">排序</label>
+                <div class="dedup-fileter-name">
+                    名字
+                    {{#if sortByName}}
+                        {{#if sortSetting.zhNameSort}}
+                            升序
+                        {{else}}
+                            降序
+                        {{/if}}
+                    {{/if}}
+                </div>
+                <div class="dedup-fileter-hotness">
+                    热门
+                    {{#if sortByHotness}}
+                        {{#if sortSetting.hotnessSort}}
+                            升序
+                        {{else}}
+                            降序
+                        {{/if}}
+                    {{/if}}
+                </div>
+            </div>
         </div>
 
         <div class="add_to_compare">
@@ -74,26 +77,31 @@
         </div>
 
         <div class="dedup-viewspot-container">
-            {{#each vs}}
-                <div class="dedup-viewspot-info" id="{{_id._str}}">
-                    <input type="checkbox" class="dedup-checkbox" data-id='{{_id._str}}' data-zhName="{{zhName}}">
-                    <div class="dedup-viewspot-name">{{zhName}}</div>
-                    {{#if isKey}}
-                        <div class="dedup-viewspot-isKey">
-                            <label class="label label-success">主</label>
+            <div>
+                {{#each vs}}
+                    <div class="wrapperwrapper">
+                        <div class="dedup-viewspot-info" id="{{_id._str}}">
+                            <input type="checkbox" class="dedup-checkbox" data-id='{{_id._str}}' data-zhName="{{zhName}}">
+                            <div class="dedup-viewspot-name">{{zhName}}</div>
+                            <div class="dedup-viewspot-address">{{address}}</div>
+                            {{#if isKey}}
+                                <div class="dedup-isKey">
+                                    <label class="label label-success">主</label>
+                                </div>
+                                <span class="dedup-jump-to-auto-saved label label-info" data-id="{{_id._str}}">查看自动合并效果</span>
+                            {{/if}}
                         </div>
-                    {{/if}}
-                    <div class="dedup-viewspot-address">{{address}}</div>
-                </div>
-                <div class="dedup-viewspot-desc hidden" id="desc-{{_id._str}}">
-                    {{#if desc}}
-                        <label class="label label-info">简介</label>
-                        {{desc}}
-                    {{else}}
-                        <label class="label label-danger">无介绍</label>
-                    {{/if}}
-                </div>
-            {{/each}}
+                        <div class="dedup-viewspot-desc hidden" id="desc-{{_id._str}}">
+                            {{#if desc}}
+                                <label class="label label-info">简介</label>
+                                {{desc}}
+                            {{else}}
+                                <label class="label label-danger">无介绍</label>
+                            {{/if}}
+                        </div>
+                    </div>
+                {{/each}}
+            </div>
         </div>
     </div>
 </template>
