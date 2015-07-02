@@ -176,25 +176,6 @@ Meteor.methods({
     });
     return {count: count};
   },
-  // poi合并使用
-  'poi-merge-update': function(dbName, pk, updateFields, uselessPk) {
-    // body...
-    check(pk, String);
-    check(dbName, String);
-    check(updateFields, Object);
-    check(uselessPk, Array);
-    var db = getMongoCol(dbName);
-    updateFields = _.extend(updateFields, {'isKey': true, 'exIds': uselessPk, 'update': true});
-    var cnt = db.update({'_id': new Mongo.ObjectID(pk)}, {'$set': updateFields});
-    var uselessCnt = 0;
-    uselessPk.map(function(pk) {
-      db.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'iskey': false}});
-      uselessCnt = uselessCnt + 1;
-    });
-    if(cnt == 1 && deleteCnt == uselessPk.length){
-      return {code: 0};
-    }
-  },
   'cityName-to-cityId': function(cityName) {
     check(cityName, String);
     return Locality.findOne({'alias': cityName}, {fields: {'_id': 1}});
@@ -418,7 +399,9 @@ Meteor.methods({
         id: Meteor.Collection.ObjectID,
         zhName: String
       },
-      mergedFields: Object
+      mergedFields: Object,
+      compareItems: Array,
+      fieldrefer: Object
     });
     var editor = Meteor.userId();
     var ts = Date.now();
@@ -428,9 +411,21 @@ Meteor.methods({
     keys.forEach(function(key) {
       originData[key] = mainPoiInfo[key];
     });
+    var reviewItems = getReviewItems(infos.poiType);
+    var comparations = [];
+    reviewItems.forEach(function (ele) {
+      if (keys.indexOf(ele.value) !== -1) {
+        comparations.push({
+          'origin': originData[ele.value],
+          'new': infos.mergedFields[ele.value],
+          'tagName': ele.zhName
+        });
+      }
+    });
     infos = _.extend(infos, {
       'editor': editor,
       'ts': ts,
+      'comparations': comparations,
       'onlineStatus': false,
       'originData': originData
     });
@@ -448,5 +443,35 @@ Meteor.methods({
     }
     return {'code': -1};
   },
+
+  /**
+   * 将合并的数据上线
+   */
+  'pushMergedInfoOnline': function(id) {
+    check(id, String);
+    var poiMergeInfo = PoiMergeInfo.findOne(id);
+    if (!poiMergeInfo) {
+      return {code: -1};
+    }
+    var dbName = poiMergeInfo.poiType;
+    var db = getMongoCol(dbName);
+    var updateFields = poiMergeInfo.mergedFields;
+    var uselessPk = [];
+    poiMergeInfo.mergedPois.map(function (ele) {
+      uselessPk.push(ele.id);
+    });
+    var pk = poiMergeInfo.mainPoi.id;
+    updateFields = _.extend(updateFields, {'isKey': true, 'exIds': uselessPk, 'update': true});
+    var cnt = db.update({'_id': pk}, {'$set': updateFields});
+    var uselessCnt = 0;
+    uselessPk.map(function(id) {
+      db.update({'_id': id}, {'$set': {'iskey': false}});
+      uselessCnt = uselessCnt + 1;
+    });
+    if(cnt == 1 && uselessCnt == uselessPk.length){
+      PoiMergeInfo.update({'_id': id}, {'$set': {'onlineStatus': true}});
+      return {code: 0};
+    }
+  }
 
 });

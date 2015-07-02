@@ -6,8 +6,20 @@ Template.compareComfirm.events({
 });
 
 Template.compare.onRendered(function() {
-  // 测试时添加，最后需要删去
-  Session.set('compareItems', ["ViewSpot", "5492bfbce721e71717456552", "5492c619e721e7171745bcec", "5492be6ce721e7171745420c"]);
+  // 管理复审时先将合并的数据填充到界面上
+  var tid = Router.current().params.id;
+  if (tid !== undefined) {
+    if (this.data.mergedInfo && this.data.mergedInfo.fieldrefer) {
+      var fieldrefer = this.data.mergedInfo.fieldrefer;
+      $('.compare-key').each(function(idx, dom) {
+        var key = $(dom).attr('id');
+        if (fieldrefer[key] !== undefined) {
+          var index = Number(fieldrefer[key]) + 1;
+          $(dom).find('span').text(index);
+        }
+      });
+    }
+  }
 
 
   Session.set('compare_select_keys', {});
@@ -50,6 +62,15 @@ Tracker.autorun(function(){
 });
 
 
+Template.compare.helpers({
+  admin : function () {
+    return _.indexOf(Meteor.user().rights, 'admin') !== -1
+  },
+  hasReviewItem: function () {
+    return Router.current().params.id;
+  }
+});
+
 
 Template.compare.events({
   "click input[name='select-radio']": function(e) {
@@ -87,6 +108,14 @@ Template.compare.events({
         key = Session.get('compare-key');
     $('li#' + key).find("span").text(parseInt(index) + 1).addClass("label-success");
     compare_select_keys(key, parseInt(index));
+  },
+  'click .push-online-btn-container': function (e) {
+    var id = Router.current().params.id;
+    Meteor.call('pushMergedInfoOnline', id, function(err, res) {
+      if (!err && res.code === 0) {
+        $('.push-online-btn-container').find('span').text('上线成功');
+      }
+    });
   },
   'click .merge-btn-container': function(e) {
     if(_.keys(Session.get('compare_select_keys')).length === 0){
@@ -200,9 +229,11 @@ function update_db (dbName, saveTo, updateFields, uselessPk) {
     'poiType': poiType,
     'mainPoi': mainPoi,
     'mergedPois': mergedPois,
-    'mergedFields': mergedFields
+    'mergedFields': mergedFields,
+    'compareItems': Session.get('compareItems'),
+    'fieldrefer': Session.get('compare_select_keys')
   };
-  console.log(infos);
+
   Meteor.call('submitPoiMergeInfo', infos, function(err, res) {
     if (!err && res.code === 0) {
       Session.set('poiMergedInfoID', res.mid);

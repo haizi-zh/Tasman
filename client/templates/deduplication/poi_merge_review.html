@@ -26,6 +26,11 @@
         <div class="pmr-merged-poi-container">
             {{#each mergedItems}}
                 <div class="pmr-merged-poi-item">
+                    <!--
+                    <a href="{{pathFor 'compare' id=this._id}}" target='_blank'>
+                        <div class="pmr-item-name">{{desc}}</div>
+                    </a>
+                    -->
                     <div class="pmr-item-name">{{desc}}</div>
                     <div class="pmr-item-online-status {{#if onlineStatus}}pmr-item-online{{else}}pmr-item-offline{{/if}}">{{#if onlineStatus}}已上线{{else}}未上线{{/if}}</div>
                 </div>

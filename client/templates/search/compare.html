@@ -1,10 +1,22 @@
 <template name="compare">
   <div class="compare-container">
-
+    {{#if hasReviewItem}}
+      {{#if admin}}
+        <div class="push-online-btn-container">
+          <span>上线</span>
+        </div>
+      {{/if}}
+    {{/if}}
     <div class="compare-left-navi-container">
-      <div class="merge-btn-container">
-        <span>合并</span>
-      </div>
+      {{#if hasReviewItem}}
+        <div class="merge-btn-container">
+          <span>修改 & 合并</span>
+        </div>
+      {{else}}
+        <div class="merge-btn-container">
+          <span>合并</span>
+        </div>
+      {{/if}}
       <ul class="compare-left-navi list-group">
         <li class="compare-key list-group-item" id='all-key' data-index="all">All</li>
         {{#each keyArray}}
