@@ -2,6 +2,9 @@ PoiMergeInfo = new Mongo.Collection('PoiMergeInfo');
 
 Template.poiMergeReview.onRendered(function () {
   Tracker.autorun(function() {
+    if (!Session.get('poiMergeInfo')) {
+      return;
+    }
     var compareItems = Session.get('poiMergeInfo').compareItems,
         type = compareItems[0],
         items = compareItems.slice(1);
@@ -46,6 +49,7 @@ Template.poiMergeReview.onRendered(function () {
       $('.compare-key').each(function(idx, dom) {
         var key = $(dom).attr('id');
         if (fieldrefer[key] !== undefined) {
+          console.log(fieldrefer[key]);
           var index = Number(fieldrefer[key]) + 1;
           $(dom).find('span').text(index);
         }
@@ -78,6 +82,10 @@ Template.poiMergeReview.events({
     var id = $(e.target).attr('data-id');
     console.log(id);
     var poiMergeInfo = PoiMergeInfo.findOne({'_id': id});
+    console.log(poiMergeInfo);
     Session.set('poiMergeInfo', poiMergeInfo);
+    $('.compare-key').each(function(idx, dom) {
+      $(dom).find('span').text('?');
+      });
   }
 });
