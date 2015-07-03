@@ -3,6 +3,17 @@
     padding: 0;
 }
 
+.pmr-left-container {
+    width: 38%;
+    display: inline-block;
+}
+
+.pmr-right-container {
+    width: 61%;
+    float: right;
+    display: inline-block;
+}
+
 .pmr-filter-container {
     padding: 3px;
     border: 1px solid #ccc;
@@ -11,7 +22,6 @@
 
 .pmr-filter-editor-container, .pmr-filter-time-container, .pmr-filter-online-container {
     margin: 7px;
-    height: 27px;
     line-height: 27px;
 }
 

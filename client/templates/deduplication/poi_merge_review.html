@@ -1,40 +1,45 @@
 <template name="poiMergeReview">
     <div class="pmr-container">
-        <div class="pmr-filter-container">
-            <div class="pmr-filter-editor-container">
-                <label class="label label-info">编辑</label>
-                <span class="pmr-filter-editor" data-id="all">任意</span>
-                {{#each editors}}
-                    <span class="pmr-filter-editor" data-id="{{_id}}">{{this.username}}</span>
+        <div class="pmr-left-container">
+            <div class="pmr-filter-container">
+                <div class="pmr-filter-editor-container">
+                    <label class="label label-info">编辑</label>
+                    <span class="pmr-filter-editor" data-id="all">任意</span>
+                    {{#each editors}}
+                        <span class="pmr-filter-editor" data-id="{{_id}}">{{this.username}}</span>
+                    {{/each}}
+                </div>
+                <div class="pmr-filter-time-container">
+                    <label class="label label-info">时间</label>
+                    <span class="pmr-filter-time" data-id="0">任意</span>
+                    <span class="pmr-filter-time" data-id="1">过去一天</span>
+                    <span class="pmr-filter-time" data-id="3">过去三天</span>
+                    <span class="pmr-filter-time" data-id="7">过去七天</span>
+                </div>
+                <div class="pmr-filter-online-container">
+                    <label class="label label-info">上线</label>
+                    <span class="pmr-filter-online" data-id="all">任意</span>
+                    <span class="pmr-filter-online" data-id="1">是</span>
+                    <span class="pmr-filter-online" data-id="0">否</span>
+                </div>
+            </div>
+
+            <div class="pmr-merged-poi-container">
+                {{#each mergedItems}}
+                    <div class="pmr-merged-poi-item" data-id="{{this._id}}">
+                        <!--
+                        <a href="{{pathFor 'compare' id=this._id}}" target='_blank'>
+                            <div class="pmr-item-name">{{desc}}</div>
+                        </a>
+                        -->
+                        <div class="pmr-item-name">{{desc}}</div>
+                        <div class="pmr-item-online-status {{#if onlineStatus}}pmr-item-online{{else}}pmr-item-offline{{/if}}">{{#if onlineStatus}}已上线{{else}}未上线{{/if}}</div>
+                    </div>
                 {{/each}}
             </div>
-            <div class="pmr-filter-time-container">
-                <label class="label label-info">时间</label>
-                <span class="pmr-filter-time" data-id="0">任意</span>
-                <span class="pmr-filter-time" data-id="1">过去一天</span>
-                <span class="pmr-filter-time" data-id="3">过去三天</span>
-                <span class="pmr-filter-time" data-id="7">过去七天</span>
-            </div>
-            <div class="pmr-filter-online-container">
-                <label class="label label-info">上线</label>
-                <span class="pmr-filter-online" data-id="all">任意</span>
-                <span class="pmr-filter-online" data-id="1">是</span>
-                <span class="pmr-filter-online" data-id="0">否</span>
-            </div>
         </div>
-
-        <div class="pmr-merged-poi-container">
-            {{#each mergedItems}}
-                <div class="pmr-merged-poi-item">
-                    <!--
-                    <a href="{{pathFor 'compare' id=this._id}}" target='_blank'>
-                        <div class="pmr-item-name">{{desc}}</div>
-                    </a>
-                    -->
-                    <div class="pmr-item-name">{{desc}}</div>
-                    <div class="pmr-item-online-status {{#if onlineStatus}}pmr-item-online{{else}}pmr-item-offline{{/if}}">{{#if onlineStatus}}已上线{{else}}未上线{{/if}}</div>
-                </div>
-            {{/each}}
+        <div class="pmr-right-container">
+            {{> compare admin=admin cmpElements=cmpElements poiIndex=poiIndex keyArray=keyArray}}
         </div>
     </div>
 </template>
