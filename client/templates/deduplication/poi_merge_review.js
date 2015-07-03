@@ -1,9 +1,10 @@
 Template.poiMergeReview.onRendered(function () {
-
+  // Session.set('poiMergeInfo', {});
   Tracker.autorun(function() {
     var compareItems = Session.get('poiMergeInfo').compareItems,
         type = compareItems[0],
         items = compareItems.slice(1);
+
     Meteor.subscribe(type + '_Cmp', items);
     console.log('rerun');
 
@@ -48,6 +49,7 @@ Template.poiMergeReview.onRendered(function () {
           $(dom).find('span').text(index);
         }
       });
+      // $('#desc').click();
     }, 1000);
   });
 
