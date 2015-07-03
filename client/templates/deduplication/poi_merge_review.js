@@ -1,5 +1,6 @@
+PoiMergeInfo = new Mongo.Collection('PoiMergeInfo');
+
 Template.poiMergeReview.onRendered(function () {
-  // Session.set('poiMergeInfo', {});
   Tracker.autorun(function() {
     var compareItems = Session.get('poiMergeInfo').compareItems,
         type = compareItems[0],
@@ -49,20 +50,10 @@ Template.poiMergeReview.onRendered(function () {
           $(dom).find('span').text(index);
         }
       });
-      // $('#desc').click();
     }, 1000);
   });
 
 });
-
-PoiMergeInfo = new Mongo.Collection('PoiMergeInfo');
-
-
-/*
-cmpElements : allReviewItem,
-      poiIndex: poiIndex,
-      keyArray: keyArray,
-*/
 
 Template.poiMergeReview.helpers({
   'mergedItems': function() {
@@ -84,8 +75,6 @@ Template.poiMergeReview.helpers({
 
 Template.poiMergeReview.events({
   'click .pmr-merged-poi-item': function (e) {
-    // Session.setPersistent('compareItems', this.compareItems);
-    // Router.go('compare', {'id': this._id});
     var id = $(e.target).attr('data-id');
     console.log(id);
     var poiMergeInfo = PoiMergeInfo.findOne({'_id': id});
