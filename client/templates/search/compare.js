@@ -7,19 +7,19 @@ Template.compareComfirm.events({
 
 Template.compare.onRendered(function() {
   // 管理复审时先将合并的数据填充到界面上
-  var tid = Router.current().params.id;
-  if (tid !== undefined) {
-    if (this.data.mergedInfo && this.data.mergedInfo.fieldrefer) {
-      var fieldrefer = this.data.mergedInfo.fieldrefer;
-      $('.compare-key').each(function(idx, dom) {
-        var key = $(dom).attr('id');
-        if (fieldrefer[key] !== undefined) {
-          var index = Number(fieldrefer[key]) + 1;
-          $(dom).find('span').text(index);
-        }
-      });
-    }
-  }
+  // var tid = Router.current().params.id;
+  // if (tid !== undefined) {
+  //   if (this.data.mergedInfo && this.data.mergedInfo.fieldrefer) {
+  //     var fieldrefer = this.data.mergedInfo.fieldrefer;
+  //     $('.compare-key').each(function(idx, dom) {
+  //       var key = $(dom).attr('id');
+  //       if (fieldrefer[key] !== undefined) {
+  //         var index = Number(fieldrefer[key]) + 1;
+  //         $(dom).find('span').text(index);
+  //       }
+  //     });
+  //   }
+  // }
 
 
   Session.set('compare_select_keys', {});
@@ -241,11 +241,12 @@ function update_db (dbName, saveTo, updateFields, uselessPk) {
     'fieldrefer': Session.get('compare_select_keys')
   };
 
-  // Meteor.call('submitPoiMergeInfo', infos, function(err, res) {
-  //   if (!err && res.code === 0) {
-  //     Session.set('poiMergedInfoID', res.mid);
-  //   }
-  // });
+  Meteor.call('submitPoiMergeInfo', infos, function(err, res) {
+    if (!err && res.code === 0) {
+      alert('合并成功');
+      Session.set('poiMergedInfoID', res.mid);
+    }
+  });
 }
 
 // 更新数据库：更新，删除冗余的POI

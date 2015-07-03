@@ -26,7 +26,7 @@ button.compare_btn {
 
 /*============compare css begin=============*/
 .compare-left-navi-container {
-    width: 15%;
+    width: 20%;
     display: inline-block;
     float: left;
     margin-top: 7px;
@@ -36,7 +36,7 @@ button.compare_btn {
 }
 
 .compare-right-container {
-    width: 80%;
+    width: 79%;
     display: inline-block;
     margin-left: 3px;
 }
