@@ -1,12 +1,12 @@
 <template name="compare">
   <div class="compare-container">
     <div class="compare-left-navi-container">
-      {{#if admin}}
-        <div class="merge-btn-container">
+      {{#if editOrReview}}
+        <div class="push-data-online">
           <span>修改 & 合并</span>
         </div>
       {{else}}
-        <div class="merge-btn-container">
+        <div class="save-merge-info">
           <span>合并</span>
         </div>
       {{/if}}

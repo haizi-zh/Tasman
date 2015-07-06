@@ -17,3 +17,11 @@ Meteor.FilterCollections.publish(Restaurant, {
 Meteor.FilterCollections.publish(Shopping, {
   name: 'Shopping-list'
 });
+
+Meteor.FilterCollections.publish(OplogPkList, {
+  name: 'oplog-pk-list'
+});
+
+Meteor.FilterCollections.publish(PoiMergeInfo, {
+  name: 'PoiMergeInfo-list'
+});

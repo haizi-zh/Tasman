@@ -7,7 +7,7 @@ Template.recheck.helpers({
   collections: function() {
     return [
       {
-        'conn': 'poi.ViewSpot',
+      'conn': 'poi.ViewSpot',
         'name': '景点'
       },
       {

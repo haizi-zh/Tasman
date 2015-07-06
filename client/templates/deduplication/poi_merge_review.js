@@ -1,5 +1,43 @@
 PoiMergeInfo = new Mongo.Collection('PoiMergeInfo');
 
+
+/**
+ * 分页操作
+ */
+new Meteor.FilterCollections(PoiMergeInfo, {
+  name: 'PoiMergeInfo-list',
+  template: 'poiMergeReview',
+  sort: {
+    order: ['desc', 'asc'],
+    defaults: [
+      ['ts', 'desc']
+    ],
+  },
+  pager: {
+    itemsPerPage: 8,
+  },
+  filters: {
+    "editor": {
+      title: '编辑人员',
+      condition: '$and',
+    },
+    "ts": {
+      title: '编辑时间',
+      condition: '$and',
+      transform: function (value) {
+        return parseInt(value);
+      },
+    },
+    'onlineStatus': {
+      title: '上线状态',
+      condition: '$and',
+      transform: function (value) {
+        return parseInt(value) === 1;
+      },
+    },
+  }
+});
+
 Template.poiMergeReview.onRendered(function () {
   Tracker.autorun(function() {
     if (!Session.get('poiMergeInfo')) {
@@ -10,12 +48,15 @@ Template.poiMergeReview.onRendered(function () {
         items = compareItems.slice(1);
 
     Meteor.subscribe(type + '_Cmp', items);
-    console.log('rerun');
+    // console.log('rerun');
 
-    var ids = [];
-    items.map(function(item){ids.push(new Mongo.ObjectID(item))});
+    // var ids = [];
+    // items.map(function(item){ids.push(new Mongo.ObjectID(item))});
     // 一次找出所有的POI，存到multiCompItems中
-    var multiCompItems = ViewSpot.find({'_id': {'$in': ids}}).fetch();
+    // var multiCompItems = ViewSpot.find({'_id': {'$in': ids}}).fetch();
+    var multiCompItems = items.map(function(item) {
+      return ViewSpot.findOne({'_id': new Mongo.ObjectID(item)});
+    });
 
     var resArray = [],
         poiIndex = [];
@@ -44,14 +85,18 @@ Template.poiMergeReview.onRendered(function () {
     Session.set('keyArray', keyArray);
     Session.set('cmpElements', allReviewItem);
 
+    Session.set('compare_select_keys', Session.get('poiMergeInfo').fieldrefer);
+
     Meteor.setTimeout(function() {
       var fieldrefer = Session.get('poiMergeInfo').fieldrefer;
       $('.compare-key').each(function(idx, dom) {
         var key = $(dom).attr('id');
+        $(dom).find('span').text('?');
+        $(dom).find('span').removeClass("label-success");
         if (fieldrefer[key] !== undefined) {
           console.log(fieldrefer[key]);
           var index = Number(fieldrefer[key]) + 1;
-          $(dom).find('span').text(index);
+          $(dom).find('span').addClass("label-success").text(index);
         }
       });
     }, 1000);
@@ -60,10 +105,7 @@ Template.poiMergeReview.onRendered(function () {
 });
 
 Template.poiMergeReview.helpers({
-  'mergedItems': function() {
-    return PoiMergeInfo.find({});
-  },
-  'admin': function () {
+  'reviewStatus': function () {
     return true;
   },
   'cmpElements': function () {
@@ -74,18 +116,47 @@ Template.poiMergeReview.helpers({
   },
   'keyArray': function() {
     return Session.get('keyArray');
-  }
+  },
+  'timeLimits': function() {
+    return [
+      {
+        'timeLimit': moment().subtract(1, 'd').startOf('day').unix() * 1000,
+        'name': '最近一天',
+        'operator': '$gt'
+      },
+      {
+        'timeLimit': moment().subtract(3, 'd').startOf('day').unix() * 1000,
+        'name': '最近三天',
+        'operator': '$gt'
+      },
+      {
+        'timeLimit': moment().subtract(7, 'd').startOf('day').unix() * 1000,
+        'name': '最近一周',
+        'operator': '$gt'
+      }
+    ]
+  },
+  'dataStatus': function() {
+    return [
+      {
+        'status': 1,
+        'name': '已上线'
+      },
+      {
+        'status': 0,
+        'name': '未上线'
+      },
+    ]
+  },
+
 });
 
 Template.poiMergeReview.events({
   'click .pmr-merged-poi-item': function (e) {
+    e.preventDefault();
+    e.stopPropagation();
     var id = $(e.target).attr('data-id');
-    console.log(id);
     var poiMergeInfo = PoiMergeInfo.findOne({'_id': id});
-    console.log(poiMergeInfo);
     Session.set('poiMergeInfo', poiMergeInfo);
-    $('.compare-key').each(function(idx, dom) {
-      $(dom).find('span').text('?');
-      });
   }
 });
