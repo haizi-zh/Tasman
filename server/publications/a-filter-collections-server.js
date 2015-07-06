@@ -43,9 +43,7 @@ Meteor.FilterCollections.publish = function (collection, options) {
 
     if (callbacks.beforePublish && _.isFunction(callbacks.beforePublish))
       query = callbacks.beforePublish(query, this) || query;
-    console.log(query.selector);
     var cursor = collection.find(query.selector, _.extend(query.options, fields));
-    console.log(cursor.fetch().length);
 
     if (callbacks.afterPublish && _.isFunction(callbacks.afterPublish))
       cursor = callbacks.afterPublish('results', cursor, this) || cursor;

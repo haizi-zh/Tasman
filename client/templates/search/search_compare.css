@@ -85,7 +85,7 @@ button.compare_btn {
   font-weight: bold;
 }
 
-.merge-btn-container {
+.push-data-online, .save-merge-info {
   width: 80%;
   margin: 3px auto;
   text-align: center;
@@ -96,18 +96,7 @@ button.compare_btn {
   cursor: pointer;
 }
 
-.push-online-btn-container {
-  width: 20%;
-  margin: 3px auto;
-  text-align: center;
-  padding: 5px;
-  border-radius: 3px;
-  color: #FFF;
-  background-color: #009900;
-  cursor: pointer;
-}
-
-.merge-btn-container:hover, .push-online-btn-container:hover {
+.push-data-online:hover, .save-merge-info:hover {
   background-color: #008000;
 }
 

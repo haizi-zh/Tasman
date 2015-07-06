@@ -46,9 +46,10 @@
 }
 
 .pmr-merged-poi-item {
-    height: 37px;   line-height: 37px;
+    height: 30px;
+    line-height: 30px;
     padding-left: 13px;
-    margin: 7px 3px;
+    margin: 3px 3px;
     background-color: #FFF;
     border-radius: 3px;
     cursor: pointer;

@@ -6,22 +6,6 @@ Template.compareComfirm.events({
 });
 
 Template.compare.onRendered(function() {
-  // 管理复审时先将合并的数据填充到界面上
-  // var tid = Router.current().params.id;
-  // if (tid !== undefined) {
-  //   if (this.data.mergedInfo && this.data.mergedInfo.fieldrefer) {
-  //     var fieldrefer = this.data.mergedInfo.fieldrefer;
-  //     $('.compare-key').each(function(idx, dom) {
-  //       var key = $(dom).attr('id');
-  //       if (fieldrefer[key] !== undefined) {
-  //         var index = Number(fieldrefer[key]) + 1;
-  //         $(dom).find('span').text(index);
-  //       }
-  //     });
-  //   }
-  // }
-
-
   Session.set('compare_select_keys', {});
   Session.set('compare-key', 'zhName');
   Session.setDefault('poiMergedInfoID', undefined);
@@ -63,12 +47,9 @@ Tracker.autorun(function(){
 
 
 Template.compare.helpers({
-  admin : function () {
+  admin: function () {
     return _.indexOf(Meteor.user().rights, 'admin') !== -1
   },
-  hasReviewItem: function () {
-    return Router.current().params.id;
-  }
 });
 
 
@@ -117,7 +98,7 @@ Template.compare.events({
       }
     });
   },
-  'click .merge-btn-container': function(e) {
+  'click .save-merge-info': function(e) {
     if(_.keys(Session.get('compare_select_keys')).length === 0){
       alert('未做修改！');
       return;
@@ -160,6 +141,39 @@ Template.compare.events({
       $('.ui.checkbox').checkbox('enable');
       $("input[name='saveTo']:checked").siblings("div").checkbox('uncheck').checkbox('disable');
     })
+  },
+  'click .push-data-online': function (e) {
+    e.stopPropagation();
+    var newFieldrefer = Session.get('compare_select_keys'),
+        oldFieldrefer = Session.get('poiMergeInfo').fieldrefer,
+        mid = Session.get('poiMergeInfo')._id,
+        updateFields = {};
+
+    // 判断是否有改动
+    var diffTag = false;
+    // 有字段改变
+    Object.keys(newFieldrefer).forEach(function(k) {
+      if (!oldFieldrefer.hasOwnProperty(k) || oldFieldrefer[k] !== newFieldrefer[k]) {
+        diffTag = true;
+      }
+    });
+    // 长度不一致
+    if (Object.keys(newFieldrefer).length !== Object.keys(oldFieldrefer).length) {
+      diffTag = true;
+    }
+    var info = {
+      mid: mid,
+      diffTag: diffTag,
+    };
+    if (diffTag) {
+      info.newFieldrefer = newFieldrefer;
+    }
+
+    Meteor.call('push-merge-info-online', info, function (err, res) {
+      if (!err && res.code === 0) {
+        throwError('合并成功');
+      }
+    });
   }
 });
 
@@ -229,7 +243,6 @@ function update_db (dbName, saveTo, updateFields, uselessPk) {
     alias.push(item.alias);
   });
   mergedFields.alias = _.uniq(_.flatten(alias));
-  console.log(mergedFields);
   var infos = {
     '_id': Session.get('poiMergedInfoID'),
     'desc': desc,
@@ -248,45 +261,6 @@ function update_db (dbName, saveTo, updateFields, uselessPk) {
     }
   });
 }
-
-// 更新数据库：更新，删除冗余的POI
-// function update_db (dbName, pk, updateFields, uselessPk) {
-
-  // var targetInfo = Session.get('compare-save-to'),
-    //   name = targetInfo.name,
-    //   id = targetInfo.id,
-    //   type = targetInfo.type,
-    //   directUrl = urlForDetail(type, id);
-    // var redirectInfo = {
-    //   'desc': '即将跳转到合并后POI',
-    //   'content': name,
-    //   'directUrl': directUrl,
-    //   'limitTime': 5,
-    // };
-
-  // Meteor.call('poi-merge-update', dbName, pk, updateFields, uselessPk, function(err, res) {
-
-  //   if(!err && res.code == 0){
-  //     bootbox.dialog({
-  //         title: "合并成功",
-  //         message: Blaze.toHTMLWithData(Blaze.Template.redirect, redirectInfo),
-  //         buttons: {
-  //             success: {
-  //                 label: "立即跳转",
-  //                 className: "btn-success",
-  //                 callback: function () {
-  //                     Router.go(type.toLowerCase() + 'Detail', {'id': id});
-  //                 }
-  //             },
-  //         }
-  //     });
-  //     timeCountDown(5, function(){
-  //       Router.go(type.toLowerCase() + 'Detail', {'id': id});
-  //       bootbox.hideAll();
-  //     });
-  //   }
-  // });
-// }
 
 
 function urlForDetail (type, id){

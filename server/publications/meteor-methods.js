@@ -354,7 +354,6 @@ Meteor.methods({
   },
   'TaskPool.update.status': function(pk) {
     check(pk, Mongo.Collection.ObjectID);
-    console.log(pk);
     TaskPool.update({'itemId': new Mongo.ObjectID(pk._str)}, {'$set': {'editStatus': true}});
   },
   'removeUnpublishedTask': function() {
@@ -411,21 +410,21 @@ Meteor.methods({
     keys.forEach(function(key) {
       originData[key] = mainPoiInfo[key];
     });
-    var reviewItems = getReviewItems(infos.poiType);
-    var comparations = [];
-    reviewItems.forEach(function (ele) {
-      if (keys.indexOf(ele.value) !== -1) {
-        comparations.push({
-          'origin': originData[ele.value],
-          'new': infos.mergedFields[ele.value],
-          'tagName': ele.zhName
-        });
-      }
-    });
+    // var reviewItems = getReviewItems(infos.poiType);
+    // var comparations = [];
+    // reviewItems.forEach(function (ele) {
+    //   if (keys.indexOf(ele.value) !== -1) {
+    //     comparations.push({
+    //       'origin': originData[ele.value],
+    //       'new': infos.mergedFields[ele.value],
+    //       'tagName': ele.zhName
+    //     });
+    //   }
+    // });
     infos = _.extend(infos, {
       'editor': editor,
       'ts': ts,
-      'comparations': comparations,
+      // 'comparations': comparations,
       'onlineStatus': false,
       'originData': originData
     });
@@ -468,10 +467,51 @@ Meteor.methods({
       db.update({'_id': id}, {'$set': {'iskey': false}});
       uselessCnt = uselessCnt + 1;
     });
-    if(cnt == 1 && uselessCnt == uselessPk.length){
+    if(cnt == 1 && uselessCnt == uselessPk.length) {
       PoiMergeInfo.update({'_id': id}, {'$set': {'onlineStatus': true}});
       return {code: 0};
+    }else {
+      return {code: -1};
     }
+
+  },
+  /**
+   * 复审数据
+   */
+  'push-merge-info-online': function (info) {
+    check(info, {
+      mid: String,
+      diffTag: Boolean,
+      newFieldrefer: Match.Optional(Object)
+    });
+    var doc = PoiMergeInfo.findOne({'_id': info.mid});
+    if (!doc) return {'code': -1};
+    // 有改动
+    if (info.diffTag) {
+      var updateFields = {},
+          items_arr = [],
+          keys = _.keys(info.newFieldrefer);
+      // 获取items_arr
+      var type = doc.compareItems[0],
+          poiKeys = doc.compareItems.splice(1),
+          db = getMongoCol(type),
+          key_val = info.newFieldrefer;
+      items_arr = poiKeys.map(function(id) {
+        return db.findOne({'_id': new Mongo.ObjectID(id)});
+      });
+      // 获取updateFields
+      for(var i = 0, len = keys.length; i < len; i++) {
+        updateFields[keys[i]] = items_arr[key_val[keys[i]]][keys[i]];
+      }
+      var updateInfo = {
+        fieldrefer: info.newFieldrefer,
+        mergedFields: updateFields
+      };
+      PoiMergeInfo.update({'_id': info.mid}, {'$set': updateInfo});
+    }
+    // 无改动，直接上线
+    var res = Meteor.call('pushMergedInfoOnline', info.mid);
+    return res;
   }
 
 });
