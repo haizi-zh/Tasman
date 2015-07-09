@@ -10,7 +10,7 @@ new Meteor.FilterCollections(PoiMergeInfo, {
   sort: {
     order: ['desc', 'asc'],
     defaults: [
-      ['ts', 'desc']
+      ['ts', 'asc']
     ],
   },
   pager: {
