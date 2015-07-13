@@ -179,7 +179,6 @@ CreatePlan = function() {
         type = activePoiType.get(),
         poiContent = _.extend(poiInfo, {'dayIndex': dayIndex, 'index': curDayPoiCnt, 'type': type}),
         tempPlan = planDetail.get();
-    console.log(dayIndex);
     tempPlan[dayIndex - 1].pois.push(poiContent);
     planDetail.set(tempPlan);
     plan.addPoiId(poiInfo.id, poiContent);
@@ -270,7 +269,6 @@ CreatePlan = function() {
   plan.recievePlanData = function(planInfo) {
     // 设置计划是否为新, id, 标题继承自已有数据
     isNew = false;
-    console.log(planInfo);
     activeCity.set(planInfo.locName);
     title.set(planInfo.title);
     var rawData = planInfo.details,
@@ -298,7 +296,6 @@ CreatePlan = function() {
       });
 
     });
-    console.log(temp);
     planDetail.set(temp);
   };
 
@@ -306,7 +303,6 @@ CreatePlan = function() {
     Meteor.call('getPlanById', id, function(err, res) {
       if(!err && res.code === 0) {
         console.log('输出获得的原始模板数据');
-        console.log(res);
         plan.recievePlanData(res.data);
       }
     });
