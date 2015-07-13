@@ -13,7 +13,6 @@ Template.citySelection.events({
     $('.sel-city-td-letter').find('div').each(function(index, dom){
       if(letter === $(dom).text()) {
         height = $(dom).position().top;
-        log($(dom));
       }
     });
     $('#selCityPlaceListId').scrollTop(height);//animate({'scrollTop': height}, 1000);
@@ -45,7 +44,6 @@ function baiduIpLocation(){
     'dataType': "jsonp",
     'success': function(res){
       if(res.status === 0){
-        console.log('返回城市数据' + res.address.split('|')[2]);
         Meteor.cmsPlan.locality.set(res.address.split('|')[2]);
       }
     }
