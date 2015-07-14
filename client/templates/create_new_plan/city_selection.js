@@ -1,6 +1,9 @@
 Template.citySelection.helpers({
   'currentCity': function(){
     return Meteor.cmsPlan.locality.get();
+  },
+  'abroad': function() {
+    return Session.get('select-is-abroad');
   }
 });
 
@@ -25,13 +28,20 @@ Template.citySelection.events({
     var cityName = $(event.target).text();
     Meteor.cmsPlan.locality.set(cityName);
     $('.city-selection-pannel').toggle();
+  },
+  'change #domestic-or-abroad': function(event){
+    event.preventDefault();
+    var state = $(event.target).is(':checked');
+    Session.set('select-is-abroad', state);
   }
 });
 
 
 
 Template.citySelection.onRendered(function(){
-  baiduIpLocation();
+  // baiduIpLocation();
+  Session.setDefault('select-is-abroad', false);
+  $('.ui.checkbox').checkbox();
 });
 
 

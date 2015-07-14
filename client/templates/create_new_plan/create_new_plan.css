@@ -17,6 +17,12 @@
   overflow: scroll;
 }
 
+.selection-checkbox {
+  width: 100%;
+  height: 50px;
+  border-bottom: 1px solid #ccc;
+}
+
 .right-plan-edit-zoom {
     width: 43%;
     height: 587px;
@@ -121,6 +127,7 @@ span.poi-search-clear {
     border: 1px solid #cdcdcd;
     position: absolute;
     z-index: 9999999;
+    overflow: auto;
     display: none;
 }
 
@@ -144,8 +151,6 @@ span.poi-search-clear {
 
 #selCityPlaceListId {
     width: 100%;
-    height: 233px;
-    overflow: auto;
     position: relative;
 }
 
