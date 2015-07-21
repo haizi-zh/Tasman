@@ -13,15 +13,12 @@ sacha:spin
 ian:accounts-ui-bootstrap-3
 accounts-password
 audit-argument-checks
-mrt:mongodb-aggregation
-matteodem:easy-search
 reactive-var
 http
 jaywon:meteor-node-uuid
 froala:editor-reactive
 jparker:crypto-md5
 agnito:autogrow
-tkornblit:icheck
 jeremy:selectize
 monbro:iron-router-breadcrumb
 momentjs:moment
@@ -30,4 +27,9 @@ mizzao:bootboxjs
 semantic:ui-checkbox
 u2622:persistent-session
 meteorhacks:npm
+
 react
+
+
+npm-container
+cosmos:browserify

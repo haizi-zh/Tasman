@@ -34,6 +34,10 @@ Meteor.publish('poi-item', function(type, locId){
 });
 
 
-Meteor.publish('CmsGeneratedPlan', function() {
+Meteor.publish('CmsGeneratedPlan', function(locName) {
+  check(locName, String);
+  if (locName !== 'all') {
+    return CmsGenerated.find({'locName': locName});
+  }
   return CmsGenerated.find({});
 });

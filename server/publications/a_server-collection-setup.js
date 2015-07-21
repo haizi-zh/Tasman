@@ -40,7 +40,7 @@ CmsOplog = new Mongo.Collection('CmsOplog');
 OplogPkList = new Mongo.Collection('OplogPkList');
 
 // 游记规划,已审核
-GuideTemplate = new Mongo.Collection('GuideTemplate', {_driver: guide});
+GuideTemplate = new Mongo.Collection('GuideTemplate', {_driver: guide, idGeneration: 'MONGO'});
 // 游记，待审核
 Plan = new Mongo.Collection('Plan', {_driver: plan});
 // 存放CMS新建的游记规划
