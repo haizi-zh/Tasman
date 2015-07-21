@@ -512,6 +512,98 @@ Meteor.methods({
     // 无改动，直接上线
     var res = Meteor.call('pushMergedInfoOnline', info.mid);
     return res;
+  },
+  /*
+   * 上传游记
+   */
+  'push-plan-online': function (pid) {
+    check(pid, String);
+    console.log(pid);
+    var plan = CmsGenerated.findOne({'_id': new Mongo.ObjectID(pid)});
+    var title = plan.locName;
+    var locality = Locality.findOne({'zhName': title});
+    var locId;
+    if (locality) {
+      locId = locality._id;
+    } else {
+      return {'code': -1, 'msg': '找不到地点信息'};
+    };
+    var itinerary = [];
+    var tempImages = [];
+    var images = [];
+    // 提取行程信息
+    plan.detail.forEach(function(oneDay) {
+      var dayIndex = oneDay.dayIndex - 1;
+      oneDay.pois.forEach(function(poi) {
+        tempImages.push({'key': poi.picKey});
+        itinerary.push({
+          'dayIndex': dayIndex,
+          'poi': {
+            'className' : 'models.poi.' + poi.type,
+            '_id': new Mongo.ObjectID(poi.id),
+            'type': poi.type === 'ViewSpot' ? 'vs' : poi.type.toLowerCase(),
+            'zhName': poi.name
+          }
+        });
+      });
+    });
+
+    tempImages.forEach(function(image) {
+      var img = Images.findOne({'key': image.key});
+      if (img) {
+        if (img.cropHint) {
+          images.push({'key': image.key, 'h': img.h, 'w': img.w, 'cropHint': img.cropHint});
+        } else {
+          images.push({'key': image.key, 'h': img.h, 'w': img.w});
+        }
+      }
+    });
+    var planInfo = {};
+    planInfo.title = title;
+    planInfo.locId = locId;
+    planInfo.itinerary = itinerary;
+    planInfo.className = 'models.guide.GuideTemplate';
+    planInfo.enabled = true;
+    planInfo.images = images;
+    // 更新或者插入游记模板
+    var cntUpdate = GuideTemplate.update({'title': title}, {'$set': planInfo}, {'upsert': true});
+    // 更新当前选中的游记，标记为线上版本
+    cntUpdate += CmsGenerated.update({'_id': new Mongo.ObjectID(pid)}, {'$set': {'online': true}});
+    // 将之前的线上版本撤下
+    CmsGenerated.find({'locName': title}).forEach(function(plan) {
+      var planId = plan._id;
+      if (planId._str !== pid && plan.online) {
+        CmsGenerated.update({'_id': planId}, {'$set': {'online': false}});
+      }
+    });
+    return {'code': cntUpdate === 2 ? 0 : -1, 'msg': cntUpdate === 2 ? '上线成功' : '上线失败'};
+  },
+  /*
+   * 删除游记
+   */
+  'del-plan': function (pid) {
+    check(pid, String);
+    var cnt = CmsGenerated.remove({'_id': new Mongo.ObjectID(pid)});
+    return {'code': cnt - 1, 'msg': cnt === 1 ? '删除成功': '删除失败'};
+  },
+  /*
+   * 获取路线中包含的城市信息，作为筛选条件
+   */
+  'citiesHasPlan': function() {
+    var loc = {};
+    CmsGenerated.find({'locName': {'$exists': true}}).forEach(function(plan) {
+      if (loc[plan.locName] === true) {return;}
+      if (!loc.hasOwnProperty(plan.locName)) {
+        loc[plan.locName] = plan.online ? true : false;
+      }
+    });
+    var locArr = [{'name': 'all'}];
+    for(var l in loc) {
+      if (loc.hasOwnProperty(l)) {
+        locArr.push({'name': l, 'online': loc[l]});
+      }
+    }
+    return locArr;
   }
 
 });
