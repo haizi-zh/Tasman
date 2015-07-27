@@ -125,6 +125,6 @@ let CityTarget = React.createClass({
 })
 
 
-Template.test.onRendered(function() {
+Template.reviewTemplate.onRendered(function() {
     React.render(<App />, document.getElementById('plan-list'));
 });
