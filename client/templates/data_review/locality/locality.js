@@ -1,12 +1,10 @@
-
-Images = new Mongo.Collection('Images');
 var helpers = {
   cityDetails: function() {
     var mid = Session.get('currentLocalityId');
-
     // var detailInfo = Locality.findOne({
     //   '_id': new Mongo.ObjectID(mid)
     // });
+
     var detailInfo = storageEngine.snapshot('geo.Locality', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Locality', detailInfo, vsDetail);
@@ -34,13 +32,14 @@ var events = {
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
     Meteor.subscribe('oplog', 'geo.Locality', new Mongo.ObjectID(mid), 0);
+
     Meteor.subscribe("localityDetail", mid);
     initOriginMD5Session();
     initOplogSession();
+
     Meteor.subscribe('Images', mid);
   },
 };
-
 
 Template.reviewLocality.helpers(helpers);
 Template.reviewLocality.events(events);
