@@ -1,16 +1,20 @@
 var arr = ['ViewSpotleftRegionNavi', 'LocalityleftRegionNavi', 'HotelleftRegionNavi', 'ShoppingleftRegionNavi', 'RestaurantleftRegionNavi'];
 
 var helpers = {
+  // country.js中
   province: function() {
-    return province;
+    return provinceArray;
   },
+
+  // 一次全部获取!
   continent: function() {
-    var countries = continent;
-    Meteor.call('getCountriesByContinent', countries, function(error, result) {
+    Meteor.call('getCountriesByContinent', continentArray, function(error, result) {
       Session.set('countries', result);
     });
     return Session.get('countries');
   },
+
+  // 根据省份(国内)/国家(国外)的选择查找相应locality
   cities: function() {
     var mid = Session.get('curFilterTag');
     console.log('输出Id' + mid);
@@ -22,6 +26,7 @@ var helpers = {
 };
 
 var events = {
+  // 切换国内
   'click #tag-domestic': function() {
     $('.abroad').addClass("hidden");
     $('.domestic').removeClass("hidden");
@@ -31,6 +36,7 @@ var events = {
 
   },
 
+  // 切换国外
   'click #tag-abroad': function() {
     $('.domestic').addClass("hidden");
     $('.abroad').removeClass("hidden");
@@ -39,6 +45,7 @@ var events = {
     $('#tag-domestic').css({'background-color': '#ccc', 'color': '#333333'});
   },
 
+  // 选择"大洲"
   'click .continent-tag': function(event) {
     var id = $(event.target).attr('id');
     var lastActive;
@@ -56,6 +63,7 @@ var events = {
     $('#countries-' + id).removeClass("hidden");
   },
 
+  // 选择"国家"(国外)或者"省份"(国内)
   'click a.filter-options': function(event) {
     var id = $(event.target).attr('id');
     Session.set('abroad', $(event.target).attr('data-abroad') == '1');
@@ -70,7 +78,8 @@ var events = {
     $(event.target).css({'background-color': '#337ab7', 'color': '#ffffff'});
     Session.set('curFilterTag', id);
   },
-  // 点击城市
+
+  // 选择"城市"
   'click a.filter-city': function(event) {
     var id = $(event.target).attr('id');
     var lastActive;
