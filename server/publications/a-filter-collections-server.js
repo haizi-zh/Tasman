@@ -1,3 +1,4 @@
+
 Meteor.FilterCollections = {};
 
 Meteor.FilterCollections.publish = function (collection, options) {
@@ -11,6 +12,7 @@ Meteor.FilterCollections.publish = function (collection, options) {
 
   // Publish Name
   var name = (options.name) ? options.name : collection._name;
+
   var publisherResultsId = 'fc-' + name + '-results';
   var publisherCountId = 'fc-' + name + '-count';
   var publisherCountCollectionName = name + 'CountFC';
@@ -19,6 +21,7 @@ Meteor.FilterCollections.publish = function (collection, options) {
    * Publish query results.
    */
 
+  //修改一:增加了个fields参数
   Meteor.publish(publisherResultsId, function (query, fields) {
     check(query, Object);
     check(fields, Object);
@@ -43,6 +46,8 @@ Meteor.FilterCollections.publish = function (collection, options) {
 
     if (callbacks.beforePublish && _.isFunction(callbacks.beforePublish))
       query = callbacks.beforePublish(query, this) || query;
+
+    //修改二:增加了个fields参数
     var cursor = collection.find(query.selector, _.extend(query.options, fields));
 
     if (callbacks.afterPublish && _.isFunction(callbacks.afterPublish))
