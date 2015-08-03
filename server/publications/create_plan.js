@@ -5,13 +5,16 @@ Meteor.publish('createPlanResult', function(poiType, locName, query, options) {
   check(locName, String);
   check(query, Object);
   check(options, Object);
-  console.log('城市' + locName);
+  console.log('城市/国家' + locName);
 
-  var locId = Locality.findOne({'alias': locName})._id;
-  if (!locId) {
-    console.log("Can't find the city: " + locName);
+  var loc = Locality.findOne({'alias': locName});
+  var country = Country.findOne({'alias': locName});
+  if (!loc && !country) {
+    console.log("Can't find the city/coutry: " + locName);
     return {};
   }
+  var locId = (loc) ? loc._id : country._id;
+
   query = _.extend(query, {'targets': locId});
   // 两种方式查找景点
   // db.ViewSpot.find({targets: ObjectId("5492bd2ae721e717174512dd")})
