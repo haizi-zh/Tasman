@@ -1,3 +1,5 @@
+
+// 新建计划的发布
 Meteor.publish('createPlanResult', function(poiType, locName, query, options) {
   check(poiType, String);
   check(locName, String);
@@ -6,7 +8,14 @@ Meteor.publish('createPlanResult', function(poiType, locName, query, options) {
   console.log('城市' + locName);
 
   var locId = Locality.findOne({'alias': locName})._id;
+  if (!locId) {
+    console.log("Can't find the city: " + locName);
+    return {};
+  }
   query = _.extend(query, {'targets': locId});
+  // 两种方式查找景点
+  // db.ViewSpot.find({targets: ObjectId("5492bd2ae721e717174512dd")})
+  // db.ViewSpot.find({"locality._id": ObjectId("5492bd2ae721e717174512dd")})
   return getMongoCol(poiType).find(query, options);
 });
 

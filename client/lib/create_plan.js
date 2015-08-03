@@ -1,3 +1,4 @@
+// 封装了新建计划的逻辑
 CreatePlan = function() {
   var that = this,
       activePoiType = new ReactiveVar('ViewSpot', function(o, n){return o === n;}),
@@ -51,6 +52,7 @@ CreatePlan = function() {
     }
   };
 
+  // 订阅逻辑
   plan.subscribe = function() {
     var poiType = activePoiType.get(),
         locName = activeCity.get(),

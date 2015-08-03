@@ -9,6 +9,7 @@ Template.citySelection.helpers({
 
 
 Template.citySelection.events({
+  // 点击字母的跳转(国内),目前无效？
   'click .sel-city-letterbar a': function(event){
     event.preventDefault();
     var letter = $(event.target).text();
@@ -20,15 +21,21 @@ Template.citySelection.events({
     });
     $('#selCityPlaceListId').scrollTop(height);//animate({'scrollTop': height}, 1000);
   },
+
+  // 下拉列表的控制
   'click .change-city': function(event){
     event.preventDefault();
     $('.city-selection-pannel').toggle();
   },
+
+  // 选择城市的动作
   'click tbody tr td a': function(event){
     var cityName = $(event.target).text();
     Meteor.cmsPlan.locality.set(cityName);
     $('.city-selection-pannel').toggle();
   },
+
+  // 国内外切换
   'change #domestic-or-abroad': function(event){
     event.preventDefault();
     var state = $(event.target).is(':checked');
