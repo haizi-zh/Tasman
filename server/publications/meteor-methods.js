@@ -11,6 +11,7 @@ Meteor.methods({
       ? curDB.find({'zhName': {'$regex': re}}, {fields: {zhName: 1, desc: 1}, sort: {hotness: -1}}).fetch()
       : curDB.find({'alias': {'$regex': re}}, {fields: {zhName: 1, desc: 1}, sort: {hotness: -1}}).fetch();
   },
+
   // 根据洲的名字，查找国家
   'getCountriesByContinent': function(continents) {
     check(continents, Array);

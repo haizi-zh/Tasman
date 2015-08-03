@@ -1,3 +1,5 @@
+// select标签的封装工具 暂未使用
+
 /*!
  * Select2 4.0.0-rc.2
  * https://select2.github.io
