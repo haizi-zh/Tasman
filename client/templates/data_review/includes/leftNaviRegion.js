@@ -100,3 +100,7 @@ for (var i = 0, len = arr.length; i < len; i++ ){
   Template[arr[i]].helpers(helpers);
   Template[arr[i]].events(events);
 }
+
+
+
+
