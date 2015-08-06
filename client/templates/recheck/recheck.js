@@ -7,15 +7,16 @@ Template.recheck.helpers({
   collections: function() {
     return [
       {
-      'conn': 'poi.ViewSpot',
+        'conn': 'poi.ViewSpot',
+        // 'conn': 'k2.ViewSpot',
         'name': '景点'
       },
       {
-        'conn': 'poi.Restaurant',
+        'conn': 'k2.Restaurant',
         'name': '美食'
       },
       {
-        'conn': 'poi.Shopping',
+        'conn': 'k2.Shopping',
         'name': '购物'
       },
       {
@@ -23,7 +24,7 @@ Template.recheck.helpers({
         'name': '酒店'
       },
       {
-        'conn': 'geo.Locality',
+        'conn': 'k2.Locality',
         'name': '城市'
       }
     ]

@@ -5,7 +5,7 @@ var helpers = {
     //   '_id': new Mongo.ObjectID(mid)
     // });
 
-    var detailInfo = storageEngine.snapshot('geo.Locality', new Mongo.ObjectID(mid));
+    var detailInfo = storageEngine.snapshot('k2.Locality', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Locality', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
@@ -31,7 +31,7 @@ var events = {
     Session.set('currentLocalityId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe('oplog', 'geo.Locality', new Mongo.ObjectID(mid), 0);
+    Meteor.subscribe('oplog', 'k2.Locality', new Mongo.ObjectID(mid), 0);
 
     Meteor.subscribe("localityDetail", mid);
     initOriginMD5Session();

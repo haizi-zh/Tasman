@@ -4,7 +4,7 @@ var helpers = {
     // var detailInfo = Shopping.findOne({
     //   '_id': new Mongo.ObjectID(mid)
     // });
-    var detailInfo = storageEngine.snapshot('poi.Shopping', new Mongo.ObjectID(mid));
+    var detailInfo = storageEngine.snapshot('k2.Shopping', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Shopping', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
@@ -30,7 +30,7 @@ var events = {
     Session.set('currentShoppingId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe('oplog', 'poi.Shopping', new Mongo.ObjectID(mid), 0);
+    Meteor.subscribe('oplog', 'k2.Shopping', new Mongo.ObjectID(mid), 0);
     Meteor.subscribe("shoppingDetail", mid)
     initOriginMD5Session();
     initOplogSession();

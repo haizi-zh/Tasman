@@ -29,6 +29,11 @@ dbAuth = {
     db: 'nebula',
     replicaSet: 'aizou',
     readPreference: 'primaryPreferred'
+  },
+  k2: {
+    db: 'k2',
+    replicaSet: 'aizou',
+    readPreference: 'primaryPreferred'
   }
 };
 
