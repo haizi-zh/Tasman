@@ -82,15 +82,16 @@ getNsAndPk = function() {
   var ns, pk;
   if (Session.get('currentVsId')) {
     ns = 'poi.ViewSpot';
+    // ns = 'k2.ViewSpot';
     pk = Session.get('currentVsId');
   } else if (Session.get('currentShoppingId')) {
-    ns = 'poi.Shopping';
+    ns = 'k2.Shopping';
     pk = Session.get('currentShoppingId');
   } else if (Session.get('currentLocalityId')) {
-    ns = 'geo.Locality';
+    ns = 'k2.Locality';
     pk = Session.get('currentLocalityId');
   } else if (Session.get('currentRestaurantId')) {
-    ns = 'poi.Restaurant';
+    ns = 'k2.Restaurant';
     pk = Session.get('currentRestaurantId');
   } else if (Session.get('currentHotelId')) {
     ns = 'poi.Hotel';

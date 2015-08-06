@@ -4,7 +4,7 @@ var helpers = {
     // var detailInfo = Restaurant.findOne({
     //   '_id': new Mongo.ObjectID(mid)
     // });
-    var detailInfo = storageEngine.snapshot('poi.Restaurant', new Mongo.ObjectID(mid));
+    var detailInfo = storageEngine.snapshot('k2.Restaurant', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('Restaurant', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
@@ -30,7 +30,7 @@ var events = {
     Session.set('currentRestaurantId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    Meteor.subscribe('oplog', 'poi.Restaurant', new Mongo.ObjectID(mid), 0);
+    Meteor.subscribe('oplog', 'k2.Restaurant', new Mongo.ObjectID(mid), 0);
     Meteor.subscribe("restaurantDetail", mid);
     initOriginMD5Session();
     initOplogSession();
