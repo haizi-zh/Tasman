@@ -81,7 +81,8 @@ sessionInfo = function(ns, pk) {
 getNsAndPk = function() {
   var ns, pk;
   if (Session.get('currentVsId')) {
-    ns = 'k2.ViewSpot';
+    // ns = 'k2.ViewSpot';
+    ns = 'poi.ViewSpot';
     pk = Session.get('currentVsId');
   } else if (Session.get('currentShoppingId')) {
     ns = 'k2.Shopping';

@@ -5,7 +5,8 @@ var helpers = {
     //   '_id': new Mongo.ObjectID(mid)
     // });
 
-    var detailInfo = storageEngine.snapshot('k2.ViewSpot', new Mongo.ObjectID(mid));
+    // var detailInfo = storageEngine.snapshot('k2.ViewSpot', new Mongo.ObjectID(mid));
+    var detailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);

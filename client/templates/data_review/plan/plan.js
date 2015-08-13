@@ -12,7 +12,8 @@ Template.reviewPlan.helpers({
         for (var j = 0;j < detailInfo.details[i].actv.length;j++){
           var vId = detailInfo.details[i].actv[j].item.id.toString().split('"')[1];
           Meteor.subscribe('viewspotDetail', vId);
-          var vsDetailInfo = storageEngine.snapshot('k2.ViewSpot', new Mongo.ObjectID(vId));
+          // var vsDetailInfo = storageEngine.snapshot('k2.ViewSpot', new Mongo.ObjectID(vId));
+          var vsDetailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(vId));
           var address = vsDetailInfo.address;
           var desc = vsDetailInfo.desc;
           var alias = vsDetailInfo.alias;
