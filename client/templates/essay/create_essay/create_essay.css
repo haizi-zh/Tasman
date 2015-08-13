@@ -33,6 +33,16 @@
 	vertical-align: top;
 }
 
+.essay-preview div{
+	text-align: left;
+}
+
+.essay-preview-wrap{
+	width: 300px;
+	height: 250px;
+	border: 1px solid #bbb;
+}
+
 .essay-submit{
 	display: block;	
 }
