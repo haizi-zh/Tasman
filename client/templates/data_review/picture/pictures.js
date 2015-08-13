@@ -323,7 +323,8 @@ Template.pictures.events({
   //本地上传图片
   "click #pic-up-sub": function(e){
     //从服务器获取token和key
-    Meteor.call('getPicUpToken', function(error, result) {
+    var options = {};
+    Meteor.call('getPicUpToken', options, function(error, result) {
       if (error) {
         return throwError(error.reason);
       }

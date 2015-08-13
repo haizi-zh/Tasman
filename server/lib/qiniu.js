@@ -47,24 +47,39 @@ QiniuSDK = function (ak, sk, bk, host){
 
   /**
    * 本地上传(表单上传) —— 获取token和key
-   * @param  {object} op    上传相关参数:bucket,expires,returnbody等
-   * @param  {string} host  对应的七牛的host
+   * @param  {object} op    上传相关参数:bucket,expires,returnbody等，新增:prefix,generator,host
    * @return {object}       upToken:上传令牌;key:根据uuid生成的key,作为bucket中的唯一标识
    */
-  this.getUpInfo = function(op, host){
+  this.getUpInfo = function(op){
     var flags = JSON.stringify(this.genPutPolicy(op));
     var encodedFlags = base64ToUrlSafe(new Buffer(flags).toString('base64'));
     var encoded = crypto.createHmac("sha1", this.secretKey).update(encodedFlags).digest('base64');
     var encodedSign = base64ToUrlSafe(encoded);
     // var encodedSign = base64ToUrlSafe(new Buffer(encoded).toString('base64'));说好的加密呢？
     var upToken = this.accessKey + ':' + encodedSign + ':' + encodedFlags;
-    var id = uuid.v1();
+
+
+    switch (op.generator){
+      //YYYYMMDDhhmmss类型的时间戳
+      case 1:
+        var id = getFormatTime();
+        break;
+
+      //unix时间戳
+      case 2:
+        var id = new Date().getTime();
+        break;
+
+      //默认为uuid
+      default:
+        var id = uuid.v1();
+    }
     // var id2 = uuid.v4();
 
     return {
       upToken: upToken,
-      key: id,
-      url: (host || this.defaultPicHost) + id
+      key: op.prefix + id,
+      url: (op.host || this.defaultPicHost) + op.prefix + id
     };
   };
 
@@ -193,4 +208,38 @@ function base64ToUrlSafe(v){
   return v.replace(/\//g, '_').replace(/\+/g, '-');
 }
 
+/**
+ * 获取格式化的时间,当前格式为YYYYMMDDhhmmssms
+ * @return {[string]} [description]
+ */
+function getFormatTime(){
+  var tempDate = new Date();
+  var Y = getFormatTimeUnit(tempDate.getFullYear(), 4);    //获取完整的年份(4位,1970-????)
+  var M = getFormatTimeUnit(tempDate.getMonth() + 1, 2);       //获取当前月份(0-11,0代表1月)
+  var D = getFormatTimeUnit(tempDate.getDate(), 2);        //获取当前日(1-31)
+  var h = getFormatTimeUnit(tempDate.getHours(), 2);       //获取当前小时数(0-23)
+  var m = getFormatTimeUnit(tempDate.getMinutes(), 2);     //获取当前分钟数(0-59)
+  var s = getFormatTimeUnit(tempDate.getSeconds(), 2);     //获取当前秒数(0-59)
+  var ms = getFormatTimeUnit(tempDate.getMilliseconds(), 3);    //获取当前毫秒数(0-999)
+  return Y + M + D + h + m + s + ms;
+}
+
+/**
+ * 获得格式化(定长)的时间单元(年，月，日，时，分，秒)
+ * @param  {[number]} timeUnit 原时间单元数值
+ * @param  {[number]} l        长度
+ * @return {[string]}          格式化的时间单元字符串
+ */
+function getFormatTimeUnit(timeUnit, l){
+  var temp = (timeUnit) ? timeUnit + '' : '';
+  for (var i = 1;i < l;i++){
+    temp = parseInt(temp / 10);
+    if (!temp)
+      timeUnit = '0' + timeUnit;
+  }
+  return timeUnit;
+}
+
+
 // var Qiniu = new QiniuSDK();
+

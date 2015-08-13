@@ -19,13 +19,15 @@ Meteor.methods({
 
   /**
    * 获取表单上传图片要用的数据
-   * @return {object} uptoken,key,url等
+   * @param  {object} op 有prefix,generator
+   * @return {object}    uptoken,key,url等
    */
-  'getPicUpToken': function(){
+  'getPicUpToken': function(op){
+    check(op, Object);
     var options = {
       expires: 1800
     };
-    return Qiniu.getUpInfo(options);
+    return Qiniu.getUpInfo(_.extend(options, op));
   },
 
   /**
