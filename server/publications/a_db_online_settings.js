@@ -55,7 +55,9 @@ var settings = {
       'pictures_host': '/qiniu/url',
       'accessKey': '/qiniu/accessKey',
       'secretKey': '/qiniu/secretKey',
-      'bucket': '/qiniu/bucket'
+      'bucket': '/qiniu/bucket',
+      'essayBucket': '/qiniu/essayBucket',
+      'essayHost': '/qiniu/essayHost'
     }
   }
 }
@@ -74,6 +76,8 @@ try{
 
 // 获取qiniu的相关参数
 bucket = getSettingValue(dir + settings.config.qiniu.bucket, result);
+essayBucket = getSettingValue(dir + settings.config.qiniu.essayBucket, result);// essay
+essayHost = getSettingValue(dir + settings.config.qiniu.essayHost, result);//'http://essay.lvxingpai.com/'
 accessKey = getSettingValue(dir + settings.config.qiniu.accessKey, result);
 secretKey = getSettingValue(dir + settings.config.qiniu.secretKey, result);
 pictures_host = getSettingValue(dir + settings.config.qiniu.pictures_host, result);

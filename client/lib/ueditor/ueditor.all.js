@@ -8075,12 +8075,12 @@
                     var configUrl = me.getActionUrl('config'),
                         isJsonp = utils.isCrossDomainUrl(configUrl);
 
-                    console.log(me.getOpt('serverUrl'));//http://localhost:3000/client/lib/ueditor/editor/,ueditor的web是http://ueditor.baidu.com/server/ueditor/controller.php?action=config&&noCache=1439276333281
+                    // console.log(me.getOpt('serverUrl'));//http://localhost:3000/client/lib/ueditor/editor/,ueditor的web是http://ueditor.baidu.com/server/ueditor/controller.php?action=config&&noCache=1439276333281
                     /* 发出ajax请求 */
                     me._serverConfigLoaded = false;
 
-                    console.log(configUrl);//http://localhost:3000/client/lib/ueditor/editor/?action=config
-                    console.log(isJsonp);//false
+                    // console.log(configUrl);//http://localhost:3000/client/lib/ueditor/editor/?action=config
+                    // console.log(isJsonp);//false
 
                     // configUrl && UE.ajax.request(configUrl,{
                     //     'method': 'GET',
@@ -24428,7 +24428,6 @@
      * @date 2014-03-31
      */
     UE.plugin.register('simpleupload', function (){
-        console.log('simpleupload');
         var me = this,
             isLoaded = false,
             containerBtn;
@@ -24569,7 +24568,9 @@
                     // form.action = utils.formatUrl(imageActionUrl + (imageActionUrl.indexOf('?') == -1 ? '?':'&') + params);
 
                     var options = {
-                        prefix: 'essays/images/',
+                        bucket: ue.lxp.bucket,
+                        host: ue.lxp.host,
+                        prefix: ue.lxp.prefix.images,
                         generator: 1
                     }
                     Meteor.call('getPicUpToken', options, function(error, result) {
@@ -24624,7 +24625,7 @@
 
                 /* 初始化简单上传按钮 */
                 'simpleuploadbtnready': function(type, container) {
-                    console.log(container);//<div class="edui-box edui-icon edui-default"></div>
+                    // console.log(container);//<div class="edui-box edui-icon edui-default"></div>
                     containerBtn = container;
                     me.afterConfigReady(initUploadBtn);
                 }

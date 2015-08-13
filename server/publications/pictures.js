@@ -25,11 +25,9 @@ Meteor.methods({
   'getPicUpToken': function(op){
     check(op, Object);
     var options = {
-      expires: 1800,
-      prefix: op.prefix || '',
-      generator: op.generator || 0
+      expires: 1800
     };
-    return Qiniu.getUpInfo(options);
+    return Qiniu.getUpInfo(_.extend(options, op));
   },
 
   /**
