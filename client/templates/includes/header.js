@@ -1,3 +1,5 @@
+
+// 导航栏下拉列表配置
 var naviBarConfig = [{
   name: "数据审核",
   url: "/data-review",
@@ -56,11 +58,20 @@ var naviBarConfig = [{
     routeName: "dedupViewspot"
   }]
   // subItem: []
+}, {
+  name: "文章编辑",
+  url: "#",
+  routeName: "",
+  subItem: [{
+    name: "新建文章",
+    url: "/essay/create",
+    routeName: "essayCreate"
+  }]
 }];
 
 Template.header.helpers({
   activeRouteClass: function( /* route names */ ) {
-    var args = Array.prototype.slice.call(arguments, 0);
+    var args = Array.prototype.slice.call(argumentsessay, 0);
     args.pop();
 
     var active = _.any(args, function(name) {

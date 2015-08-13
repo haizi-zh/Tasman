@@ -47,7 +47,7 @@ QiniuSDK = function (ak, sk, bk, host){
 
   /**
    * 本地上传(表单上传) —— 获取token和key
-   * @param  {object} op    上传相关参数:bucket,expires,returnbody等
+   * @param  {object} op    上传相关参数:bucket,expires,returnbody等，新增:prefix,generator
    * @param  {string} host  对应的七牛的host
    * @return {object}       upToken:上传令牌;key:根据uuid生成的key,作为bucket中的唯一标识
    */
@@ -58,13 +58,24 @@ QiniuSDK = function (ak, sk, bk, host){
     var encodedSign = base64ToUrlSafe(encoded);
     // var encodedSign = base64ToUrlSafe(new Buffer(encoded).toString('base64'));说好的加密呢？
     var upToken = this.accessKey + ':' + encodedSign + ':' + encodedFlags;
-    var id = uuid.v1();
+
+
+    switch (op.generator){
+      //时间戳
+      case 1:
+        var id = new Date().getTime();
+        break;
+
+      //默认为uuid
+      default:
+        var id = uuid.v1();
+    }
     // var id2 = uuid.v4();
 
     return {
       upToken: upToken,
-      key: id,
-      url: (host || this.defaultPicHost) + id
+      key: op.prefix + id,
+      url: (host || this.defaultPicHost) + op.prefix + id
     };
   };
 
