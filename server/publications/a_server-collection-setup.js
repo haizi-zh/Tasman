@@ -36,8 +36,7 @@ Country = new Mongo.Collection("Country", { _driver: k2 });
 Hotel = new Mongo.Collection("Hotel", { _driver: poi });
 Restaurant = new Mongo.Collection("Restaurant", { _driver: k2 });
 Shopping = new Mongo.Collection("Shopping", { _driver: k2 });
-// ViewSpot = new Mongo.Collection("ViewSpot", { _driver: k2 });
-ViewSpot = new Mongo.Collection("ViewSpot", { _driver: poi });
+ViewSpot = new Mongo.Collection("ViewSpot", { _driver: k2 });
 // ViewSpot = new Mongo.Collection("ViewSpot1", { _driver: poi });
 
 CmsOplog = new Mongo.Collection('CmsOplog');
