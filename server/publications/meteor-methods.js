@@ -581,6 +581,7 @@ Meteor.methods({
     });
     return {'code': cntUpdate === 2 ? 0 : -1, 'msg': cntUpdate === 2 ? '上线成功' : '上线失败'};
   },
+
   /*
    * 删除游记
    */
@@ -589,6 +590,7 @@ Meteor.methods({
     var cnt = CmsGenerated.remove({'_id': new Mongo.ObjectID(pid)});
     return {'code': cnt - 1, 'msg': cnt === 1 ? '删除成功': '删除失败'};
   },
+
   /*
    * 获取路线中包含的城市信息，作为筛选条件
    */
@@ -607,6 +609,12 @@ Meteor.methods({
       }
     }
     return locArr;
-  }
+  },
 
+  'getEssayConfig': function(){
+    return {
+      bucket: essayBucket,
+      host: essayHost
+    }
+  }
 });

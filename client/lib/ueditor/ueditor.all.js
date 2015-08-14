@@ -24493,7 +24493,7 @@
                     me.focus();
 
                     // me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
-                    me.execCommand('inserthtml', '<img style="width:100%;height:auto" class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
+                    me.execCommand('inserthtml', '<img class="loadingclass" id="' + loadingId + '" src="' + me.options.themePath + me.options.theme +'/images/spacer.gif" title="' + (me.getLang('simpleupload.loading') || '') + '" >');
 
                     var imageUrl;
                     function callback(){
@@ -24522,6 +24522,7 @@
                                 loader = me.document.getElementById(loadingId);
                                 loader.setAttribute('src', imageUrl);
                                 loader.setAttribute('_src', imageUrl);
+                                loader.setAttribute('style', "width:100%;height:auto");
                                 // loader.setAttribute('title', json.title || '');
                                 // loader.setAttribute('alt', json.original || '');
                                 // loader.removeAttribute('id');
