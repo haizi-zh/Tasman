@@ -167,6 +167,7 @@ Meteor.methods({
   'checkedItemCnt': function(){
     return OplogPkList.find({'status': 'checked'}).fetch().length;
   },
+
   // 批量上线
   'bulk-upload': function(){
     var count = 0;
@@ -177,6 +178,7 @@ Meteor.methods({
     });
     return {count: count};
   },
+
   'cityName-to-cityId': function(cityName) {
     check(cityName, String);
     return Locality.findOne({'alias': cityName}, {fields: {'_id': 1}});

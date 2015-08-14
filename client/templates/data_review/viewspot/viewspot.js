@@ -5,8 +5,8 @@ var helpers = {
     //   '_id': new Mongo.ObjectID(mid)
     // });
 
-    // var detailInfo = storageEngine.snapshot('k2.ViewSpot', new Mongo.ObjectID(mid));
-    var detailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(mid));
+    var detailInfo = storageEngine.snapshot('k2.ViewSpot', new Mongo.ObjectID(mid));
+    // var detailInfo = storageEngine.snapshot('poi.ViewSpot', new Mongo.ObjectID(mid));
     var vsDetail = [];
     review('ViewSpot', detailInfo, vsDetail);
     createOriginTextMD5(vsDetail);
@@ -32,8 +32,8 @@ var events = {
     Session.set('currentVsId', mid);
     $(e.target).siblings().removeClass('active');
     $(e.target).addClass("active");
-    // Meteor.subscribe('oplog', 'k2.ViewSpot', new Mongo.ObjectID(mid), 0);
-    Meteor.subscribe('oplog', 'poi.ViewSpot', new Mongo.ObjectID(mid), 0);
+    Meteor.subscribe('oplog', 'k2.ViewSpot', new Mongo.ObjectID(mid), 0);
+    // Meteor.subscribe('oplog', 'poi.ViewSpot', new Mongo.ObjectID(mid), 0);
 
     Meteor.subscribe("viewspotDetail", mid);
     initOriginMD5Session();
