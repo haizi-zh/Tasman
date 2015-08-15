@@ -10,7 +10,7 @@
 			{{/with}}
 
 			{{#with author}}
-			<div class="essay-title">
+			<div class="essay-author">
 				<label>作者</label>
 				<span class="word-count">0</span>/{{limit}}
 				<input type="text">
@@ -32,7 +32,12 @@
 
 			<div class="essay-cover">
 				<label>封面图(建议尺寸900*500)</label>
-				<input type="file" style="border:none">
+				<form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up">
+			        <input name="key" type="hidden" value="" class="picUpKey">
+			        <input name="token" type="hidden" value="" class="picUpToken">
+					<input name="file" type="file" style="border:none" class="essay-cover-file">
+				</form>
+				<input type="text">
 			</div>
 
 			<!-- <div class="essay-favicon"></div> -->
@@ -47,7 +52,7 @@
 
 		<div class="essay-contents">
 			<label>正文</label>
-			<script id="ueContainer" name="content" type="text/plain" style="height:600px;"></script>
+			<script id="ueContainer" name="content" type="text/plain" style="height:700px;"></script>
 		</div>
 
 	</div>
