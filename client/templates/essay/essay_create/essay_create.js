@@ -100,6 +100,7 @@ Template.essayCreate.events({
 
       alert('新建文章成功');
       console.log(res);
+      Router.go('essayList');
     });
 
     // console.log(ue.getContent());

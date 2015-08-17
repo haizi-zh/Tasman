@@ -1,0 +1,33 @@
+<Template name="essayList">
+  <div class="essay-List">  
+    <div class="essay-page-count">
+      <label for="">一共<strong>{{fcTotalItems}}</strong>个, 当前在<strong>{{fcCurrentPage}}</strong>页</label>
+      <input type="text" id="go-specific-pager" placeholder="1 ~ {{fcTotalPage}}">
+      <button class="go-specific-pager">跳转</button>
+    </div>
+
+    {{#each fcResults}}
+      <div class="essay-frame">
+        <div class="essay-title">{{title}}</div>
+        <div class="essay-author">{{author}}</div>
+        <!-- <div class="essay-editTime">{{editTime}}</div> -->
+        <div class="essay-editTime">{{timeStamp}}</div>
+        <div class="essay-cover" style="background-image:url({{cover}});"></div>
+        <div class="essay-abstract">{{abstract}}</div>
+      </div>
+    {{/each}}
+
+    <div class="essay-pager col-md-12 text-center ">
+      {{#if fcPager.pages}}
+      <!-- numbered pager -->
+        <ul class="pagination pagination-sm">
+          <li><a href="#" class="fc-pager-first">&lt;&lt;</a></li>
+          {{#each fcPager.pages}}
+            <li class="{{status}}"><a href="#" class="fc-pager-page" data-fc-pager-page="{{page}}">{{page}}</a></li>
+          {{/each}}
+          <li><a href="#" class="fc-pager-last">&gt;&gt;</a></li>
+        </ul>
+      {{/if}}
+    </div>
+  </div>
+</Template>

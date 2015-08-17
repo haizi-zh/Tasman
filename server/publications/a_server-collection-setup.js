@@ -17,7 +17,7 @@ var plan = new MongoInternals.RemoteCollectionDriver(mongoPlanUrl);
 var mongoGuideUrl = mongoUrlGen(dbAuth.guide.db, dbAuth.guide.username, dbAuth.guide.password, dbAuth.guide.address, dbAuth.guide.replicaSet, dbAuth.guide.readPreference);
 var guide = new MongoInternals.RemoteCollectionDriver(mongoGuideUrl);
 
-// CMS 用户及其它数据所在
+// CMS 用户及其它数据所在(nebula数据库)
 var mongoCmsUrl = mongoUrlGen(dbAuth.cms.db, dbAuth.cms.username, dbAuth.cms.password, dbAuth.cms.address, dbAuth.cms.replicaSet, dbAuth.cms.readPreference);
 var cms = new MongoInternals.RemoteCollectionDriver(mongoCmsUrl);
 
@@ -63,6 +63,10 @@ Notifications = new Mongo.Collection('Notifications', {_driver: cms});
 
 // POI 合并存放的合并数据
 PoiMergeInfo = new Mongo.Collection('PoiMergeInfo');
+
+//文章列表
+Essay = new Mongo.Collection('Essay', {_driver: cms});
+
 
 ownsDocument = function(userId, doc) {
   console.log(doc);
