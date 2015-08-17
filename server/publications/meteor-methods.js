@@ -611,10 +611,28 @@ Meteor.methods({
     return locArr;
   },
 
+  /**
+   * 获取essay相关的配置
+   * @return {[type]} [description]
+   */
   'getEssayConfig': function(){
     return {
       bucket: essayBucket,
       host: essayHost
     }
+  },
+
+  /**
+   * 存储新建的文章
+   */
+  'createEssay': function(essay){
+    check(essay, Object);
+    var essay = _.extend(essay, {
+      _id:  new Mongo.ObjectID(),
+      timeStamp: new Date().getTime()
+    });
+    return Essay.insert(essay);
   }
 });
+
+

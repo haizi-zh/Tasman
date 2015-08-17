@@ -24523,9 +24523,9 @@
                                 loader.setAttribute('src', imageUrl);
                                 loader.setAttribute('_src', imageUrl);
                                 loader.setAttribute('style', "width:100%;height:auto");
-                                // loader.setAttribute('title', json.title || '');
-                                // loader.setAttribute('alt', json.original || '');
-                                // loader.removeAttribute('id');
+                                loader.setAttribute('title', '');
+                                loader.setAttribute('alt', '');
+                                loader.removeAttribute('id');
                                 domUtils.removeClasses(loader, 'loadingclass');
                             } else {
                                 showErrorLoader && showErrorLoader(json.state);

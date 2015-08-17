@@ -27,6 +27,10 @@
 	height: 120px;
 }
 
+.essay-meta .essay-cover-file{
+	margin: 0;
+}
+
 .essay-contents{
 	width: 55%;
 	display: inline-block;
@@ -44,6 +48,7 @@
 }
 
 .essay-submit{
+	margin: 50px 40px;
 	display: block;	
 }
 
