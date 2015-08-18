@@ -8,7 +8,7 @@
 Template.essayList.events({
   // 点击进入编辑页面
   'click .essay-frame': function(){
-    Router.go('/essay/edit/' + this._id._str);
+    Router.go('/essay/edit/' + this.uuid);
   },
 
   // 新建文章的跳转

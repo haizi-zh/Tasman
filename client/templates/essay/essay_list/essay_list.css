@@ -55,8 +55,15 @@
 
 .essay-page-count{
 	margin: 0 0 10px 20px;
+	overflow: hidden;
 }
 
 .essay-page-count input{
 	width: 100px;
+}
+
+.essay-create{
+	float: right;
+	background-color: #9ef;
+	margin-right: 120px;
 }
