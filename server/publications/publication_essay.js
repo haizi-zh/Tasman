@@ -8,9 +8,9 @@
 //   return Essay.find({}, {sort: {timeStamp: -1}, limit: parseInt(pageLimit), fields: {title: 1, author: 1, abstract: 1, cover: 1}});
 // });
 
-Meteor.publish('essayDetail', function(id) {
-  check(id, String);
-  return Essay.find({'_id': new Mongo.ObjectID(id)});
+Meteor.publish('essayDetail', function(uid) {
+  check(uid, String);
+  return Essay.find({'uuid': uid});
 });
 
 Meteor.FilterCollections.publish(Essay, {

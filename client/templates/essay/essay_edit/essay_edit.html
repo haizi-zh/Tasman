@@ -1,34 +1,28 @@
-<template name="essayCreate">
+<template name="essayEdit">
 	<div class="essay-wrap">
 		<div class="essay-meta">
-			{{#with title}}
 			<div class="essay-title">
 				<label>标题*</label>
-				<span class="word-count">0</span>/{{limit}}
-				<input type="text" value="哈哈哈">
+				<span class="word-count">0</span>/{{title.limit}}
+				<input type="text" value="{{essayDetail.title}}">
 			</div>
-			{{/with}}
 
-			{{#with author}}
 			<div class="essay-author">
 				<label>作者</label>
-				<span class="word-count">0</span>/{{limit}}
-				<input type="text">
+				<span class="word-count">0</span>/{{author.limit}}
+				<input type="text" value="{{essayDetail.author}}">
 			</div>
-			{{/with}}
 
 			<div class="essay-keywords">
 				<label>关键字(请用","区分)</label>
-				<input type="text">
+				<input type="text" value={{essayDetail.keywords}}>
 			</div>
 
-			{{#with abstract}}
 			<div class="essay-abstract">
 				<label>摘要</label>
-				<span class="word-count">0</span>/{{limit}}
-				<textarea></textarea>
+				<span class="word-count">0</span>/{{abstract.limit}}
+				<textarea value="{{essayDetail.abstract}}"></textarea>
 			</div>
-			{{/with}}
 
 			<div class="essay-cover">
 				<label>封面图(建议尺寸900*500)</label>
@@ -37,7 +31,7 @@
 			        <input name="token" type="hidden" value="" class="picUpToken">
 					<input name="file" type="file" style="border:none" class="essay-cover-file">
 				</form>
-				<input type="text">
+				<input type="text" value="{{essayDetail.cover}}">
 			</div>
 
 			<!-- <div class="essay-favicon"></div> -->
@@ -47,7 +41,9 @@
 				<div class="essay-preview-wrap"></div>
 			</div>
 
-			<button class="essay-submit">提交</button>
+			{{#with uuid}}
+			<button class="essay-submit">保存</button>
+			{{/with}}
 		</div>
 
 		<div class="essay-contents">

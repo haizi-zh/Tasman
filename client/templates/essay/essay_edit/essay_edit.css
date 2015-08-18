@@ -1,0 +1,57 @@
+.essay-meta{
+	width: 40%;
+	margin-right: 4%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.essay-meta div{
+	overflow: hidden;
+	text-align: right;
+}
+
+.essay-meta label{
+	float: left;
+}
+
+.essay-meta input, .essay-meta textarea{
+	display: block;
+	width: 100%;
+	padding: 5px;
+	margin-bottom: 30px;
+	border: 1px solid #ccc;
+}
+
+.essay-meta .essay-abstract textarea{
+	resize: none;
+	height: 120px;
+}
+
+.essay-meta .essay-cover-file{
+	margin: 0;
+}
+
+.essay-contents{
+	width: 55%;
+	display: inline-block;
+	vertical-align: top;
+}
+
+.essay-preview div{
+	text-align: left;
+}
+
+.essay-preview-wrap{
+	width: 300px;
+	height: 250px;
+	border: 1px solid #bbb;
+}
+
+.essay-submit{
+	margin: 50px 40px;
+	display: block;	
+}
+
+.color-red{
+	color: red;
+}

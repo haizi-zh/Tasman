@@ -623,15 +623,18 @@ Meteor.methods({
   },
 
   /**
-   * 存储新建的文章
+   * 保存文章(假如没有则新建)
+   * @param  {String} uid   uuid
+   * @param  {Objetc} essay 需要保存的内容
+   * @return {[type]}       [description]
    */
-  'createEssay': function(essay){
+  'saveEssay': function(uid, essay){
+    check(uid, String);
     check(essay, Object);
     var essay = _.extend(essay, {
-      _id:  new Mongo.ObjectID(),
-      timeStamp: new Date().getTime()
+      editTime: new Date().getTime()
     });
-    return Essay.insert(essay);
+    return Essay.upsert({uuid: uid}, {'$set': essay});
   }
 });
 
