@@ -1,0 +1,49 @@
+.essay-frame{
+	vertical-align: top;
+	display: inline-block;
+	width: 310px;
+	height: 350px;
+	border: 1px solid #ccc;
+	margin: 5px 20px;
+	padding: 5px;
+}
+
+.essay-frame>div{
+	margin-top: 5px;
+}
+
+.essay-frame>div:last-child{
+	margin-bottom: 5px;
+}
+
+.essay-frame .essay-title{
+	color: #444;
+	font-size: 18px;
+}
+
+.essay-frame .essay-author{
+	color: #999;
+	font-size: 14px;
+	display: inline-block;
+	width: 50%;
+}
+
+.essay-frame .essay-editTime{
+	color: #aaa;
+	font-style: italic;
+	display: inline-block;
+	width: calc(50% - 5px);
+	text-align: right;
+}
+
+.essay-frame .essay-cover{
+	width: 300px;
+	height: 200px;
+	background-size: cover;
+	background-position: center;
+}
+
+.essay-frame .essay-abstract{
+	color: #666;
+	font-size: 14px;
+}

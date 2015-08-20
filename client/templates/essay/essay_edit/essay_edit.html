@@ -27,8 +27,6 @@
 			<div class="essay-cover">
 				<label>封面图(建议尺寸900*500)</label>
 				<form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up">
-			        <input name="key" type="hidden" value="" class="picUpKey">
-			        <input name="token" type="hidden" value="" class="picUpToken">
 					<input name="file" type="file" style="border:none" class="essay-cover-file">
 				</form>
 				<input type="text" value="{{essayDetail.cover}}">
@@ -42,7 +40,9 @@
 			</div>
 
 			{{#with uuid}}
-			<button class="essay-submit">保存</button>
+			<button class="essay-submit-btn">保存</button>
+			<button class="essay-preview-btn">预览</button>
+			<button class="essay-submit">保存并群发</button>
 			{{/with}}
 		</div>
 

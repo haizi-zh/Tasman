@@ -635,6 +635,14 @@ Meteor.methods({
       editTime: new Date().getTime()
     });
     return Essay.upsert({uuid: uid}, {'$set': essay});
+  },
+
+  /**
+   * 查找标题为title的essay信息
+   */
+  'findEssay': function(title){
+    check(title, String);
+    return Essay.find({'title': title}).fetch();
   }
 });
 

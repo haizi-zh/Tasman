@@ -1,5 +1,6 @@
 // 初始化变量
-var ue = undefined;
+ue = undefined;
+essayPreviewTargetLayer = null;
 
 Tracker.autorun(function () {
   Session.get('ueReady') && ue.setContent(Session.get('currentEssayDetailContents'));
@@ -7,13 +8,19 @@ Tracker.autorun(function () {
 
 Template.essayEdit.rendered = function(){
   ue = UE.getEditor('ueContainer');
+
   // 存储自用的ue相关的变量参数
   Meteor.call('getEssayConfig', function(err, res){
     ue.lxp = {
       bucket: res.bucket,
       host: res.host,
       prefix: {
-        images: 'static/images/'
+        images: 'static/images/',
+        draft: 'preview/',
+        publish: ''
+      },
+      suffix: {
+        draft: '.html'
       }
     };  
   })
@@ -63,8 +70,8 @@ var wordCountFunction = function(e){
 
 
 Template.essayEdit.events({
-  // 提交文章内容
-  'click .essay-submit': function(e){
+  // 保存文章内容
+  'click .essay-submit-btn': function(e){
     var essay = {
       title: $('.essay-title>input').val(),
       author: $('.essay-author>input').val(),
@@ -105,7 +112,6 @@ Template.essayEdit.events({
 
       alert('新建文章成功');
       console.log(res);
-      Router.go('essayList');
     });
   },
 
@@ -131,9 +137,9 @@ Template.essayEdit.events({
         return throwError(error.reason);
       }
       if (result){
-        $(e.target).siblings(".picUpToken").val(result.upToken);
-        $(e.target).siblings(".picUpKey").val(result.key);
         var form_data = new FormData($('#pic-up')[0]);
+        form_data.append('key', result.key);
+        form_data.append('token', result.upToken);
 
         //用jquery.ajax提交表单
         $.ajax({
@@ -154,6 +160,23 @@ Template.essayEdit.events({
         alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
+  },
+
+  // 预发布文章，相应账号接收信息
+  'click .essay-preview-btn': function(e){
+    if (essayPreviewTargetLayer) {
+      essayPreviewTargetLayer.show();
+    } else {
+      var shareDialogInfo = {
+        template: Template.essayPreviewTargetLayer,
+        title: '发送预览',
+        doc: {
+          uid: this.toString()
+        }
+      };
+      essayPreviewTargetLayer = ReactiveModal.initDialog(shareDialogInfo);
+      essayPreviewTargetLayer.show();
+    }
   }
 })
 

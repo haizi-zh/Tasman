@@ -78,8 +78,8 @@ QiniuSDK = function (ak, sk, bk, host){
 
     return {
       upToken: upToken,
-      key: op.prefix + id,
-      url: (op.host || this.defaultPicHost) + op.prefix + id
+      key: (op.prefix || '') + id + (op.suffix || ''),
+      url: (op.host || this.defaultPicHost) + (op.prefix || '') + id + (op.suffix || '')
     };
   };
 

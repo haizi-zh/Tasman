@@ -1,0 +1,68 @@
+.create-message-target-part-input{
+	width: 300px;
+	margin-right: 100px;
+}
+
+.create-message-contents{
+	margin: 30px 0;
+	border: 1px solid #ddd;
+	height: 400px;
+}
+
+.create-message-contents-nav{
+	border-bottom: 1px solid #ddd;
+}
+
+.create-message-contents-nav ul{
+	padding: 0;
+	margin: 0;
+}
+
+.create-message-contents-nav li{
+	display: inline-block;
+	list-style: none;
+	border-right: 1px solid #ddd;
+	padding: 5px 10px;
+}
+
+.create-message-contents-nav li a{
+	color: #999;
+}
+
+.create-message-contents-nav li:hover a{
+	color: #666;
+}
+
+.create-message-contents-nav li.active a{
+	color: #666;
+}
+
+.create-message-contents-essay .essay-select-frame{
+	border: 1px dashed #ccc;
+	width: 310px;
+	height: 300px;
+	margin: 20px;
+}
+
+.create-message-contents-essay .essay-select-frame .plus{
+	margin-top: 60px;
+	text-align: center;
+	font-size: 80px;
+	color: #ddd;
+	line-height: 1.2;
+}
+
+.create-message-contents-essay .essay-select-frame a{
+	display: block;
+	margin: 0px auto;
+	color: #999;
+	font-size: 18px;
+	text-align: center;
+}
+
+.create-message-contents-essay .delete{
+	vertical-align: bottom;
+	margin: 10px;
+}
+
+
