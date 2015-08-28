@@ -1,0 +1,58 @@
+<Template name="essayPublish">
+  <div class="essay-publish">
+    <nav class="navbar navbar-default" role="navigation">
+      <ul class="nav nav-tabs">
+        <li role="navigation" class="create-message-nav active"><a href="#">新建群发消息</a></li>
+        <li role="navigation" class="published-message-nav"><a href="#">已发布消息</a></li>
+      </ul>
+    </nav>
+
+    <div class="essay-publish-list">
+      <div class="create-message-frame show">
+        <div class="create-message-target">
+            <h5>请选择发送对象</h5>
+            <input type="radio" class="create-message-target-part" name="target" id="part">
+            <label for="part">部分用户</label>
+            <input class="create-message-target-part-input" placeholder="请输入用户的id号，并以逗号区分">
+            <input type="radio" class="create-message-target-all" name="target" id="all">
+            <label for="all">所有用户</label>
+        </div>
+
+        <div class="create-message-contents">
+            <div class="create-message-contents-nav">
+                <ul>
+                    <li class="create-message-contents-nav-essay active"><a href="#">文章素材</a></li>
+                    <li class="create-message-contents-nav-text"><a href="#">文本消息</a></li>
+                    <li class="create-message-contents-nav-pic"><a href="#">图片</a></li>
+                    <li class="create-message-contents-nav-audio"><a href="#">语音</a></li>
+                    <li class="create-message-contents-nav-video"><a href="#">视频</a></li>
+                </ul>
+            </div>
+
+            <div class="create-message-contents-select">
+                <div class="create-message-contents-essay show">
+                    <div class="essay-select-frame">
+                        <div class="plus">+</div>
+                        <a href="#">从素材库中选择</a>
+                    </div>
+                </div>
+                <div class="create-message-contents-text hidden">
+                </div>
+                <div class="create-message-contents-pic hidden">
+                </div>
+                <div class="create-message-contents-audio hidden">
+                </div>
+                <div class="create-message-contents-video hidden">
+                </div>
+            </div>
+        </div>
+
+        <button class="publish">群发消息</button>
+      </div>
+
+      <div class="published-message-frame hidden">
+        查看已发布消息
+      </div>
+    </div>
+  </div>
+</Template>

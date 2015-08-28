@@ -1,3 +1,9 @@
+var msgHandlerHost = process.env['MSG_HANDLER_HOST'] + '/chats';
+if (!msgHandlerHost) {
+  throw "缺少环境变量: MSG_HANDLER_HOST";
+  return;
+}
+
 Meteor.methods({
   'search': function(collection, keyword){
     check(collection, String);
@@ -56,6 +62,8 @@ Meteor.methods({
     }
     return temp;
   },
+
+  // 更新修改记录(OplohPkList)
   'OplogPkList.update': function(ts, ns, userId, pk, zhName){
     check(ts, Number);
     check(ns, String);
@@ -69,6 +77,7 @@ Meteor.methods({
       OplogPkList.update(query, {'$set': {'ts': ts, 'zhName': zhName, status: 'review'}, '$addToSet': {'editorId': userId}, '$inc': {'opCount': 1}}, {'upsert': true});
     }
   },
+
   // update online data, optional: desc
   'updateOnlineData': function(pk, desc) {
     check(pk, String);
@@ -81,36 +90,45 @@ Meteor.methods({
         snapshotId = branchCount + 1,
         updateContent = Meteor.call('stagedContent', ns, new Mongo.ObjectID(pk));
     updateContent['taoziEna'] = true;
+
     // omit _id for secure
     var resFromOnline = getMongoCol(col).update({'_id': new Mongo.ObjectID(pk)}, {'$set': _.omit(updateContent, '_id')});
+
     // update CmsOplog
     var resFromCmsOplog = CmsOplog.update(
                               {'pk': new Mongo.ObjectID(pk), 'status': 'staged'},
                               {'$set': {'status': 'merged', 'snapshotId': snapshotId}},
                               {'multi': true});
-    // update OplogList
+
+    // update OplogPkList
     var resFromOplogPkList = OplogPkList.update(
                                 {'pk': pk},
                                 {'$addToSet': {'branch': {'snapshotId': snapshotId, 'desc': commitInfo}},
                                 '$set': {opCount: 0, status: 'uploaded'}});
+
     if(resFromOnline >= 1 && resFromCmsOplog >= 1 && resFromOplogPkList >= 1) {
       return {'code': 0};
     }else{
       return {'code': 1};
     }
   },
+
   // get staged content from CmsOplog collection
   'stagedContent': function(ns, pk){
     check(ns, String);
     check(pk, Meteor.Collection.ObjectID);
     return storageEngine.snapshot(ns, pk);
   },
+
+
   'snapshotInfo': function(ns, pk, snapshotId){
     check(ns, String);
     check(pk, Meteor.Collection.ObjectID);
     check(snapshotId, Number);
     return storageEngine.snapshot(ns, pk, {}, snapshotId);
   },
+
+  // 回滚版本
   'scrollBack': function(item, snapshotId){
     check(item, Object);
     check(snapshotId, Number);
@@ -134,6 +152,8 @@ Meteor.methods({
       return {'code': 1};
     }
   },
+
+
   'deleteUser': function(userId){
     check(userId, String);
     var cnt = Meteor.users.remove({_id: userId});
@@ -143,6 +163,8 @@ Meteor.methods({
       return {'code': 1};
     }
   },
+
+
   'rejectEditInfo': function(pk){
     check(pk, String);
     var resFromCmsOplog = CmsOplog.update(
@@ -156,16 +178,25 @@ Meteor.methods({
       return {'code': 1};
     }
   },
+
+  // 已复审 => 准备上线
   'ready-online': function(pk){
     check(pk, String);
+    console.log('ready');
+    // OplogPkList.update({'pk': pk, 'ns': 'k2'}, {'$set': {'status': 'checked'}});
     OplogPkList.update({'pk': pk}, {'$set': {'status': 'checked'}});
   },
+
+  // 准备上线 => 已复审
   'unready-online': function(pk){
     check(pk, String);
     OplogPkList.update({'pk': pk}, {'$set': {'status': 'review'}});
   },
+
+  // 获取checked(已复审)状态的数目
   'checkedItemCnt': function(){
-    return OplogPkList.find({'status': 'checked'}).fetch().length;
+    // return OplogPkList.find({'status': 'checked'}).fetch().length;
+    return OplogPkList.find({'status': 'checked'}).count();
   },
 
   // 批量上线
@@ -179,15 +210,20 @@ Meteor.methods({
     return {count: count};
   },
 
+  // 
   'cityName-to-cityId': function(cityName) {
     check(cityName, String);
     return Locality.findOne({'alias': cityName}, {fields: {'_id': 1}});
   },
+
+  // 
   'getPlanById': function(id) {
     check(id, String);
     var res = Plan.findOne({'_id': new Mongo.ObjectID(id)});
     return {'code': 0, 'data': res};
   },
+
+  // 
   'saveNewPlan': function(planInfo) {
     check(planInfo, Object);
     var cnt = CmsGenerated.update({'_id': new Mongo.ObjectID(planInfo._id)},{'$set': _.omit(planInfo, '_id')}, {upsert: true});
@@ -196,6 +232,8 @@ Meteor.methods({
     }
     return {code: -1};
   },
+
+  // 
   'createNewPlan': function(timeObj) {
     check(timeObj, Object);
     var newId = new Mongo.ObjectID(),
@@ -205,6 +243,8 @@ Meteor.methods({
     }
     return {code: -1, msg: '初始化失败'};
   },
+
+  // 
   'saveEditedPlan': function(planInfo) {
     check(planInfo, Object);
     var title = planInfo.title,
@@ -249,6 +289,8 @@ Meteor.methods({
     }
     return {'code': -1};
   },
+
+  // 
   'commonDBQuery': function(colName, query, options) {
     check(colName, String);
     check(query, Object);
@@ -268,20 +310,28 @@ Meteor.methods({
     }
     return {'code': -1};
   },
+
+  // 
   'readyToAssign': function(pk) {
     check(pk, String);
     TaskPool.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'status': 'ready'}});
   },
+
+  // 
   'unreadyToAssign': function(pk) {
     check(pk, String);
     TaskPool.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'status': 'unassgined'}});
   },
+
+  // 
   'taskAssign': function(editorInfo) {
     check(editorInfo, Object);
     TaskPool.update({'status': 'ready'}, {'$set': {'editorId': editorInfo.editorId, 'editorName': editorInfo.editorName,'status': 'assigned'}}, {'multi': true});
     var cnt = TaskPool.find({'editorId': editorInfo.editorId, 'status': 'assigned'}).count();
     return {'code': 0, 'count': cnt};
   },
+
+  // 
   'taskCheckAll': function(checkStatus) {
     check(checkStatus, Boolean);
     var cnt;
@@ -292,15 +342,21 @@ Meteor.methods({
     }
     return {'code': 0, 'count': cnt};
   },
+
+  // 
   'editorTaskCount': function(eid) {
     check(eid, String);
     var cnt = TaskPool.find({'editorId': eid, 'status': 'assigned'}).count();
     return {'code': 0, 'count': cnt};
   },
+
+  // 
   'pullTaskBackToPool': function(pk) {
     check(pk, String);
     TaskPool.update({'_id': new Mongo.ObjectID(pk)}, {'$set': {'status': 'ready'},'$unset': {'editorId': '', 'editorName': ''}});
   },
+
+  // 
   'taskConfirm': function() {
     var assignDetail = [],
         editor = {};
@@ -322,6 +378,8 @@ Meteor.methods({
     });
     return {'code': 0, 'data': assignDetail};
   },
+
+  // 
   'taskPublish': function(detail, desc) {
     check(detail, Array);
     check(desc, String);
@@ -355,10 +413,14 @@ Meteor.methods({
     });
     return {'code': 0}
   },
+
+  // 
   'TaskPool.update.status': function(pk) {
     check(pk, Mongo.Collection.ObjectID);
     TaskPool.update({'itemId': new Mongo.ObjectID(pk._str)}, {'$set': {'editStatus': true}});
   },
+
+  // 
   'removeUnpublishedTask': function() {
     TaskPool.find({'taskId': undefined}).forEach(function(doc) {
       getMongoCol(doc.type).update({'_id': new Mongo.ObjectID(doc.itemId._str)}, {'$unset': {'cmsStatus': ''}})
@@ -478,6 +540,7 @@ Meteor.methods({
     }
 
   },
+
   /**
    * 复审数据
    */
@@ -516,6 +579,7 @@ Meteor.methods({
     var res = Meteor.call('pushMergedInfoOnline', info.mid);
     return res;
   },
+
   /*
    * 上传游记
    */
@@ -623,15 +687,41 @@ Meteor.methods({
   },
 
   /**
-   * 存储新建的文章
+   * 保存文章(假如没有则新建)
+   * @param  {String} uid   uuid
+   * @param  {Objetc} essay 需要保存的内容
+   * @return {[type]}       [description]
    */
-  'createEssay': function(essay){
+  'saveEssay': function(uid, essay){
+    check(uid, String);
     check(essay, Object);
     var essay = _.extend(essay, {
-      _id:  new Mongo.ObjectID(),
-      timeStamp: new Date().getTime()
+      editTime: new Date().getTime()
     });
-    return Essay.insert(essay);
+    return Essay.upsert({uuid: uid}, {'$set': essay});
+  },
+
+  /**
+   * 查找标题为title的essay信息
+   */
+  'findEssay': function(title){
+    check(title, String);
+    return Essay.find({'title': title}).fetch();
+  },
+
+  // 发送消息
+  'sendMsg': function(option){
+    console.log('option');
+    check(option, Object);
+    console.log(option);
+    var res = HTTP.post(msgHandlerHost, option);
+    console.log(res);
+    if (res.statusCode === 200) {
+      return {code: 0, data: res.data};
+    } else {
+      throw "信息发送失败";
+      return {code: -1, data: '信息发送失败'};
+    }
   }
 });
 

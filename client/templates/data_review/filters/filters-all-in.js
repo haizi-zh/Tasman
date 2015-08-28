@@ -22,7 +22,7 @@ EssayFilter = new Meteor.FilterCollections(Essay, {
   sort:{
     order: ['desc', 'asc'],
     defaults: [
-      ['timeStamp', 'desc'],
+      ['editTime', 'desc'],
     ]
   },
   pager: {
@@ -46,8 +46,8 @@ EssayFilter = new Meteor.FilterCollections(Essay, {
     afterResults: function(cursor){
       var alteredResults = cursor.fetch();
       _.each(alteredResults, function(result, idx){
-        var date = new Date(alteredResults[idx].timeStamp);
-        alteredResults[idx].timeStamp = getFormatTime(date);
+        var date = new Date(alteredResults[idx].editTime);
+        alteredResults[idx].editTime = getFormatTime(date);
       });
       return alteredResults;
     },

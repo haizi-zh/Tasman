@@ -58,16 +58,16 @@ var naviBarConfig = [{
     routeName: "dedupViewspot"
   }]
 }, {
-  name: "文章编辑",
+  name: "运营文章",
   url: "#",
   routeName: "",
   subItem: [{
-    name: "新建文章",
-    url: "/essay/create",
-    routeName: "essayCreate"
-  }, {
     name: "文章一览",
     url: "/essay/list",
+    routeName: "essayList"
+  },{
+    name: "文章发布",
+    url: "/essay/publish",
     routeName: "essayList"
   }]
 }];

@@ -47,9 +47,14 @@
 	border: 1px solid #bbb;
 }
 
-.essay-submit{
-	margin: 50px 40px;
-	display: block;	
+.essay-submit-btn{
+	vertical-align: top;
+	margin: 50px 20px;
+	display: inline-block;
+}
+
+.essay-preview-btn{
+	margin-top: 50px;
 }
 
 .color-red{

@@ -1,5 +1,12 @@
+// 初始化变量
+ue = undefined;
+essayPreviewTargetLayer = null;
 
-Template.essayCreate.rendered = function(){
+Tracker.autorun(function () {
+  Session.get('ueReady') && ue.setContent(Session.get('currentEssayDetailContents'));
+});
+
+Template.essayEdit.rendered = function(){
   ue = UE.getEditor('ueContainer');
 
   // 存储自用的ue相关的变量参数
@@ -8,7 +15,12 @@ Template.essayCreate.rendered = function(){
       bucket: res.bucket,
       host: res.host,
       prefix: {
-        images: 'static/images/'
+        images: 'static/images/',
+        draft: 'preview/',
+        publish: ''
+      },
+      suffix: {
+        draft: '.html'
       }
     };  
   })
@@ -16,11 +28,12 @@ Template.essayCreate.rendered = function(){
   ue.ready(function(){
     //设置编辑器的内容
     ue.setContent('请在此编辑文章!');
+    Session.set('ueReady', true);
   });
 }
 
 
-Template.essayCreate.helpers({
+Template.essayEdit.helpers({
   'title': function(){
     return {
       'limit': 60
@@ -56,9 +69,9 @@ var wordCountFunction = function(e){
 }
 
 
-Template.essayCreate.events({
-  // 提交文章内容
-  'click .essay-submit': function(e){
+Template.essayEdit.events({
+  // 保存文章内容
+  'click .essay-submit-btn': function(e){
     var essay = {
       title: $('.essay-title>input').val(),
       author: $('.essay-author>input').val(),
@@ -90,9 +103,8 @@ Template.essayCreate.events({
     else
       delete essay.keywords;
 
-
     // 存储文章
-    Meteor.call('createEssay', essay, function(err, res){
+    Meteor.call('saveEssay', this.toString(), essay, function(err, res){
       if (err) {
         alert('保存失败');
         return ;
@@ -100,11 +112,7 @@ Template.essayCreate.events({
 
       alert('新建文章成功');
       console.log(res);
-      Router.go('essayList');
     });
-
-    // console.log(ue.getContent());
-    // console.log(ue.getContentTxt());
   },
 
   // 统计字数(input)
@@ -129,9 +137,9 @@ Template.essayCreate.events({
         return throwError(error.reason);
       }
       if (result){
-        $(e.target).siblings(".picUpToken").val(result.upToken);
-        $(e.target).siblings(".picUpKey").val(result.key);
         var form_data = new FormData($('#pic-up')[0]);
+        form_data.append('key', result.key);
+        form_data.append('token', result.upToken);
 
         //用jquery.ajax提交表单
         $.ajax({
@@ -152,6 +160,23 @@ Template.essayCreate.events({
         alert("上传图片失败，请再次上传或联系程序员！");
       }
     });
+  },
+
+  // 预发布文章，相应账号接收信息
+  'click .essay-preview-btn': function(e){
+    if (essayPreviewTargetLayer) {
+      essayPreviewTargetLayer.show();
+    } else {
+      var shareDialogInfo = {
+        template: Template.essayPreviewTargetLayer,
+        title: '发送预览',
+        doc: {
+          uid: this.toString()
+        }
+      };
+      essayPreviewTargetLayer = ReactiveModal.initDialog(shareDialogInfo);
+      essayPreviewTargetLayer.show();
+    }
   }
 })
 

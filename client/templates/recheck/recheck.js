@@ -4,6 +4,7 @@ Template.recheck.onRendered(function(){
 
 
 Template.recheck.helpers({
+  // 数据库类别
   collections: function() {
     return [
       {
@@ -29,6 +30,8 @@ Template.recheck.helpers({
       }
     ]
   },
+
+  // 数据状态
   'dataStatus': function(){
     return [
       {
@@ -45,6 +48,8 @@ Template.recheck.helpers({
       },
     ]
   },
+
+  // 时间范围
   'timeLimits': function() {
     return [
       {
@@ -69,6 +74,8 @@ Template.recheck.helpers({
       }
     ]
   },
+
+  // 已复审数据数目
   'checkedItemCnt': function() {
     Session.get('trigger-cal-checked');
     Meteor.call('checkedItemCnt', function(err, res){
@@ -89,6 +96,7 @@ Template.recheck.helpers({
 // })
 
 Template.recheck.events({
+  // 点击复审项目,展示修改内容
   'click .recheck-items': function(event) {
     var mid = $(event.target).attr('id');
     if(Session.get('recheckItem') && Session.get('recheckItem').pk === mid) {
@@ -103,17 +111,23 @@ Template.recheck.events({
     Meteor.subscribe('oplog', ns, new Mongo.ObjectID(mid), 0);
     Meteor.setTimeout(arrangeDiv, 2000);
   },
+
+  // 选择复审项目
   'click input[name="ready-online"]': function(event){
     event.preventDefault();
     event.stopPropagation();
     var pk = $(event.target).parent().attr('id');
     if(event.target.checked){
+      console.log('checked');
       Meteor.call('ready-online', pk);
     }else{
+      console.log('unchecked');
       Meteor.call('unready-online', pk);
     }
     Session.set('trigger-cal-checked', Date.now());
   },
+
+  // 待复审 => 全选/ 准备上线 => 全不选(每次只操作一列数据)
   'click .select-all': function(event){
     event.preventDefault();
     if($(event.target).hasClass("all-in")){
@@ -136,6 +150,8 @@ Template.recheck.events({
       });
     }
   },
+
+  // 批量上线
   'click .upload-btn': function(event){
     Meteor.call('bulk-upload', function(err, res){
       if(!err){
@@ -146,6 +162,8 @@ Template.recheck.events({
       }
     });
   },
+
+  // 筛选条件的展开/隐藏
   'click .btn-up-down': function(){
     if($('.recheck-filter-wrapper').hasClass("hidden")){
       $('.recheck-filter-wrapper').removeClass("hidden")

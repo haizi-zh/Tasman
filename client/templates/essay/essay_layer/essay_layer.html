@@ -1,0 +1,20 @@
+<template name="essaySelectLayer">
+	<div class="essay-select-layer">
+		<input type="text" class="keyword" placeholder="标题名">
+		<a href="#" class="close">x</a>
+		<a href="#" class="search"></a>
+	</div>
+
+	<div class="essay-select-list">
+
+	</div>
+</template>
+
+<template name="essayPreviewTargetLayer">
+	<div class="essay-preview-target-layer">
+		<input type="text" class="keyword" placeholder="请输入接收者的账户ID">
+		<button class="confirm">确定</button>
+		<button class="cancel">取消</button>
+		{{> essayUpForm}}
+	</div>
+</template>

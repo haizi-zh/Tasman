@@ -27,12 +27,14 @@ dbAuth = {
   },
   cms: {
     db: 'nebula',
-    replicaSet: 'aizou',
+    // replicaSet: 'aizou',
+    replicaSet: 'foba',
     readPreference: 'primaryPreferred'
   },
   k2: {
     db: 'k2',
-    replicaSet: 'aizou',
+    // replicaSet: 'aizou',
+    replicaSet: 'foba',
     readPreference: 'primaryPreferred'
   }
 };
@@ -47,10 +49,14 @@ var configUrl = host + '/v2/keys/project-conf';
 // 需要通过请求获取的配置信息
 var settings = {
   backends: {
-    callUrl: backendsUrl + '/mongo' + '?recursive=true'
+    callUrl: backendsUrl + '/mongo-production' + '?recursive=true'
   },
   config: {
     callUrl: configUrl + '/tasman' + '?recursive=true',
+    mongoAuth: {
+      'mongoUser': '/mongo/user',
+      'mongoPass': '/mongo/password'
+    },
     qiniu: {
       'pictures_host': '/qiniu/url',
       'accessKey': '/qiniu/accessKey',
@@ -81,6 +87,15 @@ essayHost = getSettingValue(dir + settings.config.qiniu.essayHost, result);//'ht
 accessKey = getSettingValue(dir + settings.config.qiniu.accessKey, result);
 secretKey = getSettingValue(dir + settings.config.qiniu.secretKey, result);
 pictures_host = getSettingValue(dir + settings.config.qiniu.pictures_host, result);
+
+mongoUser = getSettingValue(dir + settings.config.mongoAuth.mongoUser, result);
+mongoPass = getSettingValue(dir + settings.config.mongoAuth.mongoPass, result);
+
+dbAuth.k2.password = mongoPass;
+dbAuth.k2.username = mongoUser;
+dbAuth.k2.authSource = 'nebula';
+dbAuth.cms.password = mongoPass;
+dbAuth.cms.username = mongoUser;
 
 /** 
  * 解析etcd返回的数据，并返回path对应的配置值

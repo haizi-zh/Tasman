@@ -1,0 +1,40 @@
+.essay-select-layer{
+	position: relative;
+	overflow: hidden;
+	border: 1px solid #ccc;
+	width: 400px;
+}
+
+.essay-select-layer input{
+	width: 350px;
+	border: none;
+}
+
+.essay-select-layer .close{
+	position: absolute;
+	left: 350px;
+	width: 25px;
+	text-align: center;
+	border-right: 1px solid #666;
+}
+
+.essay-select-layer .close:hover{
+	color: #333;
+	border-right-color: #666;
+}
+
+.essay-select-layer .search{
+	background: url(/images/search.png) no-repeat;
+	background-size:  contain;
+	position: absolute;
+	left: 375px;
+	width: 20px;
+	height: 20px;
+	margin: 2px;
+}
+
+.essay-select-list{
+	margin-top: 20px;
+	height: 400px;
+	overflow: auto;
+}
