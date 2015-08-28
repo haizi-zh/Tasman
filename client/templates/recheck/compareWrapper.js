@@ -11,13 +11,10 @@ Tracker.autorun(function(){
   }
 });
 
-Tracker.autorun(function(){
-
-});
-
 Template.compareWrapper.helpers({
 
   itemData: function(){
+    // 有什么用？
     var item = Session.get('recheckItem');
     // 0 ：对应base中的线上数据，对应compare中的待review数据
     Session.set('recheckBaseVersion', 0);
@@ -25,12 +22,13 @@ Template.compareWrapper.helpers({
     return 1;
   },
 
+  // 数据的版本列表
   releaseList: function() {
     var item = Session.get('recheckItem');
     return OplogPkList.findOne({'pk': item.pk}).branch;
   },
 
-  //提供对照用的数据
+  // 基本版本的数据
   baseData: function(){
     var snapshotId = Session.get('recheckBaseVersion');
     var item = Session.get('recheckItem');
@@ -61,6 +59,7 @@ Template.compareWrapper.helpers({
     return baseData;
   },
 
+  // 基本版本的图片
   basePic: function(){
     var snapshotId = Session.get('recheckBaseVersion');
     var item = Session.get('recheckItem');
@@ -87,7 +86,7 @@ Template.compareWrapper.helpers({
     return images;
   },
 
-
+  // 修改版本的数据
 	compareData: function(){
     var snapshotId = Session.get('recheckCompareVersion');
     var item = Session.get('recheckItem');
@@ -116,6 +115,7 @@ Template.compareWrapper.helpers({
     return compareData;
   },
 
+  // 修改版本的图片
   comparePic: function(){
     var snapshotId = Session.get('recheckCompareVersion');
     var item = Session.get('recheckItem');
@@ -201,7 +201,7 @@ Template.compareWrapper.helpers({
 
 
 Template.compareWrapper.events({
-  //保存非富文本框的修改
+  // 保存非富文本框的修改
   "blur textarea": function(e){
     var recheckCompareData = Session.get("recheckCompareData");
     for (i = 0;i < recheckCompareData.length;i++) {
@@ -214,7 +214,7 @@ Template.compareWrapper.events({
     }
   },
 
-  //保存富文本框的修改
+  // 保存富文本框的修改
   'blur .froala-view': function(e){
     var recheckCompareData = Session.get("recheckCompareData");
     for (i = 0;i < recheckCompareData.length;i++) {
@@ -227,18 +227,21 @@ Template.compareWrapper.events({
     }
   },
 
+  // 切换基本版本的版本号
   'change #baseRelease': function(e) {
     var snapshotId = $(e.target).val();
     log(snapshotId);
     Session.set('recheckBaseVersion', parseInt(snapshotId));
   },
 
+  // 切换修改版本的版本号s
   'change #compareRelease': function(e) {
     var snapshotId = $(e.target).val();
     log(snapshotId);
     Session.set('recheckCompareVersion', parseInt(snapshotId));
   },
 
+  // 提交复审中的修改
   'click #submit-info': function(e) {
     e.preventDefault();
     log('上传数据!');
@@ -248,11 +251,13 @@ Template.compareWrapper.events({
     submitOplog(ns, pk);
   },
 
+  // 将数据的修改上线
   'click #upload-data': function(e) {
     e.preventDefault();
     var item = Session.get('recheckItem'),
         pk = item.pk;
-    // 将线上数据进行修改
+
+    // 对线上数据进行修改
     Meteor.call('updateOnlineData', pk, function(err, res){
       if(!err && 0 === res.code) {
         alert('上传成功');
@@ -262,6 +267,7 @@ Template.compareWrapper.events({
     });
   },
 
+  // 撤销对数据进行的修改
   'click #reject-info': function(e) {
     e.preventDefault();
     var item = Session.get('recheckItem'),
@@ -277,6 +283,7 @@ Template.compareWrapper.events({
     }
   },
 
+  // 回滚版本
   'click .scroll-back': function(e) {
     e.preventDefault();
     var baseV = Session.get('recheckBaseVersion'),
@@ -294,12 +301,14 @@ Template.compareWrapper.events({
     }
   },
 
+  // 修改图片 => 需要跳转到项目详情页面
   'click #edit-pic-btn': function(e) {
     var item = Session.get('recheckItem');
     window.open("/" + item.ns.split('.')[1] + "/" + item.pk);
     // window.open(Router.url(item.ns.split('.')[1].toLowerCase() + 'Detail', {'id': item.pk}));
   },
 
+  // 只查看修改项
   'click #showModified': function(e) {
     var diffChildDom = $('.recheck-diff-wrapper').children('div.form-group');
     var compareChlidDom = $('.recheck-compare-wrapper').children('div.form-group');

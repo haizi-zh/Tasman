@@ -30,7 +30,6 @@ Template.essaySelectLayer.events({
 Template.essayPreviewTargetLayer.events({
   // 确认发送
   'click .confirm': function(e){
-    var uid = this.uid;
     var targetId = $(e.target).siblings('input').val();
     var contents = ue.getContent();
 
@@ -52,7 +51,7 @@ Template.essayPreviewTargetLayer.events({
         form_data.append('key', result.key);
         form_data.append('token', result.upToken);
 
-        // 转成二维码？
+        // 转成二进制流？
         // contents = Array.prototype.map.call(contents, function(c) {
         //   return c.charCodeAt(0);
         // });
@@ -111,9 +110,38 @@ Template.essayPreviewTargetLayer.events({
           processData: false,
           data: form_data,
           success: function(data) {
-            var essayUrl = result.url;
-            // alert('成功上传网页' + essayUrl);
-            // window.open(essayUrl);
+            var msgContents ={
+                title: $('.essay-title>input').val(),
+                desc: $('.essay-abstract>textarea').val(),
+                image: $('.essay-cover>input').val(),
+                url: result.url
+              };
+            var msg = {
+                  'receiver': Number(targetId),
+                  'sender': 10000,
+                  'msgType': 18,
+                  'contents': JSON.stringify(msgContents),
+                  'chatType': 'single'
+                },
+                header = {
+                  'Content-Type': 'application/json',
+                },
+                option = {
+                  'header': header,
+                  'data': msg
+                };
+
+            Meteor.call('sendMsg', option, function(err, res){
+              if (err){
+                alert('发送预览消息失败！');
+                console.log(err);
+              }
+
+              if (res){
+                alert('发送成功，请在手机上预览！');
+                essayPreviewTargetLayer.hide();
+              }
+            })
           }
         });
       }else{
