@@ -56,7 +56,7 @@ Template.essayPreviewTargetLayer.events({
         //   return c.charCodeAt(0);
         // });
 
-        var cssStyle = '<style>' + '.essay-wrap{position: relative;width: 95%;margin: 0 auto;padding: 20px;background-color: #fff;padding-bottom: 100px;}' + '</style>';
+        var cssStyle = '<style>' + '.essay-wrap{position: relative;width: 100%;box-sizing: border-box;margin: 0 auto;padding: 10px;background-color: #fff;padding-bottom: 100px;} img{width:100%;height:auto;}' + '</style>';
 
         var meta = '<meta http-equiv="Content-Type" content="text/html; charset=utf-8">' + 
           '<meta http-equiv="X-UA-Compatible" content="IE=edge">' + 

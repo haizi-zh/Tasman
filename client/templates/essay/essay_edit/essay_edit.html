@@ -3,13 +3,25 @@
 		<div class="essay-meta">
 			<div class="essay-title">
 				<label>标题*</label>
-				<span class="word-count">0</span>/{{title.limit}}
+				<span class="word-count">
+					{{#if essayDetail.titleCount}}
+						{{essayDetail.titleCount}}
+					{{else}}
+						0
+					{{/if}}
+				</span>/{{title.limit}}
 				<input type="text" value="{{essayDetail.title}}">
 			</div>
 
 			<div class="essay-author">
 				<label>作者</label>
-				<span class="word-count">0</span>/{{author.limit}}
+				<span class="word-count">
+					{{#if essayDetail.authorCount}}
+						{{essayDetail.authorCount}}
+					{{else}}
+						0
+					{{/if}}
+				</span>/{{author.limit}}
 				<input type="text" value="{{essayDetail.author}}">
 			</div>
 
@@ -20,7 +32,13 @@
 
 			<div class="essay-abstract">
 				<label>摘要</label>
-				<span class="word-count">0</span>/{{abstract.limit}}
+				<span class="word-count">
+					{{#if essayDetail.abstractCount}}
+						{{essayDetail.abstractCount}}
+					{{else}}
+						0
+					{{/if}}
+				</span>/{{abstract.limit}}
 				<textarea value="{{essayDetail.abstract}}"></textarea>
 			</div>
 

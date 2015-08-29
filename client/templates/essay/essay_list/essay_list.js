@@ -8,13 +8,15 @@
 Template.essayList.events({
   // 点击进入编辑页面
   'click .essay-frame': function(){
-    Router.go('/essay/edit/' + this.uuid);
+    // 为了解决UE 没法重新刷新的问题
+    // Router.go('/essay/edit/' + this.uuid);
+    window.open('/essay/edit/' + this.uuid);
   },
 
   // 新建文章的跳转
   'click .essay-create': function(){
     var uid = uuid.v1();
-    console.log(uid);
-    Router.go('/essay/edit/' + uid);
+    // Router.go('/essay/edit/' + uid);
+    window.open('/essay/edit/' + uid);
   }
 })
