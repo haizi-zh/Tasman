@@ -2,6 +2,10 @@
 ue = undefined;
 essayPreviewTargetLayer = null;
 
+UI.registerHelper('essayMetaInfo', function(contents) {
+  return (contents) ? contents.length : 0;
+});
+
 Tracker.autorun(function () {
   Session.get('ueReady') && ue.setContent(Session.get('currentEssayDetailContents'));
 });
