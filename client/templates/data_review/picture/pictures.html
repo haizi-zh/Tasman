@@ -22,8 +22,12 @@
       <form method="post" enctype="multipart/form-data" id="pic-up" name="pic-up" class="form-group">
         <input name="key" type="hidden" value="" id="picUpKey">
         <input name="token" type="hidden" value="" id="picUpToken">
-        <input name="file" type="file"/>
+        <input name="file" type="file" id='file'/>
       </form>
+      <div id="progress_bar">
+        <div class="percent">0%</div>
+      </div>
+      <output id="list"></output>
     </div>
 
     <!-- 当前已选图片队列 -->

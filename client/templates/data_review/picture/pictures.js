@@ -1,3 +1,6 @@
+// for the upload
+var reader;
+
 var _time, cropCoords, currentIndex, currentSource, cropScale, cropScaleIndex;
 
 // cropHints, selectedCropHints, upCropHints:imagestore图片, poi/geo图片, 上传图片的裁剪信息
@@ -383,6 +386,50 @@ Template.pictures.events({
     });
   },
 
+   // 上传图片的预览以及进度的监控
+  'change #file': function(evt){
+
+    // 上传图片的预览
+    var file = evt.target.files[0];
+    reader = new FileReader();
+    reader.onload = (function(theFile) {
+      return function(e) {
+        // Render thumbnail.
+        var span = document.createElement('span');
+        span.innerHTML = ['<img class="thumb" src="', e.target.result,
+                          '" title="', escape(theFile.name), '"/>'].join('');
+        $('#list').empty();
+        document.getElementById('list').insertBefore(span, null);
+      };
+    })(file);
+    reader.readAsDataURL(file);
+
+    // 上传过程的进度监控
+    var progress = document.querySelector('.percent');
+
+    // Reset progress indicator on new file selection.
+    progress.style.width = '0%';
+    progress.textContent = '0%';
+
+    reader = new FileReader();
+    reader.onerror = errorHandler;
+    reader.onprogress = updateProgress;
+    reader.onloadstart = function(e) {
+      $('#progress_bar').show();
+      document.getElementById('progress_bar').className = 'loading';
+    };
+    reader.onload = function(e) {
+      // Ensure that the progress bar displays 100% at the end.
+      progress.style.width = '100%';
+      progress.textContent = '100%';
+      // setTimeout("document.getElementById('progress_bar').className='';", 2000);
+      setTimeout("$('#progress_bar').hide();", 2000);
+    }
+
+    // Read in the image file as a binary string.
+    reader.readAsBinaryString(evt.target.files[0]);
+  },
+
   //上传远端图片
   "click #pic-fet-sub": function(e){
     var fetchUrl = $('#fet-pic-url').val();
@@ -604,3 +651,35 @@ Template.pictures.events({
   },
 });
 //////
+
+
+// 错误处理
+function errorHandler(evt) {
+  var progress = document.querySelector('.percent');
+  switch(evt.target.error.code) {
+    case evt.target.error.NOT_FOUND_ERR:
+      alert('File Not Found!');
+      break;
+    case evt.target.error.NOT_READABLE_ERR:
+      alert('File is not readable');
+      break;
+    case evt.target.error.ABORT_ERR:
+      break; // noop
+    default:
+      alert('An error occurred reading this file.');
+  };
+}
+
+// 进度更新
+function updateProgress(evt) {
+  var progress = document.querySelector('.percent');
+  // evt is an ProgressEvent.
+  if (evt.lengthComputable) {
+    var percentLoaded = Math.round((evt.loaded / evt.total) * 100);
+    // Increase the progress bar length.
+    if (percentLoaded < 100) {
+      progress.style.width = percentLoaded + '%';
+      progress.textContent = percentLoaded + '%';
+    }
+  }
+}
