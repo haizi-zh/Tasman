@@ -51,7 +51,7 @@ GuideTemplate = new Mongo.Collection('GuideTemplate', {_driver: k2, idGeneration
 // Plan = new Mongo.Collection('Plan', {_driver: plan});
 
 // 存放CMS新建的游记规划
-CmsGenerated = new Mongo.Collection('CmsGenerated', {_driver: k2});
+CmsGenerated = new Mongo.Collection('CmsGenerated', {_driver: cms});
 
 // 任务分配
 TaskPool = new Mongo.Collection('TaskPool', {_driver: cms});
